@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<overlay id="java-firefox-extension-browser-overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://zotero/content/include.js"/>
+    <script type="application/x-javascript" src="chrome://zotero-winword-integration/content/browser-overlay.js"/>
+</overlay>
