@@ -24,7 +24,31 @@
 const ZOTEROWINWORDINTEGRATION_ID = "zoteroWinWordIntegration@zotero.org";
 const ZOTEROWINWORDINTEGRATION_PREF = "extensions.zoteroWinWordIntegration.version";
 
-function zoteroWinWordIntegration_firstRun() {
+function ZoteroWinWordIntegration_checkVersion(name, url, id, minVersion) {
+	// check Zotero version
+	try {
+		var ext = Components.classes['@mozilla.org/extensions/manager;1']
+		   .getService(Components.interfaces.nsIExtensionManager).getItemForID(id);
+		var comp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+			.getService(Components.interfaces.nsIVersionComparator)
+			.compare(ext.version, minVersion);
+	} catch(e) {
+		var comp = -1;
+	}
+	
+	if(comp < 0) {
+		var err = 'This version of Zotero OpenOffice Integration requires '+name+' '+minVersion+
+			' or later to run. Please download the latest version of '+name+' from '+url+'.';
+		var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Components.interfaces.nsIPromptService)
+			.alert(null, 'Zotero OpenOffice Integration Error', err);
+		throw err;
+	}
+}
+
+function ZoteroWinWordIntegration_firstRun() {
+	ZoteroWinWordIntegration_checkVersion("Zotero", "zotero.org", "zotero@chnm.gmu.edu", "2.0b7.SVN");
+	
 	try {
 		// find Word Startup folder (see http://support.microsoft.com/kb/210860)
 		
@@ -83,9 +107,9 @@ function zoteroWinWordIntegration_firstRun() {
 
 var ext = Components.classes['@mozilla.org/extensions/manager;1']
    .getService(Components.interfaces.nsIExtensionManager).getItemForID(ZOTEROWINWORDINTEGRATION_ID);
-var zoteroWinWordIntegration_prefService = Components.classes["@mozilla.org/preferences-service;1"].
+var ZoteroWinWordIntegration_prefService = Components.classes["@mozilla.org/preferences-service;1"].
 	getService(Components.interfaces.nsIPrefBranch);
-if(zoteroWinWordIntegration_prefService.getCharPref(ZOTEROWINWORDINTEGRATION_PREF) != ext.version) {
-	zoteroWinWordIntegration_firstRun();
-	zoteroWinWordIntegration_prefService.setCharPref(ZOTEROWINWORDINTEGRATION_PREF, ext.version);
+if(ZoteroWinWordIntegration_prefService.getCharPref(ZOTEROWINWORDINTEGRATION_PREF) != ext.version) {
+	ZoteroWinWordIntegration_firstRun();
+	ZoteroWinWordIntegration_prefService.setCharPref(ZOTEROWINWORDINTEGRATION_PREF, ext.version);
 }
