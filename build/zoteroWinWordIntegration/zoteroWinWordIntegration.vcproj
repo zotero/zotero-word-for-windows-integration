@@ -115,7 +115,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration.dll"
+				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
 				Outputs="..\..\components\zoteroWinWordIntegration.dll"
 			/>
 			<Tool

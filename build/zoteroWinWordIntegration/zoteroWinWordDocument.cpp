@@ -147,6 +147,8 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 		
 		if(strcmp(fieldType, "Field") == 0) {
 			CFields rangeFields = selection.get_Fields();
+			long long selectionStart = selection.get_Start();
+			long long selectionEnd = selection.get_End();
 			
 			long rangeFieldCount = rangeFields.get_Count();
 			if(!rangeFieldCount) {
@@ -154,27 +156,41 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 				CRange selectionRange = selection.get_Range();
 				CRange range = selectionRange.get_Duplicate();
 				CRange rangeEnd = selectionRange.get_Duplicate();
-				range.GoToPrevious(7);							// go to previous field
-				rangeEnd.GoToNext(7);							// go to next field
+				range = range.GoToPrevious(7);							// go to previous field
+				rangeEnd = rangeEnd.GoToNext(7);						// go to next field
 
 				// might only be one field in the entire doc
-				if(range.get_Start() == rangeEnd.get_Start()) {
-					rangeEnd.GoToNext(4);	// move a paragraph
+				long long rangeEndIndex = rangeEnd.get_Start();
+				if(range.get_Start() == rangeEndIndex) {
+					range = range.GoToPrevious(3);		// move a line back
+				}
+				if(rangeEndIndex < selectionEnd) {
+					rangeEndIndex = selectionEnd;		// span at least to selection end
 				}
 
 				// make range span from previous field to next field
-				range.put_End(rangeEnd.get_Start());
+				range.put_End(rangeEndIndex);
 
 				// check all fields to see if they are in the selection
 				rangeFields = range.get_Fields();
 				rangeFieldCount = rangeFields.get_Count();
 			}
-			
+
 			for(long i=0; i<rangeFieldCount; i++) {
 				CField testField = rangeFields.Item(i+1);
 				CRange testFieldCode = testField.get_Code();
+				CRange testFieldResult = testField.get_Result();
 				CString testFieldCodeText = testFieldCode.get_Text();
-
+				long long testFieldStart = testFieldCode.get_Start();
+				long long testFieldEnd = testFieldResult.get_End();
+				
+				// if there is no overlap, continue
+				if((testFieldStart > selectionStart && testFieldEnd > selectionEnd
+						&& testFieldStart > selectionEnd && testFieldEnd > selectionEnd)
+						|| (testFieldStart < selectionStart && testFieldEnd < selectionEnd
+						&& testFieldStart < selectionEnd && testFieldEnd < selectionEnd)) continue;
+				
+				// otherwise, check for an appropriate code
 				if(wcsncmp(testFieldCodeText, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0
 						|| wcsncmp(testFieldCodeText, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
 					*_retval = new zoteroWinWordField(this, testField);

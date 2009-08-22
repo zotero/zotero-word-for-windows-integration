@@ -43,26 +43,26 @@ public:
 		static BYTE parms[] = VTS_DISPATCH ;
 		InvokeHelper(0x2, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
 	}
-	long get_Start()
+	long long get_Start()
 	{
-		long result;
-		InvokeHelper(0x3, DISPATCH_PROPERTYGET, VT_I4, (void*)&result, NULL);
+		long long result;
+		InvokeHelper(0x3, DISPATCH_PROPERTYGET, VT_I8, (void*)&result, NULL);
 		return result;
 	}
-	void put_Start(long newValue)
+	void put_Start(long long newValue)
 	{
-		static BYTE parms[] = VTS_I4 ;
+		static BYTE parms[] = VTS_I8 ;
 		InvokeHelper(0x3, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
 	}
-	long get_End()
+	long long get_End()
 	{
-		long result;
-		InvokeHelper(0x4, DISPATCH_PROPERTYGET, VT_I4, (void*)&result, NULL);
+		long long result;
+		InvokeHelper(0x4, DISPATCH_PROPERTYGET, VT_I8, (void*)&result, NULL);
 		return result;
 	}
-	void put_End(long newValue)
+	void put_End(long long newValue)
 	{
-		static BYTE parms[] = VTS_I4 ;
+		static BYTE parms[] = VTS_I8 ;
 		InvokeHelper(0x4, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
 	}
 	LPDISPATCH get_Font()
