@@ -37,11 +37,11 @@ function ZoteroWinWordIntegration_checkVersion(name, url, id, minVersion) {
 	}
 	
 	if(comp < 0) {
-		var err = 'This version of Zotero OpenOffice Integration requires '+name+' '+minVersion+
+		var err = 'This version of Zotero WinWord Integration requires '+name+' '+minVersion+
 			' or later to run. Please download the latest version of '+name+' from '+url+'.';
 		var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService)
-			.alert(null, 'Zotero OpenOffice Integration Error', err);
+			.alert(null, 'Zotero WinWord Integration Error', err);
 		throw err;
 	}
 }
