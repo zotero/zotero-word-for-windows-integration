@@ -140,6 +140,12 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 				CRange toDelete = comTextRange.get_Duplicate();
 				toDelete.Collapse(0);
 				toDelete.MoveStart(1, -1);
+				CString test = toDelete.get_Text();
+				if(toDelete.get_Text() != L"\x0d") {
+					toDelete.Collapse(0);
+					toDelete.MoveEnd(1, 1);
+					test = toDelete.get_Text();
+				}
 				toDelete.put_Text(L"");
 			}
 		} else {
