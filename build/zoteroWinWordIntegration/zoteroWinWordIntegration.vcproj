@@ -115,7 +115,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
+				CommandLine="copy Release\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
 				Outputs="..\..\components\zoteroWinWordIntegration.dll"
 			/>
 			<Tool
@@ -159,6 +159,7 @@
 				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\xulrunner-sdk\lib&quot;;&quot;..\xulrunner-sdk\sdk\lib&quot;"
+				EnableUAC="false"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
