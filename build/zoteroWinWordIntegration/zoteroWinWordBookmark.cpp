@@ -36,9 +36,19 @@ zoteroWinWordBookmark::zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookm
 	try {
 		comBookmark = bookmark;
 		doc = aDoc;
-		init();
+		init(true);
 	} catch(...) {}
 }
+zoteroWinWordBookmark::zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookmark0 bookmark, CString aBookmarkName)
+{
+	try {
+		comBookmark = bookmark;
+		doc = aDoc;
+		bookmarkName = aBookmarkName;
+		init(false);
+	} catch(...) {}
+}
+
 
 /* void removeCode (); */
 NS_IMETHODIMP zoteroWinWordBookmark::RemoveCode()
@@ -118,10 +128,12 @@ NS_IMETHODIMP zoteroWinWordBookmark::SetText(const PRUnichar *text, PRBool isRic
 	}
 }
 
-void zoteroWinWordBookmark::init()
+void zoteroWinWordBookmark::init(bool needName)
 {
 	offset1 = -1;
-	bookmarkName = comBookmark.get_Name();
+	if(needName) {
+		bookmarkName = comBookmark.get_Name();
+	}
 	comTextRange = comBookmark.get_Range();
 }
 
@@ -136,7 +148,7 @@ void zoteroWinWordBookmark::loadFromRange(CRange comRange)
 	} else {
 		CBookmark0 comBookmark = comBookmarks.Add(bookmarkName, comRange);
 	}
-	init();
+	init(false);
 }
 
 CRange zoteroWinWordBookmark::getFieldRange()
@@ -181,8 +193,14 @@ zoteroWinWordBookmarkEnumerator::zoteroWinWordBookmarkEnumerator(zoteroWinWordDo
 void zoteroWinWordBookmarkEnumerator::fetchNextItem(short i) {
 	if(bookmarkIndex[i] < bookmarkCount[i]) {
 		CBookmark0 comBookmark = comBookmarks[i].Item(bookmarkIndex[i]++ + 1);
-		doc->AddRef();
-		fieldItem[i] = new zoteroWinWordBookmark(doc, comBookmark);
+		CString bookmarkName = comBookmark.get_Name();
+		if(wcsncmp(bookmarkName, BOOKMARK_PREFIX, BOOKMARK_PREFIX.GetLength()) == 0
+				|| wcsncmp(bookmarkName, BACKUP_BOOKMARK_PREFIX, BACKUP_BOOKMARK_PREFIX.GetLength()) == 0) {
+			doc->AddRef();
+			fieldItem[i] = new zoteroWinWordBookmark(doc, comBookmark);
+		} else {
+			fetchNextItem(i);
+		}
 	} else {
 		fieldItem[i] = NULL;
 	}

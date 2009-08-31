@@ -41,7 +41,18 @@ zoteroWinWordField::zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field
 	try {
 		comField = field;
 		doc = aDoc;
-		init();
+		init(true);
+	} catch(...) {}
+}
+
+zoteroWinWordField::zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field, CRange codeRange, CString code)
+{
+	try {
+		comField = field;
+		doc = aDoc;
+		comCodeRange = codeRange;
+		rawCode = code;
+		init(false);
 	} catch(...) {}
 }
 
@@ -129,7 +140,7 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 			CFile::Remove(tempFile);
 
 			// put font back on
-			init();
+			init(true);
 			comFont = comTextRange.get_Font();
 			comFont.put_Name(fontName);
 			comFont.put_Size(fontSize);
@@ -163,20 +174,22 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 NS_IMETHODIMP zoteroWinWordField::GetCode(PRUnichar **_retval)
 {
 	try {
-		CStringW comString = comCodeRange.get_Text();
+		if(rawCode.IsEmpty()) {
+			rawCode = comCodeRange.get_Text();
+		}
+
 		CStringW prefix;
-		if(wcsncmp(comString, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
+		if(wcsncmp(rawCode, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
 			prefix = FIELD_PREFIX;
-		} else if(wcsncmp(comString, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
+		} else if(wcsncmp(rawCode, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
 			prefix = BACKUP_FIELD_PREFIX;
 		} else {
 			return NS_ERROR_FAILURE;
 		}
-		OutputDebugString(prefix);
 
-		long length = comString.GetLength()-prefix.GetLength();
+		long length = rawCode.GetLength()-prefix.GetLength();
 		*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
-		lstrcpyn(*_retval, ((LPCTSTR)comString)+(prefix.GetLength()), length+1);
+		lstrcpyn(*_retval, ((LPCTSTR)rawCode)+(prefix.GetLength()), length+1);
 		OutputDebugString(*_retval);
 		return NS_OK;
 	} catch(...) {
@@ -188,7 +201,8 @@ NS_IMETHODIMP zoteroWinWordField::GetCode(PRUnichar **_retval)
 NS_IMETHODIMP zoteroWinWordField::SetCode(const PRUnichar *code)
 {
 	try {
-		comCodeRange.put_Text(FIELD_PREFIX+code);
+		rawCode = FIELD_PREFIX+code;
+		comCodeRange.put_Text(rawCode);
 		return NS_OK;
 	} catch(...) {
 		return NS_ERROR_FAILURE;
@@ -217,7 +231,7 @@ NS_IMETHODIMP zoteroWinWordField::GetNoteIndex(PRUint32 *_retval)
 NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, PRBool *_retval)
 {
 	try {
-		zoteroWinWordField *winWordField = dynamic_cast<zoteroWinWordField*>(field);
+		zoteroWinWordField *winWordField = static_cast<zoteroWinWordField*>(field);
 		*_retval = comTextRange.IsEqual(winWordField->comTextRange);
 		return NS_OK;
 	} catch(...) {
@@ -350,10 +364,12 @@ bool zoteroWinWordField::isWholeNote()
 	return false;
 }
 
-void zoteroWinWordField::init()
+void zoteroWinWordField::init(bool needCode)
 {
 	offset1 = -1;
-	comCodeRange = comField.get_Code();
+	if(needCode) {
+		comCodeRange = comField.get_Code();
+	}
 	comTextRange = comField.get_Result();
 }
 
@@ -361,7 +377,7 @@ void zoteroWinWordField::loadFromRange(CRange comRange)
 {
 	CFields comFields = comRange.get_Fields();
 	comField = comFields.Item(1);
-	init();
+	init(true);
 }
 
 CRange zoteroWinWordField::getFieldRange()
@@ -460,8 +476,16 @@ zoteroWinWordFieldEnumerator::~zoteroWinWordFieldEnumerator() {
 void zoteroWinWordFieldEnumerator::fetchNextItem(short i) {
 	VARIANT var;
 	if(fieldEnum[i]->Next(1, &var, NULL) == S_OK) {
-		doc->AddRef();
-		fieldItem[i] = new zoteroWinWordField(doc, var.pdispVal);
+		CField field = var.pdispVal;
+		CRange codeRange = field.get_Code();
+		CString codeString = codeRange.get_Text();
+		if(wcsncmp(codeString, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0
+				|| wcsncmp(codeString, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
+			doc->AddRef();
+			fieldItem[i] = new zoteroWinWordField(doc, field, codeRange, codeString);
+		} else {
+			fetchNextItem(i);
+		}
 	} else {
 		fieldItem[i] = NULL;
 	}

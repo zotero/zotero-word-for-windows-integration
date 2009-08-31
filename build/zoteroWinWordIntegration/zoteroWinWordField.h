@@ -55,6 +55,7 @@ public:
 
 	zoteroWinWordField();
 	zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field);
+	zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field, CRange codeRange, CString code);
 	// gah! this destructor has to be virtual, or else our CString doesn't get deallocated.
 	virtual ~zoteroWinWordField();
 
@@ -66,6 +67,7 @@ public:
 private:
 	CField comField;
 	CRange comCodeRange;
+	CString rawCode;
 
 	bool isWholeNote();
 
@@ -74,7 +76,7 @@ protected:
 	CEndnote comEndnote;
 	zoteroWinWordDocument *doc;
 
-	virtual void init();
+	virtual void init(bool needCode);
 	virtual void loadFromRange(CRange comRange);
 	virtual void deleteField();
 };

@@ -49,6 +49,7 @@ class zoteroWinWordBookmark : public zoteroWinWordField
 public:
 	zoteroWinWordBookmark();
 	zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookmark0 field);
+	zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookmark0 bookmark, CString aBookmarkName);
 
 	NS_IMETHODIMP RemoveCode();
 	NS_IMETHODIMP SetCode(const PRUnichar *code);
@@ -61,7 +62,7 @@ private:
 	CString bookmarkName;
 
 protected:
-	void init();
+	void init(bool needName);
 	void loadFromRange(CRange comRange);
 	void deleteField();
 };
