@@ -136,6 +136,7 @@
 				FavorSizeOrSpeed="0"
 				AdditionalIncludeDirectories="&quot;..\xulrunner-sdk\include&quot;;&quot;..\xulrunner-sdk\sdk\include&quot;;&quot;..\xulrunner-sdk\include\xpcom&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32"
+				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
