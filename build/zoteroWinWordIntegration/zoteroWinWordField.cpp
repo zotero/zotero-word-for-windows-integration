@@ -190,7 +190,6 @@ NS_IMETHODIMP zoteroWinWordField::GetCode(PRUnichar **_retval)
 		long length = rawCode.GetLength()-prefix.GetLength();
 		*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
 		lstrcpyn(*_retval, ((LPCTSTR)rawCode)+(prefix.GetLength()), length+1);
-		OutputDebugString(*_retval);
 		return NS_OK;
 	} catch(...) {
 		return NS_ERROR_FAILURE;
