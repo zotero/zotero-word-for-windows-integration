@@ -31,6 +31,7 @@
 #include "zoteroWinWordBookmark.h"
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
+static COleVariant covTrue((short)TRUE), covFalse((short)FALSE);
 /* Implementation file */
 NS_IMPL_ISUPPORTS1(zoteroWinWordField, zoteroIntegrationField)
 NS_IMPL_ISUPPORTS1(zoteroWinWordEnumerator, nsISimpleEnumerator)
@@ -136,7 +137,7 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 			delete[] writeBuffer;
 
 			// read from file into range
-			comTextRange.InsertFile(tempFile, &covOptional, &covOptional, &covOptional, &covOptional);
+			comTextRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
 			CFile::Remove(tempFile);
 
 			// put font back on
