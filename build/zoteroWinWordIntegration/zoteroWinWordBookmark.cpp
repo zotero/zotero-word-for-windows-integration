@@ -29,16 +29,16 @@
 #include "zoteroWinWordDocument.h"
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
+#include "zoteroException.h"
 
 zoteroWinWordBookmark::zoteroWinWordBookmark() {}
 zoteroWinWordBookmark::zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookmark0 bookmark)
 {
-	try {
-		comBookmark = bookmark;
-		doc = aDoc;
-		init(true);
-	} catch(...) {}
+	comBookmark = bookmark;
+	doc = aDoc;
+	init(true);
 }
+
 zoteroWinWordBookmark::zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookmark0 bookmark, CString aBookmarkName)
 {
 	try {
@@ -53,79 +53,71 @@ zoteroWinWordBookmark::zoteroWinWordBookmark(zoteroWinWordDocument *aDoc, CBookm
 /* void removeCode (); */
 NS_IMETHODIMP zoteroWinWordBookmark::RemoveCode()
 {
-	try {
-		comBookmark.Delete();
-		doc->setProperty(bookmarkName, L"");
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	comBookmark.Delete();
+	doc->setProperty(bookmarkName, L"");
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* wstring getCode (); */
 NS_IMETHODIMP zoteroWinWordBookmark::GetCode(PRUnichar **_retval)
 {
-	try {
-		CString prefix;
-		CString comString = doc->getProperty(bookmarkName);
-		if(wcsncmp(comString, BOOKMARK_PREFIX, BOOKMARK_PREFIX.GetLength()) == 0) {
-			prefix = BOOKMARK_PREFIX;
-		} else if(wcsncmp(comString, BACKUP_BOOKMARK_PREFIX, BACKUP_BOOKMARK_PREFIX.GetLength()) == 0) {
-			prefix = BACKUP_BOOKMARK_PREFIX;
-		} else {
-			return NS_ERROR_FAILURE;
-		}
-
-		long length = comString.GetLength()-prefix.GetLength();
-		*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
-		lstrcpyn(*_retval, ((LPCTSTR)comString)+(prefix.GetLength()), length+1);
-		return NS_OK;
-	} catch(...) {
+	ZOTERO_EXCEPTION_CATCHER_START
+	CString prefix;
+	CString comString = doc->getProperty(bookmarkName);
+	if(wcsncmp(comString, BOOKMARK_PREFIX, BOOKMARK_PREFIX.GetLength()) == 0) {
+		prefix = BOOKMARK_PREFIX;
+	} else if(wcsncmp(comString, BACKUP_BOOKMARK_PREFIX, BACKUP_BOOKMARK_PREFIX.GetLength()) == 0) {
+		prefix = BACKUP_BOOKMARK_PREFIX;
+	} else {
 		return NS_ERROR_FAILURE;
 	}
+
+	long length = comString.GetLength()-prefix.GetLength();
+	*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
+	lstrcpyn(*_retval, ((LPCTSTR)comString)+(prefix.GetLength()), length+1);
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void setCode (in wstring code); */
 NS_IMETHODIMP zoteroWinWordBookmark::SetCode(const PRUnichar *code)
 {
-	try {
-		doc->setProperty(bookmarkName, BOOKMARK_PREFIX+code);
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	doc->setProperty(bookmarkName, BOOKMARK_PREFIX+code);
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void setText (in wstring text, in boolean isRich); */
 NS_IMETHODIMP zoteroWinWordBookmark::SetText(const PRUnichar *text, PRBool isRich)
 {
-	try {
-		if(isRich) {
-			// InsertFile method will clobber the bookmark, so add it to the RTF
-			wchar_t *bookmarkText = new wchar_t[32+bookmarkName.GetLength()*2+lstrlen(text)];
-			lstrcpy(bookmarkText, L"{\\rtf {\\bkmkstart ");
-			lstrcat(bookmarkText, bookmarkName);
-			lstrcat(bookmarkText, L"}{");
-			lstrcat(bookmarkText, text+6);
-			lstrcat(bookmarkText, L"{\\bkmkend ");
-			lstrcat(bookmarkText, bookmarkName);
-			lstrcat(bookmarkText, L"}}");
-			nsresult retval = zoteroWinWordField::SetText(bookmarkText, true);
-			delete[] bookmarkText;
-			return retval;
-		} else {
-			nsresult retval = zoteroWinWordField::SetText(text, false);
-			if(retval == NS_OK) {
-				// setting the text of the bookmark erases it, so we need to recreate
-				CDocument0 comDoc = comTextRange.get_Document();
-				CBookmarks comBookmarks = comDoc.get_Bookmarks();
-				comBookmark = comBookmarks.Add(bookmarkName, comTextRange);
-			}
-			return retval;
+	ZOTERO_EXCEPTION_CATCHER_START
+	if(isRich) {
+		// InsertFile method will clobber the bookmark, so add it to the RTF
+		wchar_t *bookmarkText = new wchar_t[32+bookmarkName.GetLength()*2+lstrlen(text)];
+		lstrcpy(bookmarkText, L"{\\rtf {\\bkmkstart ");
+		lstrcat(bookmarkText, bookmarkName);
+		lstrcat(bookmarkText, L"}{");
+		lstrcat(bookmarkText, text+6);
+		lstrcat(bookmarkText, L"{\\bkmkend ");
+		lstrcat(bookmarkText, bookmarkName);
+		lstrcat(bookmarkText, L"}}");
+		nsresult retval = zoteroWinWordField::SetText(bookmarkText, true);
+		delete[] bookmarkText;
+		return retval;
+	} else {
+		nsresult retval = zoteroWinWordField::SetText(text, false);
+		if(retval == NS_OK) {
+			// setting the text of the bookmark erases it, so we need to recreate
+			CDocument0 comDoc = comTextRange.get_Document();
+			CBookmarks comBookmarks = comDoc.get_Bookmarks();
+			comBookmark = comBookmarks.Add(bookmarkName, comTextRange);
 		}
-	} catch(...) {
-		return NS_ERROR_FAILURE;
+		return retval;
 	}
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 void zoteroWinWordBookmark::init(bool needName)
@@ -166,7 +158,6 @@ void zoteroWinWordBookmark::deleteField()
 
 zoteroWinWordBookmarkEnumerator::zoteroWinWordBookmarkEnumerator() {}
 zoteroWinWordBookmarkEnumerator::zoteroWinWordBookmarkEnumerator(zoteroWinWordDocument *aDoc) {
-	OutputDebugString(L"zoteroWinWordBookmarkEnumerator\n");
 	doc = aDoc;
 	CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
 	CRange comStoryRange;

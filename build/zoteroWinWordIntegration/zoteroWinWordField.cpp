@@ -29,6 +29,7 @@
 #include "zoteroWinWordDocument.h"
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
+#include "zoteroException.h"
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 static COleVariant covTrue((short)TRUE), covFalse((short)FALSE);
@@ -39,22 +40,18 @@ NS_IMPL_ISUPPORTS1(zoteroWinWordEnumerator, nsISimpleEnumerator)
 zoteroWinWordField::zoteroWinWordField() {}
 zoteroWinWordField::zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field)
 {
-	try {
-		comField = field;
-		doc = aDoc;
-		init(true);
-	} catch(...) {}
+	comField = field;
+	doc = aDoc;
+	init(true);
 }
 
 zoteroWinWordField::zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field, CRange codeRange, CString code)
 {
-	try {
-		comField = field;
-		doc = aDoc;
-		comCodeRange = codeRange;
-		rawCode = code;
-		init(false);
-	} catch(...) {}
+	comField = field;
+	doc = aDoc;
+	comCodeRange = codeRange;
+	rawCode = code;
+	init(false);
 }
 
 zoteroWinWordField::~zoteroWinWordField()
@@ -65,178 +62,169 @@ zoteroWinWordField::~zoteroWinWordField()
 /* void delete (); */
 NS_IMETHODIMP zoteroWinWordField::Delete()
 {
-	try {
-		if(isWholeNote()) {
-			// if the note contains only this field, delete the note
-			if(comFootnote) {
-				comFootnote.Delete();
-			} else if(comEndnote) {
-				comEndnote.Delete();
-			}
-		} else {
-			// delete the field
-			deleteField();
+	ZOTERO_EXCEPTION_CATCHER_START
+	if(isWholeNote()) {
+		// if the note contains only this field, delete the note
+		if(comFootnote) {
+			comFootnote.Delete();
+		} else if(comEndnote) {
+			comEndnote.Delete();
 		}
-
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
+	} else {
+		// delete the field
+		deleteField();
 	}
+
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void select (); */
 NS_IMETHODIMP zoteroWinWordField::Select()
 {
-	try {
-		comTextRange.Select();
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	comTextRange.Select();
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void removeCode (); */
 NS_IMETHODIMP zoteroWinWordField::RemoveCode()
 {
-	try {
-		comField.Unlink();
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	comField.Unlink();
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void setText (in wstring text, in boolean isRich); */
 NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 {
-	try {
-		if(isRich) {
-			// get current font info
-			CFont0 comFont = comTextRange.get_Font();
-			CString fontName = comFont.get_Name();
-			float fontSize = comFont.get_Size();
-			
-			// get a temp file
-			TCHAR tempPath[MAX_PATH+1], tempFile[MAX_PATH+1];
-			GetTempPath(MAX_PATH, tempPath);
-			GetTempFileName(tempPath, _T("ZOTERO"), 0, tempFile);
+	ZOTERO_EXCEPTION_CATCHER_START
+	if(isRich) {
+		// get current font info
+		CFont0 comFont = comTextRange.get_Font();
+		CString fontName = comFont.get_Name();
+		float fontSize = comFont.get_Size();
+		
+		// get a temp file
+		TCHAR tempPath[MAX_PATH+1], tempFile[MAX_PATH+1];
+		GetTempPath(MAX_PATH, tempPath);
+		GetTempFileName(tempPath, _T("ZOTERO"), 0, tempFile);
 
-			// allocate a buffer larger than necessary and convert from wide chars
-			int length = lstrlen(text)*2;
-			char *writeBuffer = new char[length+1];
-			int nBytes = WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK | WC_SEPCHARS, text,
-				-1, writeBuffer, length, NULL, NULL);
+		// allocate a buffer larger than necessary and convert from wide chars
+		int length = lstrlen(text)*2;
+		char *writeBuffer = new char[length+1];
+		int nBytes = WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK | WC_SEPCHARS, text,
+			-1, writeBuffer, length, NULL, NULL);
 
-			// open and write file
-			HANDLE tempFileHandle = CreateFile(tempFile, GENERIC_WRITE, FILE_SHARE_READ, NULL,
-				CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, NULL);
-			DWORD nWritten;
-			WriteFile(tempFileHandle, writeBuffer, nBytes-1, &nWritten, NULL);
-			SetEndOfFile(tempFileHandle);
-			CloseHandle(tempFileHandle);
-			delete[] writeBuffer;
+		// open and write file
+		HANDLE tempFileHandle = CreateFile(tempFile, GENERIC_WRITE, FILE_SHARE_READ, NULL,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, NULL);
+		DWORD nWritten;
+		WriteFile(tempFileHandle, writeBuffer, nBytes-1, &nWritten, NULL);
+		SetEndOfFile(tempFileHandle);
+		CloseHandle(tempFileHandle);
+		delete[] writeBuffer;
 
-			// read from file into range
-			comTextRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
-			CFile::Remove(tempFile);
+		// read from file into range
+		comTextRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
+		CFile::Remove(tempFile);
 
-			// put font back on
-			init(true);
-			comFont = comTextRange.get_Font();
-			comFont.put_Name(fontName);
-			comFont.put_Size(fontSize);
+		// put font back on
+		init(true);
+		comFont = comTextRange.get_Font();
+		comFont.put_Name(fontName);
+		comFont.put_Size(fontSize);
 
-			// need to delete the return that gets added at the end, but only if there are no
-			// returns within the text to be inserted
-			if(!wcsstr(text, L"\\\r") && !wcsstr(text, L"\\par") && !wcsstr(text, L"\\\n")) {
-				CRange toDelete = comTextRange.get_Duplicate();
+		// need to delete the return that gets added at the end, but only if there are no
+		// returns within the text to be inserted
+		if(!wcsstr(text, L"\\\r") && !wcsstr(text, L"\\par") && !wcsstr(text, L"\\\n")) {
+			CRange toDelete = comTextRange.get_Duplicate();
+			toDelete.Collapse(0);
+			toDelete.MoveStart(1, -1);
+			CString test = toDelete.get_Text();
+			if(toDelete.get_Text() != L"\x0d") {
 				toDelete.Collapse(0);
-				toDelete.MoveStart(1, -1);
-				CString test = toDelete.get_Text();
-				if(toDelete.get_Text() != L"\x0d") {
-					toDelete.Collapse(0);
-					toDelete.MoveEnd(1, 1);
-					test = toDelete.get_Text();
-				}
-				toDelete.put_Text(L"");
+				toDelete.MoveEnd(1, 1);
+				test = toDelete.get_Text();
 			}
-		} else {
-			CFont0 comFont = comTextRange.get_Font();
-			comFont.Reset();
-			comTextRange.put_Text(text);
+			toDelete.put_Text(L"");
 		}
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
+	} else {
+		CFont0 comFont = comTextRange.get_Font();
+		comFont.Reset();
+		comTextRange.put_Text(text);
 	}
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* wstring getCode (); */
 NS_IMETHODIMP zoteroWinWordField::GetCode(PRUnichar **_retval)
 {
-	try {
-		if(rawCode.IsEmpty()) {
-			rawCode = comCodeRange.get_Text();
-		}
+	ZOTERO_EXCEPTION_CATCHER_START
+	if(rawCode.IsEmpty()) {
+		rawCode = comCodeRange.get_Text();
+	}
 
-		CStringW prefix;
-		if(wcsncmp(rawCode, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
-			prefix = FIELD_PREFIX;
-		} else if(wcsncmp(rawCode, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
-			prefix = BACKUP_FIELD_PREFIX;
-		} else {
-			return NS_ERROR_FAILURE;
-		}
-
-		long length = rawCode.GetLength()-prefix.GetLength();
-		*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
-		lstrcpyn(*_retval, ((LPCTSTR)rawCode)+(prefix.GetLength()), length+1);
-		return NS_OK;
-	} catch(...) {
+	CStringW prefix;
+	if(wcsncmp(rawCode, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
+		prefix = FIELD_PREFIX;
+	} else if(wcsncmp(rawCode, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
+		prefix = BACKUP_FIELD_PREFIX;
+	} else {
 		return NS_ERROR_FAILURE;
 	}
+	
+	long codeLength = rawCode.GetLength();
+	long length;
+	if(rawCode[codeLength-1] == ' ') {
+		length = codeLength-prefix.GetLength()-1;
+	} else {
+		length = codeLength-prefix.GetLength();
+		SetCode(((LPCTSTR)rawCode)+(prefix.GetLength()));
+	}
+	*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
+	lstrcpyn(*_retval, ((LPCTSTR)rawCode)+(prefix.GetLength()), length+1);
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void setCode (in wstring code); */
 NS_IMETHODIMP zoteroWinWordField::SetCode(const PRUnichar *code)
 {
-	try {
-		rawCode = FIELD_PREFIX+code;
-		comCodeRange.put_Text(rawCode);
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	rawCode = FIELD_PREFIX+code+L' ';
+	comCodeRange.put_Text(rawCode);
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* unsigned short getNoteIndex (); */
 NS_IMETHODIMP zoteroWinWordField::GetNoteIndex(PRUint32 *_retval)
 {
-	try {
-		loadOffsets();
-		if(comFootnote != NULL) {
-			*_retval = comFootnote.get_Index();
-		} else if(comEndnote != NULL) {
-			*_retval = comEndnote.get_Index();
-		} else {
-			*_retval = 0;
-		}
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
+	ZOTERO_EXCEPTION_CATCHER_START
+	loadOffsets();
+	if(comFootnote != NULL) {
+		*_retval = comFootnote.get_Index();
+	} else if(comEndnote != NULL) {
+		*_retval = comEndnote.get_Index();
+	} else {
+		*_retval = 0;
 	}
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* boolean equals (in zoteroIntegrationField field); */
 NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, PRBool *_retval)
 {
-	try {
-		zoteroWinWordField *winWordField = static_cast<zoteroWinWordField*>(field);
-		*_retval = comTextRange.IsEqual(winWordField->comTextRange);
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	zoteroWinWordField *winWordField = static_cast<zoteroWinWordField*>(field);
+	*_retval = comTextRange.IsEqual(winWordField->comTextRange);
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* End of implementation class template. */
@@ -401,70 +389,64 @@ zoteroWinWordEnumerator::~zoteroWinWordEnumerator() {
 }
 
 NS_IMETHODIMP zoteroWinWordEnumerator::GetNext(nsISupports **_retval) {
-	try {
-		// figure out which item comes next
-		short minItem = -1;
-		for(short i=0; i<3; i++) {
-			if(fieldItem[i] != NULL && (minItem == -1 || *fieldItem[i] < *fieldItem[minItem])) {
-				minItem = i;
-			}
+	ZOTERO_EXCEPTION_CATCHER_START
+	// figure out which item comes next
+	short minItem = -1;
+	for(short i=0; i<3; i++) {
+		if(fieldItem[i] != NULL && (minItem == -1 || *fieldItem[i] < *fieldItem[minItem])) {
+			minItem = i;
 		}
-		
-		// prepare for return
-		*_retval = fieldItem[minItem];
-		(*_retval)->AddRef();
-		
-		// add a new one
-		fetchNextItem(minItem);
-
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
 	}
+	
+	// prepare for return
+	*_retval = fieldItem[minItem];
+	(*_retval)->AddRef();
+	
+	// add a new one
+	fetchNextItem(minItem);
+
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 NS_IMETHODIMP zoteroWinWordEnumerator::HasMoreElements(PRBool *_retval) {
-	try {
-		*_retval = false;
-		for(short i=0; i<3; i++) {
-			if(fieldItem[i] != NULL) {
-				*_retval = true;
-				break;
-			}
+	ZOTERO_EXCEPTION_CATCHER_START
+	*_retval = false;
+	for(short i=0; i<3; i++) {
+		if(fieldItem[i] != NULL) {
+			*_retval = true;
+			break;
 		}
-		return NS_OK;
-	} catch(...) {
-		return NS_ERROR_FAILURE;
 	}
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 zoteroWinWordFieldEnumerator::zoteroWinWordFieldEnumerator() {}
 zoteroWinWordFieldEnumerator::zoteroWinWordFieldEnumerator(zoteroWinWordDocument *aDoc) {
-	try {
-		doc = aDoc;
-		CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
-		CRange comStoryRange;
-		CFields comFields;
-		LPUNKNOWN pUnk;
-		for(short i=0; i<3; i++) {
-			try {
-				comStoryRange = comStoryRanges.Item(i+1);
-			} catch(COleDispatchException* e) {
-				e->Delete();
-				fieldItem[i] = NULL;
-				continue;
-			}
-			comFields = comStoryRange.get_Fields();
-
-			// generate enum
-			pUnk = comFields.get__NewEnum();
-			pUnk->QueryInterface(IID_IEnumVARIANT, (void **)&fieldEnum[i]);
-			pUnk->Release();
-			
-			// get first zoteroWinWordField
-			fetchNextItem(i);
+	doc = aDoc;
+	CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
+	CRange comStoryRange;
+	CFields comFields;
+	LPUNKNOWN pUnk;
+	for(short i=0; i<3; i++) {
+		try {
+			comStoryRange = comStoryRanges.Item(i+1);
+		} catch(COleDispatchException* e) {
+			e->Delete();
+			fieldItem[i] = NULL;
+			continue;
 		}
-	} catch(...) {}
+		comFields = comStoryRange.get_Fields();
+
+		// generate enum
+		pUnk = comFields.get__NewEnum();
+		pUnk->QueryInterface(IID_IEnumVARIANT, (void **)&fieldEnum[i]);
+		pUnk->Release();
+		
+		// get first zoteroWinWordField
+		fetchNextItem(i);
+	}
 }
 
 zoteroWinWordFieldEnumerator::~zoteroWinWordFieldEnumerator() {

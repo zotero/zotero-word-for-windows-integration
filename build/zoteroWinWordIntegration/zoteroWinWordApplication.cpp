@@ -29,6 +29,7 @@
 #include "zoteroWinWordApplication.h"
 #include "zoteroWinWordDocument.h"
 #include "nsStringAPI.h"
+#include "zoteroException.h"
 
 /* Implementation file */
 NS_IMPL_ISUPPORTS1(zoteroWinWordApplication, zoteroIntegrationApplication)
@@ -46,9 +47,11 @@ zoteroWinWordApplication::~zoteroWinWordApplication()
 /* readonly attribute zoteroIntegrationDocument activeDocument; */
 NS_IMETHODIMP zoteroWinWordApplication::GetActiveDocument(zoteroIntegrationDocument **_retval)
 {
+	ZOTERO_EXCEPTION_CATCHER_START
 	*_retval = new zoteroWinWordDocument();
 	(*_retval)->AddRef();
 	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* readonly attribute ACString primaryFieldType; */
