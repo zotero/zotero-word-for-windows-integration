@@ -101,7 +101,7 @@ NS_IMETHODIMP zoteroWinWordDocument::DisplayAlert(const PRUnichar *dialogText, P
 		} else if(buttons == zoteroIntegrationDocument::DIALOG_BUTTONS_YES_NO_CANCEL) {
 			if(buttonClicked == IDYES) {
 				*_retval = 2;
-			} else if(buttonClicked = IDNO) {
+			} else if(buttonClicked == IDNO) {
 				*_retval = 1;
 			} else {
 				*_retval = 0;
