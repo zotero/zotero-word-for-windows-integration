@@ -128,6 +128,7 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 		delete[] writeBuffer;
 
 		// read from file into range
+		comTextRange.put_Text(L"");
 		comTextRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
 		CFile::Remove(tempFile);
 
