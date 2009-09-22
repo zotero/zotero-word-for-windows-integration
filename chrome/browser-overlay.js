@@ -59,6 +59,9 @@ function ZoteroWinWordIntegration_firstRun() {
 		dot.append("Zotero.dot");
 
 		// find Word Startup folders (see http://support.microsoft.com/kb/210860)
+		var appData = Components.classes["@mozilla.org/file/directory_service;1"]
+				.getService(Components.interfaces.nsIProperties)
+				.get("AppData", Components.interfaces.nsILocalFile);
 		
 		// first check the registry for a custom startup folder
 		var startupFolders = [];
@@ -76,9 +79,7 @@ function ZoteroWinWordIntegration_firstRun() {
 				} finally {
 					wrk.close();
 				}
-			} catch(e) {
-				continue;
-			}
+			} catch(e) {}
 			
 			// create nsIFile from path in registry
 			if(path) {
@@ -87,15 +88,27 @@ function ZoteroWinWordIntegration_firstRun() {
 				startupFolder.initWithPath(path);
 				startupFolders.push(startupFolder);
 			} else {
-				addDefaultStartupFolder = true;
+				try {
+					wrk.open(Components.interfaces.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
+						"Software\\Microsoft\\Office\\"+i+".0\\Common\\General",
+						Components.interfaces.nsIWindowsRegKey.ACCESS_READ);
+					try {
+						var startup = wrk.readStringValue("Startup");
+						var startupFolder = appData.clone().QueryInterface(Components.interfaces.nsILocalFile);
+						startupFolder.appendRelativePath("Microsoft\\Word\\"+startup);
+						startupFolders.push(startupFolder);
+					} finally {
+						wrk.close();
+					}
+				} catch(e) {
+					addDefaultStartupFolder = true;
+				}
 			}
 		}
 		
 		if(startupFolders.length == 0 || addDefaultStartupFolder) {
 			// if not in the registry, append Microsoft/Word/Startup to %AppData% (default location)
-			var startupFolder = Components.classes["@mozilla.org/file/directory_service;1"]
-				 .getService(Components.interfaces.nsIProperties)
-				 .get("AppData", Components.interfaces.nsILocalFile);
+			var startupFolder = appData.clone().QueryInterface(Components.interfaces.nsILocalFile);
 			startupFolder.appendRelativePath("Microsoft\\Word\\Startup");
 			startupFolders.push(startupFolder);
 		}
