@@ -144,8 +144,8 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 	
 	if(strcmp(fieldType, "Field") == 0) {
 		CFields rangeFields = selection.get_Fields();
-		long long selectionStart = selection.get_Start();
-		long long selectionEnd = selection.get_End();
+		long selectionStart = selection.get_Start();
+		long selectionEnd = selection.get_End();
 		
 		long rangeFieldCount = rangeFields.get_Count();
 		if(!rangeFieldCount) {
@@ -157,7 +157,7 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			rangeEnd = rangeEnd.GoToNext(7);						// go to next field
 
 			// might only be one field in the entire doc
-			long long rangeEndIndex = rangeEnd.get_Start();
+			long rangeEndIndex = rangeEnd.get_Start();
 			if(range.get_Start() == rangeEndIndex) {
 				range = range.GoToPrevious(3);		// move a line back
 			}
@@ -178,8 +178,8 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			CRange testFieldCode = testField.get_Code();
 			CRange testFieldResult = testField.get_Result();
 			CString testFieldCodeText = testFieldCode.get_Text();
-			long long testFieldStart = testFieldCode.get_Start();
-			long long testFieldEnd = testFieldResult.get_End();
+			long testFieldStart = testFieldCode.get_Start();
+			long testFieldEnd = testFieldResult.get_End();
 			
 			// if there is no overlap, continue
 			if((testFieldStart > selectionStart && testFieldEnd > selectionEnd

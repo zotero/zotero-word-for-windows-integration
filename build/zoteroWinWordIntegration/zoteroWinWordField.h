@@ -49,8 +49,8 @@ public:
 	NS_DECL_ISUPPORTS
 	NS_DECL_ZOTEROINTEGRATIONFIELD
 
-	long long offset1;
-	long long offset2;
+	long offset1;
+	long offset2;
 	CRange comTextRange;
 
 	zoteroWinWordField();
