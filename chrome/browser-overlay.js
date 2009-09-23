@@ -83,10 +83,14 @@ function ZoteroWinWordIntegration_firstRun() {
 			
 			// create nsIFile from path in registry
 			if(path) {
-				var startupFolder = Components.classes["@mozilla.org/file/local;1"].
-					createInstance(Components.interfaces.nsILocalFile);
-				startupFolder.initWithPath(path);
-				startupFolders.push(startupFolder);
+				try {
+					var startupFolder = Components.classes["@mozilla.org/file/local;1"].
+						createInstance(Components.interfaces.nsILocalFile);
+					startupFolder.initWithPath(path);
+					startupFolders.push(startupFolder);
+				} catch(e) {
+					addDefaultStartupFolder = true;
+				}
 			} else {
 				try {
 					wrk.open(Components.interfaces.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
