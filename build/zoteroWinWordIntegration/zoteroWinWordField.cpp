@@ -101,12 +101,12 @@ NS_IMETHODIMP zoteroWinWordField::RemoveCode()
 NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
+	// get current font info
+	CFont0 comFont = comTextRange.get_Font();
+	CString fontName = comFont.get_Name();
+	float fontSize = comFont.get_Size();
+
 	if(isRich) {
-		// get current font info
-		CFont0 comFont = comTextRange.get_Font();
-		CString fontName = comFont.get_Name();
-		float fontSize = comFont.get_Size();
-		
 		// get a temp file
 		TCHAR tempPath[MAX_PATH+1], tempFile[MAX_PATH+1];
 		GetTempPath(MAX_PATH, tempPath);
@@ -135,8 +135,6 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 		// put font back on
 		init(true);
 		comFont = comTextRange.get_Font();
-		comFont.put_Name(fontName);
-		comFont.put_Size(fontSize);
 
 		// need to delete the return that gets added at the end, but only if there are no
 		// returns within the text to be inserted
@@ -157,6 +155,8 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 		comFont.Reset();
 		comTextRange.put_Text(text);
 	}
+	comFont.put_Name(fontName);
+	comFont.put_Size(fontSize);
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
 }
