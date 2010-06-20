@@ -64,10 +64,12 @@ public:
 	void setProperty(CString propertyName, CString propertyValue);
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
+	void setScreenUpdatingStatus(bool status);
 
 private:
 	CApplication comApp;
 	CCustomProperties comProperties;
+	bool currentScreenUpdatingStatus;
 
 	~zoteroWinWordDocument();
 
