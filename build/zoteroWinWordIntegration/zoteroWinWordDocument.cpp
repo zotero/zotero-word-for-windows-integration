@@ -38,23 +38,72 @@ NS_IMPL_ISUPPORTS1(zoteroWinWordDocument, zoteroIntegrationDocument)
 
 zoteroWinWordDocument::zoteroWinWordDocument()
 {
-	// attach to running Word instance
-	IUnknown *pUnk = NULL;
-	IDispatch *pDisp = NULL;
-	// get the class ID for Word
-	CLSID clsid;
-	CLSIDFromProgID(L"Word.Application", &clsid); 
-	// get running Word instance
-	GetActiveObject(clsid, NULL, (IUnknown**)&pUnk);
-	pUnk->QueryInterface(IID_IDispatch, (void **)&pDisp);
-	// attach our class to the running Word instance
-	comApp.AttachDispatch(pDisp);
-	pUnk->Release();
+	initFromActiveObject();
+}
+
+zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
+	// attach to a specific document
+	// Get a BindCtx.
+	IBindCtx *pbc;
+	HRESULT hr = CreateBindCtx(0, &pbc);
+	if(FAILED(hr)) {
+		ZOTERO_THROW_EXCEPTION("Could not get a BindCTX");
+		throw NS_ERROR_FAILURE;
+	}
 	
-	// get some useful things	
-	comDoc = comApp.get_ActiveDocument();
-	comProperties = comDoc.get_CustomDocumentProperties();
-	currentScreenUpdatingStatus = true;
+	// Get running-object table.
+	IRunningObjectTable *prot;
+	hr = pbc->GetRunningObjectTable(&prot);
+	if(FAILED(hr)) {
+		ZOTERO_THROW_EXCEPTION("Could not get Running Object Table");
+		pbc->Release();
+		throw NS_ERROR_FAILURE;
+	}
+
+	IEnumMoniker *pem;
+	hr = prot->EnumRunning(&pem);
+	if(FAILED(hr)) {
+		ZOTERO_THROW_EXCEPTION("Could not get moniker enumerator");
+		prot->Release();
+		pbc->Release();
+		throw NS_ERROR_FAILURE;
+	}
+	
+	// Start at the beginning.
+	pem->Reset();
+	
+	ULONG fetched;
+	IMoniker *pmon;
+	IDispatch *pDisp = NULL;
+	int n = 0;
+	while(pem->Next(1, &pmon, &fetched) == S_OK) {
+		LPOLESTR pName;
+		pmon->GetDisplayName(pbc, NULL, &pName);
+
+		if(wcscmp(pName, docName) == 0) {
+			hr = pmon->BindToObject(pbc, NULL, IID_IDispatch, (void **)&pDisp);
+			pmon->Release();
+			break;
+		}
+
+		pmon->Release();
+	}
+	
+	pmon->Release();
+	prot->Release();
+	pbc->Release();
+	
+	if(pDisp == NULL) {
+		initFromActiveObject();
+	} else {
+		// attach our class to the running Word instance
+		comDoc.AttachDispatch(pDisp);
+		
+		// get some useful things
+		comApp = comDoc.get_Application();
+		comProperties = comDoc.get_CustomDocumentProperties();
+		currentScreenUpdatingStatus = true;
+	}
 }
 
 zoteroWinWordDocument::~zoteroWinWordDocument() {}
@@ -472,4 +521,28 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 		comApp.put_ScreenUpdating(status);
 		currentScreenUpdatingStatus = status;
 	}
+}
+
+/* attaches this document to the active document of the first launched WinWord instance */
+void zoteroWinWordDocument::initFromActiveObject() {
+	IUnknown *pUnk = NULL;
+	IDispatch *pDisp = NULL;
+	// get the class ID for Word
+	CLSID clsid;
+	CLSIDFromProgID(L"Word.Application", &clsid); 
+	// get running Word instance
+	GetActiveObject(clsid, NULL, (IUnknown**)&pUnk);
+	if(pUnk == NULL) {
+		ZOTERO_THROW_EXCEPTION("Could not find a running Word instance.");
+		throw NS_ERROR_FAILURE;
+	}
+	pUnk->QueryInterface(IID_IDispatch, (void **)&pDisp);
+	// attach our class to the running Word instance
+	comApp.AttachDispatch(pDisp);
+	pUnk->Release();
+	
+	// get some useful things
+	comDoc = comApp.get_ActiveDocument();
+	comProperties = comDoc.get_CustomDocumentProperties();
+	currentScreenUpdatingStatus = true;
 }

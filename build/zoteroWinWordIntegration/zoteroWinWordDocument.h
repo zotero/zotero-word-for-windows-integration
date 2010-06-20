@@ -60,11 +60,13 @@ public:
 	CDocument0 comDoc;
 
 	zoteroWinWordDocument();
+	zoteroWinWordDocument(const PRUnichar *);
 	CString getProperty(CString propertyName);
 	void setProperty(CString propertyName, CString propertyValue);
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
+	void initFromActiveObject();
 
 private:
 	CApplication comApp;

@@ -54,6 +54,15 @@ NS_IMETHODIMP zoteroWinWordApplication::GetActiveDocument(zoteroIntegrationDocum
 	ZOTERO_EXCEPTION_CATCHER_END
 }
 
+NS_IMETHODIMP zoteroWinWordApplication::GetDocument(const PRUnichar* documentIdentifier, zoteroIntegrationDocument **_retval)
+{
+	ZOTERO_EXCEPTION_CATCHER_START
+	*_retval = new zoteroWinWordDocument(documentIdentifier);
+	(*_retval)->AddRef();
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
+}
+
 /* readonly attribute ACString primaryFieldType; */
 NS_IMETHODIMP zoteroWinWordApplication::GetPrimaryFieldType(nsACString & aPrimaryFieldType)
 {
