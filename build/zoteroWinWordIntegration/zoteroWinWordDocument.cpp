@@ -54,6 +54,7 @@ zoteroWinWordDocument::zoteroWinWordDocument()
 	// get some useful things	
 	comDoc = comApp.get_ActiveDocument();
 	comProperties = comDoc.get_CustomDocumentProperties();
+	currentScreenUpdatingStatus = true;
 }
 
 zoteroWinWordDocument::~zoteroWinWordDocument() {}
@@ -469,5 +470,6 @@ nsresult zoteroWinWordDocument::makeNewField(const char *fieldType, CRange inser
 void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 	if(status != currentScreenUpdatingStatus) {
 		comApp.put_ScreenUpdating(status);
+		currentScreenUpdatingStatus = status;
 	}
 }
