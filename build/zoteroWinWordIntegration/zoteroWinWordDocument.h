@@ -48,6 +48,8 @@ const CString BACKUP_PREFS_PROPERTY = _T("CITE_PREF");
 const CString BOOKMARK_REFERENCE_PROPERTY = _T("ZOTERO_BREF_");
 const CString BACKUP_BOOKMARK_REFERENCE_PROPERTY = _T("CITE_BREF_");
 const CString FIELD_PLACEHOLDER = _T("{Citation}");
+const CString BIBLIOGRAPHY_CODE = _T("BIBL");
+#define BIBLIOGRAPHY_STYLE L"Bibliography"
 #define MAX_PROPERTY_LENGTH 255
 
 /* Header file */
@@ -66,12 +68,12 @@ public:
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
-	void initFromActiveObject();
 
 private:
 	CApplication comApp;
 	CCustomProperties comProperties;
 	bool currentScreenUpdatingStatus;
+	void initFromActiveObject();
 
 	~zoteroWinWordDocument();
 

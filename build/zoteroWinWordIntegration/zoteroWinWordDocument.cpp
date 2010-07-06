@@ -406,6 +406,38 @@ NS_IMETHODIMP zoteroWinWordDocument::Convert(nsISimpleEnumerator *fields, const 
 	ZOTERO_EXCEPTION_CATCHER_END
 }
 
+/* void setBibliographyStyle (in long firstLineIndent, in long bodyIndent, in unsigned long lineSpacing, in unsigned long entrySpacing, [array, size_is (tabStopCount)] in long tabStops, in unsigned long tabStopCount); */
+NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount)
+{
+	ZOTERO_EXCEPTION_CATCHER_START
+	// get bibliography style
+	CStyles styles = comDoc.get_Styles();
+	CStyle style;
+	try {
+		style = styles.Item(BIBLIOGRAPHY_STYLE);
+	} catch(COleDispatchException* e) {
+		style = styles.Add(BIBLIOGRAPHY_STYLE,
+			COleVariant((short) 1) /* wdStyleTypeParagraph */);
+		e->Delete();
+	}
+	CParagraphFormat paraFormat = style.get_ParagraphFormat();
+	paraFormat.put_FirstLineIndent(((float) firstLineIndent)/20);
+	paraFormat.put_LeftIndent(((float) bodyIndent)/20);
+	paraFormat.put_LineSpacing(((float) lineSpacing)/20);
+	paraFormat.put_SpaceAfter(((float) entrySpacing)/20);
+	CTabStops comTabStops = paraFormat.get_TabStops();
+	comTabStops.ClearAll();
+
+	for(PRUint32 i=0; i<tabStopCount; i++) {
+		comTabStops.Add(((float) tabStops[i])/20,
+			COleVariant((short) 0) /* wdAlignTabLeft */,
+			COleVariant((short) 0) /* wdTabLeaderSpaces */);
+	}
+
+    return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
+}
+
 /* void cleanup (); */
 NS_IMETHODIMP zoteroWinWordDocument::Cleanup()
 {

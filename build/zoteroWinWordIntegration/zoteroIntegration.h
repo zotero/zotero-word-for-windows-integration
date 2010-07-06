@@ -1,5 +1,5 @@
 /*
- * DO NOT EDIT.  THIS FILE IS GENERATED FROM Z:\Windows\zoteroIntegration.idl
+ * DO NOT EDIT.  THIS FILE IS GENERATED FROM /Users/simon/Desktop/Development/FS/zotero/extension/trunk/idl/zoteroIntegration.idl
  */
 
 #ifndef __gen_zoteroIntegration_h__
@@ -26,6 +26,10 @@
   {0xaedb37a0, 0x48bb, 0x11de, \
     { 0x8a, 0x39, 0x08, 0x00, 0x20, 0x0c, 0x9a, 0x66 }}
 
+/**
+ * The zoteroIntegrationField interface corresponds to a field containing an individual citation
+ * or bibliography.
+ */
 class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
  public: 
 
@@ -265,6 +269,12 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports 
   NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count) = 0;
 
   /**
+   * Sets the bibliography style, overwriting the current values for this document
+   */
+  /* void setBibliographyStyle (in long firstLineIndent, in long bodyIndent, in unsigned long lineSpacing, in unsigned long entrySpacing, [array, size_is (tabStopCount)] in long tabStops, in unsigned long tabStopCount); */
+  NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount) = 0;
+
+  /**
    * Runs on function completion to clean up everything integration played with.
    */
   /* void cleanup (); */
@@ -303,6 +313,7 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports 
   NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM); \
   NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM); \
   NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count); \
+  NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount); \
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void); \
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
@@ -316,6 +327,7 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports 
   NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM) { return _to InsertField(fieldType, noteType, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM) { return _to GetFields(fieldType, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count) { return _to Convert(fields, toFieldType, toNoteType, count); } \
+  NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount) { return _to SetBibliographyStyle(firstLineIndent, bodyIndent, lineSpacing, entrySpacing, tabStops, tabStopCount); } \
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void) { return _to Cleanup(); } \
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
@@ -329,6 +341,7 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports 
   NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->InsertField(fieldType, noteType, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFields(fieldType, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count) { return !_to ? NS_ERROR_NULL_POINTER : _to->Convert(fields, toFieldType, toNoteType, count); } \
+  NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetBibliographyStyle(firstLineIndent, bodyIndent, lineSpacing, entrySpacing, tabStops, tabStopCount); } \
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Cleanup(); } \
 
 #if 0
@@ -413,6 +426,12 @@ NS_IMETHODIMP _MYCLASS_::GetFields(const char *fieldType, nsISimpleEnumerator **
 
 /* void convert (in nsISimpleEnumerator fields, in string toFieldType, [array, size_is (count)] in unsigned short toNoteType, in unsigned long count); */
 NS_IMETHODIMP _MYCLASS_::Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void setBibliographyStyle (in long firstLineIndent, in long bodyIndent, in unsigned long lineSpacing, in unsigned long entrySpacing, [array, size_is (tabStopCount)] in long tabStops, in unsigned long tabStopCount); */
+NS_IMETHODIMP _MYCLASS_::SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

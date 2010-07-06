@@ -68,6 +68,7 @@ private:
 	CField comField;
 	CRange comCodeRange;
 	CString rawCode;
+	CString code;
 
 	bool isWholeNote();
 

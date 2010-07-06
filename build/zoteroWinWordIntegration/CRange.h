@@ -302,9 +302,9 @@ public:
 		InvokeHelper(0x97, DISPATCH_PROPERTYGET, VT_VARIANT, (void*)&result, NULL);
 		return result;
 	}
-	void put_Style(VARIANT * newValue)
+	void put_Style(LPCTSTR newValue)
 	{
-		static BYTE parms[] = VTS_PVARIANT ;
+		static BYTE parms[] = VTS_BSTR ;
 		InvokeHelper(0x97, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
 	}
 	long get_StoryLength()

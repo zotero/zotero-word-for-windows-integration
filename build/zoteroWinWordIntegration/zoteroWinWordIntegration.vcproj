@@ -291,6 +291,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CParagraphFormat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CRange.h"
 				>
 			</File>
@@ -300,6 +304,22 @@
 			</File>
 			<File
 				RelativePath=".\CStoryRanges.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CStyle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CStyles.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CTabStop.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CTabStops.h"
 				>
 			</File>
 			<File

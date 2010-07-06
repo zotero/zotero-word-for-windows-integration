@@ -153,6 +153,13 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 			}
 			toDelete.put_Text(L"");
 		}
+
+		if(wcsncmp(code, BIBLIOGRAPHY_CODE, BIBLIOGRAPHY_CODE.GetLength()) == 0) {
+			// set style on bibliography
+			try {
+				comTextRange.put_Style(L"Bibliography");
+			} catch(...) {}
+		}
 	} else {
 		CFont0 comFont = comTextRange.get_Font();
 		comFont.Reset();
@@ -168,37 +175,20 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 NS_IMETHODIMP zoteroWinWordField::GetCode(PRUnichar **_retval)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	if(rawCode.IsEmpty()) {
-		rawCode = comCodeRange.get_Text();
-	}
+	if(code.IsEmpty()) return NS_ERROR_FAILURE;
 
-	CStringW prefix;
-	if(wcsncmp(rawCode, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
-		prefix = FIELD_PREFIX;
-	} else if(wcsncmp(rawCode, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
-		prefix = BACKUP_FIELD_PREFIX;
-	} else {
-		return NS_ERROR_FAILURE;
-	}
-	
-	long codeLength = rawCode.GetLength();
-	long length;
-	if(rawCode[codeLength-1] == ' ') {
-		length = codeLength-prefix.GetLength()-1;
-	} else {
-		length = codeLength-prefix.GetLength();
-		SetCode(((LPCTSTR)rawCode)+(prefix.GetLength()));
-	}
-	*_retval = (PRUnichar *) NS_Alloc((length+1) * sizeof(PRUnichar));
-	lstrcpyn(*_retval, ((LPCTSTR)rawCode)+(prefix.GetLength()), length+1);
+	long size = code.GetLength()+1;
+	*_retval = (PRUnichar *) NS_Alloc(size * sizeof(PRUnichar));
+	lstrcpyn(*_retval, (LPCTSTR) code, size);
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* void setCode (in wstring code); */
-NS_IMETHODIMP zoteroWinWordField::SetCode(const PRUnichar *code)
+NS_IMETHODIMP zoteroWinWordField::SetCode(const PRUnichar *aCode)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
+	code = aCode;
 	rawCode = FIELD_PREFIX+code+L' ';
 	comCodeRange.put_Text(rawCode);
 	return NS_OK;
@@ -359,10 +349,35 @@ bool zoteroWinWordField::isWholeNote()
 void zoteroWinWordField::init(bool needCode)
 {
 	offset1 = -1;
+
+	// get ranges
 	if(needCode) {
 		comCodeRange = comField.get_Code();
 	}
 	comTextRange = comField.get_Result();
+
+	// get rawCode
+	if(rawCode.IsEmpty()) {
+		rawCode = comCodeRange.get_Text();
+	}
+	
+	// get code
+	CStringW prefix;
+	if(wcsncmp(rawCode, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
+		prefix = FIELD_PREFIX;
+	} else if(wcsncmp(rawCode, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
+		prefix = BACKUP_FIELD_PREFIX;
+	}
+	
+	if(!prefix.IsEmpty()) {
+		long codeLength = rawCode.GetLength();
+		if(rawCode[codeLength-1] == ' ') {
+			long prefixLength = prefix.GetLength();
+			code = rawCode.Mid(prefixLength, codeLength-prefixLength-1);
+		} else {
+			code = rawCode.Mid(prefix.GetLength());
+		}
+	}
 }
 
 void zoteroWinWordField::loadFromRange(CRange comRange)
