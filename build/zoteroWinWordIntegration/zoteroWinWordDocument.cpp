@@ -225,8 +225,18 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 
 		for(long i=0; i<rangeFieldCount; i++) {
 			CField testField = rangeFields.Item(i+1);
-			CRange testFieldCode = testField.get_Code();
-			CRange testFieldResult = testField.get_Result();
+			CRange testFieldCode, testFieldResult;
+			
+			// for whatever reason, the result can be undefined on a field
+			// (I've seen it with my own eyes!)
+			try {
+				testFieldCode = testField.get_Code();
+				testFieldResult = testField.get_Result();
+			} catch(COleDispatchException *e) {
+				e->Delete();
+				continue;
+			}
+
 			CString testFieldCodeText = testFieldCode.get_Text();
 			long testFieldStart = testFieldCode.get_Start();
 			long testFieldEnd = testFieldResult.get_End();
