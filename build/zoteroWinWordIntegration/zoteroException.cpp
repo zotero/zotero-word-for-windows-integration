@@ -38,6 +38,7 @@ zoteroException::zoteroException(CException *exception, char *aFunction, char *a
 		freeMessage = true;
 	} else {
 		message = NULL;
+		freeMessage = false;
 	}
 	exception->Delete();
 	function = aFunction;
