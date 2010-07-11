@@ -74,6 +74,7 @@ private:
 	CCustomProperties comProperties;
 	bool currentScreenUpdatingStatus;
 	void initFromActiveObject();
+	void initFilter();
 
 	~zoteroWinWordDocument();
 

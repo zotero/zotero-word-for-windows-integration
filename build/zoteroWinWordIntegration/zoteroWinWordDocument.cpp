@@ -33,15 +33,22 @@
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 
+/* Global filter, since this applies on a per-application basis
+ * Need to refcount */
+COleMessageFilter *filter = NULL;
+short filterRefs = 0;
+
 /* Implementation file */
 NS_IMPL_ISUPPORTS1(zoteroWinWordDocument, zoteroIntegrationDocument)
 
 zoteroWinWordDocument::zoteroWinWordDocument()
 {
+	initFilter();
 	initFromActiveObject();
 }
 
 zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
+	initFilter();
 	// attach to a specific document
 	// Get a BindCtx.
 	IBindCtx *pbc;
@@ -106,7 +113,14 @@ zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
 	}
 }
 
-zoteroWinWordDocument::~zoteroWinWordDocument() {}
+zoteroWinWordDocument::~zoteroWinWordDocument() {
+	filterRefs--;
+	if(filterRefs <= 0 && filter != NULL) {
+		filter->Revoke();
+		delete filter;
+		filter = NULL;
+	}
+}
 
 /* short displayAlert (in wstring dialogText, in unsigned short icon, in unsigned short buttons); */
 NS_IMETHODIMP zoteroWinWordDocument::DisplayAlert(const PRUnichar *dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval)
@@ -231,6 +245,7 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			// (I've seen it with my own eyes!)
 			try {
 				testFieldCode = testField.get_Code();
+				CString testFieldCodeText2 = testFieldCode.get_Text();
 				testFieldResult = testField.get_Result();
 			} catch(COleDispatchException *e) {
 				e->Delete();
@@ -383,6 +398,7 @@ NS_IMETHODIMP zoteroWinWordDocument::Convert(nsISimpleEnumerator *fields, const 
 		if(xpcomField->QueryInterface(zoteroIntegrationField::COMTypeInfo<int>::kIID, (void **)&field) != NS_OK) {
 			return NS_ERROR_CANNOT_CONVERT_DATA;
 		}
+		xpcomField->Release();
 		
 		bookmark = dynamic_cast<zoteroWinWordBookmark*>(field);
 		bool convertToBookmark = bookmark == NULL && strcmp(toFieldType, "Bookmark") == 0;
@@ -587,4 +603,20 @@ void zoteroWinWordDocument::initFromActiveObject() {
 	comDoc = comApp.get_ActiveDocument();
 	comProperties = comDoc.get_CustomDocumentProperties();
 	currentScreenUpdatingStatus = true;
+}
+
+/**
+ * Initialize a COleMessageFilter to deal with Word being busy
+ */
+void zoteroWinWordDocument::initFilter() {
+	if(filter == NULL) {
+		filter = new COleMessageFilter();
+		filter->EnableBusyDialog(false);
+		filter->EnableNotRespondingDialog(false);
+		filter->SetRetryReply(250);
+		filter->Register();
+		filterRefs = 1;
+	} else {
+		filterRefs++;
+	}
 }
