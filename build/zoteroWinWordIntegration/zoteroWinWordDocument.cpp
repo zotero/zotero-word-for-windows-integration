@@ -245,7 +245,6 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			// (I've seen it with my own eyes!)
 			try {
 				testFieldCode = testField.get_Code();
-				CString testFieldCodeText2 = testFieldCode.get_Text();
 				testFieldResult = testField.get_Result();
 			} catch(COleDispatchException *e) {
 				e->Delete();
