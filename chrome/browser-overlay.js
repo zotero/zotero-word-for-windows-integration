@@ -47,7 +47,7 @@ function ZoteroWinWordIntegration_checkVersion(name, url, id, minVersion) {
 }
 
 function ZoteroWinWordIntegration_firstRun() {
-	ZoteroWinWordIntegration_checkVersion("Zotero", "zotero.org", "zotero@chnm.gmu.edu", "2.0b7.SVN");
+	ZoteroWinWordIntegration_checkVersion("Zotero", "zotero.org", "zotero@chnm.gmu.edu", "2.1a1.SVN");
 	
 	try {		
 		// get Zotero.dot file
