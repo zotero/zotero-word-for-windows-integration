@@ -1,12 +1,32 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://global/skin/global.css"?>
-<?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
-<prefwindow title="Integration Preferences" onload="moveToAlertPosition();"
-		windowtype="zotero:pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<prefpane id="zotero-macword-integration-general">
-		<description>Click the button below to reinstall the Zotero add-on for Microsoft Word.</description>
-		<button label="Reinstall Word Components" oncommand="ZoteroWinWordIntegration_firstRun()"/>
-	</prefpane>
-    <script type="application/x-javascript" src="chrome://zotero/content/include.js"/>
-	<script type="application/x-javascript" src="chrome://zotero-winword-integration/content/browser-overlay.js"/>
-</prefwindow>
+<overlay id="winWordIntegration"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<tabpanel id="wordProcessors">
+		<groupbox id="wordProcessors-winWordIntegration" position="1">
+			<caption label="Microsoft Word for Windows"/>
+			<description id="wordProcessors-winWordIntegration-description" width="45em" />
+			<hbox pack="center">
+				<button id="wordProcessors-winWordIntegration-install" oncommand="updateWinWordIntegration(new ZoteroPluginInstaller(ZoteroWinWordIntegration, false, true));"/>
+			</hbox>
+			<script src="chrome://zotero-winword-integration/content/common.js"/>
+			<script src="chrome://zotero-winword-integration/content/winWord.js"/>
+			<script>
+			<![CDATA[
+			window.addEventListener("load", function() {
+				var zpi = new ZoteroPluginInstaller(ZoteroWinWordIntegration, true);
+				updateWinWordIntegration(zpi);
+			}, false);
+			
+			function updateWinWordIntegration(zpi) {
+				var isInstalled = zpi.isInstalled();
+				document.getElementById("wordProcessors-winWordIntegration-description").textContent =
+					"The Zotero Word for Windows add-on is "+(isInstalled ? "" : "not ")+"currently installed.";
+				document.getElementById("wordProcessors-winWordIntegration-install").label =
+					(isInstalled ? "Reinstall" : "Install")+" Word Add-in";
+			}
+			]]>
+			</script>
+		</groupbox>
+	</tabpanel>
+</overlay>

@@ -21,40 +21,28 @@
     
     ***** END LICENSE BLOCK *****
 */
-const ZOTEROWINWORDINTEGRATION_ID = "zoteroWinWordIntegration@zotero.org";
-const ZOTEROWINWORDINTEGRATION_PREF = "extensions.zoteroWinWordIntegration.version";
 
-function ZoteroWinWordIntegration_checkVersion(name, url, id, minVersion) {
-	// check Zotero version
-	try {
-		var ext = Components.classes['@mozilla.org/extensions/manager;1']
-		   .getService(Components.interfaces.nsIExtensionManager).getItemForID(id);
-		var comp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-			.getService(Components.interfaces.nsIVersionComparator)
-			.compare(ext.version, minVersion);
-	} catch(e) {
-		var comp = -1;
-	}
+var ZoteroWinWordIntegration = new function() {
+	this.EXTENSION_STRING = "Zotero WinWord Integration";
+	this.EXTENSION_ID = "zoteroWinWordIntegration@zotero.org";
+	this.EXTENSION_PREF_BRANCH = "extensions.zoteroWinWordIntegration.";
+	this.EXTENSION_DIR = "zotero-winword-integration";
+	this.APP = 'Microsoft Word';
 	
-	if(comp < 0) {
-		var err = 'This version of Zotero WinWord Integration requires '+name+' '+minVersion+
-			' or later to run. Please download the latest version of '+name+' from '+url+'.';
-		var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService)
-			.alert(null, 'Zotero WinWord Integration Error', err);
-		throw err;
-	}
-}
-
-function ZoteroWinWordIntegration_firstRun() {
-	ZoteroWinWordIntegration_checkVersion("Zotero", "zotero.org", "zotero@chnm.gmu.edu", "2.1a1.SVN");
+	this.REQUIRED_ADDONS = [{
+		name: "Zotero",
+		url: "zotero.org",
+		id: "zotero@chnm.gmu.edu",
+		minVersion: "2.1a1.SVN"
+	}];
 	
-	try {		
+	var zoteroPluginInstaller;
+	
+	this.verifyNotCorrupt = function(zpi) {}
+	
+	this.install = function(zpi) {
 		// get Zotero.dot file
-		var dot = Components.classes["@mozilla.org/extensions/manager;1"].
-			getService(Components.interfaces.nsIExtensionManager).
-			getInstallLocation(ZOTEROWINWORDINTEGRATION_ID).
-			getItemLocation(ZOTEROWINWORDINTEGRATION_ID);
+		var dot = zpi.getAddonPath(this.EXTENSION_ID);
 		dot.append("install");
 		dot.append("Zotero.dot");
 
@@ -125,20 +113,5 @@ function ZoteroWinWordIntegration_firstRun() {
 			// copy Zotero.dot file to Word Startup folder
 			dot.copyTo(startupFolder, "Zotero.dot");
 		}
-	} catch(e) {
-		var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService)
-			.alert(null, 'Zotero Word Integration Error',
-			'Zotero Word Integration could not complete installation because an error occurred. Please ensure that Word is closed, and then restart Firefox.');
-		throw e;
 	}
-}
-
-var ext = Components.classes['@mozilla.org/extensions/manager;1']
-   .getService(Components.interfaces.nsIExtensionManager).getItemForID(ZOTEROWINWORDINTEGRATION_ID);
-var ZoteroWinWordIntegration_prefService = Components.classes["@mozilla.org/preferences-service;1"].
-	getService(Components.interfaces.nsIPrefBranch);
-if(ZoteroWinWordIntegration_prefService.getCharPref(ZOTEROWINWORDINTEGRATION_PREF) != ext.version) {
-	ZoteroWinWordIntegration_firstRun();
-	ZoteroWinWordIntegration_prefService.setCharPref(ZOTEROWINWORDINTEGRATION_PREF, ext.version);
 }

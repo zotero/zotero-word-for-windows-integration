@@ -1,2 +1,5 @@
-overlay    chrome://browser/content/browser.xul chrome://zotero-winword-integration/content/browser-overlay.xul
+overlay    chrome://browser/content/browser.xul chrome://zotero-winword-integration/content/overlay.xul
+overlay    chrome://zotero/content/standalone.xul chrome://zotero-winword-integration/content/overlay.xul
+overlay    chrome://zotero/content/preferences/preferences.xul chrome://zotero-winword-integration/content/preferences.xul
+
 content    zotero-winword-integration chrome/
