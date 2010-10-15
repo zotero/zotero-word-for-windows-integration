@@ -113,5 +113,7 @@ var ZoteroWinWordIntegration = new function() {
 			// copy Zotero.dot file to Word Startup folder
 			dot.copyTo(startupFolder, "Zotero.dot");
 		}
+		
+		zpi.success();
 	}
 }

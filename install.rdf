@@ -10,7 +10,11 @@
 	<em:homepageURL>http://www.zotero.org</em:homepageURL>
 	<em:updateURL>https://www.zotero.org/download/update-svn.rdf</em:updateURL>
 	<em:iconURL>chrome://zotero/skin/zotero_z_32px.png</em:iconURL>
-    <em:optionsURL>chrome://zotero-winword-integration/content/preferences.xul</em:optionsURL>
+    <em:optionsURL>
+    	javascript:window.openDialog(
+    	'chrome://zotero/content/preferences/preferences.xul', 'zotero-prefs',
+    	'chrome,titlebar,toolbar', {"pane":"zotero-prefpane-cite"}); undefined;
+	</em:optionsURL>
     <em:description>Integrates Zotero with Microsoft Word for Windows</em:description>
 	<em:type>2</em:type> <!-- type=extension --> 
 	
