@@ -56,7 +56,7 @@ var ZoteroWinWordIntegration = new function() {
 		var addDefaultStartupFolder = false;
 		var wrk = Components.classes["@mozilla.org/windows-registry-key;1"]
 			.createInstance(Components.interfaces.nsIWindowsRegKey);
-		for(var i=9; i<=13; i++) {
+		for(var i=9; i<=14; i++) {
 			var path = null;
 			try {
 				wrk.open(Components.interfaces.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
