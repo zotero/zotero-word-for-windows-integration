@@ -26,9 +26,9 @@
     ***** END LICENSE BLOCK *****
 */
 
-#include "nsXPCOM.h"
-#include "nsIGenericFactory.h"
-	
+#include "mozilla/ModuleUtils.h"
+#include "nsIClassInfoImpl.h"
+
 /**
  * Components to be registered
  */
@@ -36,54 +36,43 @@
 #include "zoteroWinWordDocument.h"
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
-	
+
 NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordApplication)
-NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordDocument)
-NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordFieldEnumerator)
-NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordBookmarkEnumerator)
-NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordField)
-NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordBookmark)
-	
-//----------------------------------------------------------
-	
-static const nsModuleComponentInfo components[] =
-{
-	{
-		ZOTEROWINWORDAPPLICATION_CLASSNAME,
-		ZOTEROWINWORDAPPLICATION_CID,
-		ZOTEROWINWORDAPPLICATION_CONTRACTID,
-		zoteroWinWordApplicationConstructor
-	},
-	{
-		ZOTEROWINWORDDOCUMENT_CLASSNAME,
-		ZOTEROWINWORDDOCUMENT_CID,
-		ZOTEROWINWORDDOCUMENT_CONTRACTID,
-		zoteroWinWordDocumentConstructor
-	},
-	{
-		ZOTEROWINWORDFIELDENUMERATOR_CLASSNAME,
-		ZOTEROWINWORDFIELDENUMERATOR_CID,
-		ZOTEROWINWORDFIELDENUMERATOR_CONTRACTID,
-		zoteroWinWordFieldEnumeratorConstructor
-	},
-	{
-		ZOTEROWINWORDBOOKMARKENUMERATOR_CLASSNAME,
-		ZOTEROWINWORDBOOKMARKENUMERATOR_CID,
-		ZOTEROWINWORDBOOKMARKENUMERATOR_CONTRACTID,
-		zoteroWinWordBookmarkEnumeratorConstructor
-	},
-	{
-		ZOTEROWINWORDFIELD_CLASSNAME,
-		ZOTEROWINWORDFIELD_CID,
-		ZOTEROWINWORDFIELD_CONTRACTID,
-		zoteroWinWordFieldConstructor
-	},
-	{
-		ZOTEROWINWORDBOOKMARK_CLASSNAME,
-		ZOTEROWINWORDBOOKMARK_CID,
-		ZOTEROWINWORDBOOKMARK_CONTRACTID,
-		zoteroWinWordBookmarkConstructor
-	}
+
+// The following line defines a kNS_SAMPLE_CID CID variable.
+NS_DEFINE_NAMED_CID(ZOTEROWINWORDAPPLICATION_CID);
+
+// Build a table of ClassIDs (CIDs) which are implemented by this module. CIDs
+// should be completely unique UUIDs.
+// each entry has the form { CID, service, factoryproc, constructorproc }
+// where factoryproc is usually NULL.
+static const mozilla::Module::CIDEntry kSampleCIDs[] = {
+    { &kZOTEROWINWORDAPPLICATION_CID, false, NULL, zoteroWinWordApplicationConstructor },
+    { NULL }
 };
-	
-NS_IMPL_NSGETMODULE(MyExtension, components)
+
+// Build a table which maps contract IDs to CIDs.
+// A contract is a string which identifies a particular set of functionality. In some
+// cases an extension component may override the contract ID of a builtin gecko component
+// to modify or extend functionality.
+static const mozilla::Module::ContractIDEntry kSampleContracts[] = {
+    { ZOTEROWINWORDAPPLICATION_CONTRACTID, &kZOTEROWINWORDAPPLICATION_CID },
+    { NULL }
+};
+
+static const mozilla::Module kzoteroWinWordModule = {
+    mozilla::Module::kVersion,
+    kSampleCIDs,
+    kSampleContracts,
+    NULL
+};
+
+// The following line implements the one-and-only "NSModule" symbol exported from this
+// shared library.
+NSMODULE_DEFN(zoteroWinWordModule) = &kzoteroWinWordModule;
+
+// The following line implements the one-and-only "NSGetModule" symbol
+// for compatibility with mozilla 1.9.2. You should only use this
+// if you need a binary which is backwards-compatible and if you use
+// interfaces carefully across multiple versions.
+NS_IMPL_MOZILLA192_NSGETMODULE(&kzoteroWinWordModule)

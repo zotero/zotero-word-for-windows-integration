@@ -135,7 +135,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="0"
 				AdditionalIncludeDirectories="&quot;..\xulrunner-sdk\include&quot;;&quot;..\xulrunner-sdk\sdk\include&quot;;&quot;..\xulrunner-sdk\include\xpcom&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -158,7 +158,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s.lib"
+				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\xulrunner-sdk\lib&quot;;&quot;..\xulrunner-sdk\sdk\lib&quot;"
 				EnableUAC="false"
