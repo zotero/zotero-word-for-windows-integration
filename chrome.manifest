@@ -3,3 +3,6 @@ overlay    chrome://zotero/content/standalone.xul chrome://zotero-winword-integr
 overlay    chrome://zotero/content/preferences/preferences.xul chrome://zotero-winword-integration/content/preferences.xul
 
 content    zotero-winword-integration chrome/
+
+interfaces  components/zoteroIntegration.xpt
+binary-component components/zoteroWinWordIntegration.dll
