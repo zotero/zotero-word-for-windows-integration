@@ -26,6 +26,10 @@
     ***** END LICENSE BLOCK *****
 */
 
+#include "nsCOMPtr.h"
+#include "nsIConsoleService.h"
+#include "nsServiceManagerUtils.h"
+
 #include "zoteroWinWordDocument.h"
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
@@ -101,6 +105,8 @@ zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
 	pbc->Release();
 	
 	if(pDisp == NULL) {
+		nsCOMPtr<nsIConsoleService> consoleService = do_GetService(NS_CONSOLESERVICE_CONTRACTID);
+		consoleService->LogStringMessage(L"Zotero WinWord Integration: getDocument() could not find document in ROT");
 		initFromActiveObject();
 	} else {
 		// attach our class to the running Word instance
