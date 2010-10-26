@@ -326,7 +326,7 @@ NS_IMETHODIMP zoteroWinWordDocument::SetDocumentData(const PRUnichar *data)
 NS_IMETHODIMP zoteroWinWordDocument::InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	setScreenUpdatingStatus(false);
+	//setScreenUpdatingStatus(false);
 
 	CSelection selection = comApp.get_Selection();
 	
@@ -384,7 +384,7 @@ NS_IMETHODIMP zoteroWinWordDocument::GetFields(const char *fieldType, nsISimpleE
 NS_IMETHODIMP zoteroWinWordDocument::Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	setScreenUpdatingStatus(false);
+	//setScreenUpdatingStatus(false);
 
 	long i = 0;
 	PRBool moreElements;
@@ -434,7 +434,7 @@ NS_IMETHODIMP zoteroWinWordDocument::Convert(nsISimpleEnumerator *fields, const 
 /* void cleanup (); */
 NS_IMETHODIMP zoteroWinWordDocument::Cleanup()
 {
-	setScreenUpdatingStatus(true);
+	//setScreenUpdatingStatus(true);
 	return NS_OK;
 }
 

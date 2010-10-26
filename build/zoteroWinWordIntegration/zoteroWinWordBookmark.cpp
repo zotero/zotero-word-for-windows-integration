@@ -94,7 +94,7 @@ NS_IMETHODIMP zoteroWinWordBookmark::SetCode(const PRUnichar *code)
 NS_IMETHODIMP zoteroWinWordBookmark::SetText(const PRUnichar *text, PRBool isRich)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	doc->setScreenUpdatingStatus(false);
+	//doc->setScreenUpdatingStatus(false);
 
 	if(isRich) {
 		// InsertFile method will clobber the bookmark, so add it to the RTF

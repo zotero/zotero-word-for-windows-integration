@@ -83,7 +83,7 @@ NS_IMETHODIMP zoteroWinWordField::Delete()
 NS_IMETHODIMP zoteroWinWordField::Select()
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	doc->setScreenUpdatingStatus(true);
+	//doc->setScreenUpdatingStatus(true);
 	comTextRange.Select();
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
@@ -102,7 +102,7 @@ NS_IMETHODIMP zoteroWinWordField::RemoveCode()
 NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	doc->setScreenUpdatingStatus(false);
+	//doc->setScreenUpdatingStatus(false);
 	
 	// get current font info
 	CFont0 comFont = comTextRange.get_Font();
