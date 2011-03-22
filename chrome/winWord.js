@@ -108,7 +108,13 @@ var ZoteroWinWordIntegration = new function() {
 		for each(var startupFolder in startupFolders) {
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsILocalFile);
 			oldDot.append("Zotero.dot");
-			if(oldDot.exists()) oldDot.remove(false);
+			if(oldDot.exists()) {
+				try {
+					oldDot.remove(false);
+				} catch(e) {
+					throw "Could not remove "+oldDot.path;
+				}
+			}
 			
 			// copy Zotero.dot file to Word Startup folder
 			dot.copyTo(startupFolder, "Zotero.dot");
