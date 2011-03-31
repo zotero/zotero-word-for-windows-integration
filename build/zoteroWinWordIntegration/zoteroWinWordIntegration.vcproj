@@ -163,7 +163,7 @@
 				AdditionalLibraryDirectories="&quot;..\xulrunner-sdk\lib&quot;;&quot;..\xulrunner-sdk\sdk\lib&quot;"
 				EnableUAC="false"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
