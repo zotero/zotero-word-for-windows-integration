@@ -38,16 +38,31 @@
 #include "zoteroWinWordBookmark.h"
 
 NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordApplication)
+NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordDocument)
+NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordFieldEnumerator)
+NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordBookmarkEnumerator)
+NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordField)
+NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordBookmark)
 
-// The following line defines a kNS_SAMPLE_CID CID variable.
+// The following line defines CID variables
 NS_DEFINE_NAMED_CID(ZOTEROWINWORDAPPLICATION_CID);
+NS_DEFINE_NAMED_CID(ZOTEROWINWORDDOCUMENT_CID);
+NS_DEFINE_NAMED_CID(ZOTEROWINWORDFIELDENUMERATOR_CID);
+NS_DEFINE_NAMED_CID(ZOTEROWINWORDBOOKMARKENUMERATOR_CID);
+NS_DEFINE_NAMED_CID(ZOTEROWINWORDFIELD_CID);
+NS_DEFINE_NAMED_CID(ZOTEROWINWORDBOOKMARK_CID);
 
 // Build a table of ClassIDs (CIDs) which are implemented by this module. CIDs
 // should be completely unique UUIDs.
 // each entry has the form { CID, service, factoryproc, constructorproc }
 // where factoryproc is usually NULL.
-static const mozilla::Module::CIDEntry kSampleCIDs[] = {
+static const mozilla::Module::CIDEntry kCIDs[] = {
     { &kZOTEROWINWORDAPPLICATION_CID, false, NULL, zoteroWinWordApplicationConstructor },
+    { &kZOTEROWINWORDDOCUMENT_CID, false, NULL, zoteroWinWordDocumentConstructor },
+    { &kZOTEROWINWORDFIELDENUMERATOR_CID, false, NULL, zoteroWinWordFieldEnumeratorConstructor },
+    { &kZOTEROWINWORDBOOKMARKENUMERATOR_CID, false, NULL, zoteroWinWordBookmarkEnumeratorConstructor },
+    { &kZOTEROWINWORDFIELD_CID, false, NULL, zoteroWinWordFieldConstructor },
+    { &kZOTEROWINWORDBOOKMARK_CID, false, NULL, zoteroWinWordBookmarkConstructor },
     { NULL }
 };
 
@@ -55,15 +70,20 @@ static const mozilla::Module::CIDEntry kSampleCIDs[] = {
 // A contract is a string which identifies a particular set of functionality. In some
 // cases an extension component may override the contract ID of a builtin gecko component
 // to modify or extend functionality.
-static const mozilla::Module::ContractIDEntry kSampleContracts[] = {
+static const mozilla::Module::ContractIDEntry kContracts[] = {
     { ZOTEROWINWORDAPPLICATION_CONTRACTID, &kZOTEROWINWORDAPPLICATION_CID },
+    { ZOTEROWINWORDDOCUMENT_CONTRACTID, &kZOTEROWINWORDDOCUMENT_CID },
+    { ZOTEROWINWORDFIELDENUMERATOR_CONTRACTID, &kZOTEROWINWORDFIELDENUMERATOR_CID },
+    { ZOTEROWINWORDBOOKMARKENUMERATOR_CONTRACTID, &kZOTEROWINWORDBOOKMARKENUMERATOR_CID },
+    { ZOTEROWINWORDFIELD_CONTRACTID, &kZOTEROWINWORDFIELD_CID },
+    { ZOTEROWINWORDBOOKMARK_CONTRACTID, &kZOTEROWINWORDBOOKMARK_CID },
     { NULL }
 };
 
 static const mozilla::Module kzoteroWinWordModule = {
     mozilla::Module::kVersion,
-    kSampleCIDs,
-    kSampleContracts,
+    kCIDs,
+    kContracts,
     NULL
 };
 
