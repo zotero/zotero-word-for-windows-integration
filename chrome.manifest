@@ -7,4 +7,5 @@ content    zotero-winword-integration chrome/
 
 interfaces  components/zoteroIntegration.xpt
 binary-component components/zoteroWinWordIntegration-gecko-2.0.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=4.*
-binary-component components/zoteroWinWordIntegration-gecko-5.0.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion=5.*
+binary-component components/zoteroWinWordIntegration-gecko-2.0.dll application=zotero@chnm.gmu.edu
+binary-component components-new/zoteroWinWordIntegration-gecko-5.0.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=5.0b1

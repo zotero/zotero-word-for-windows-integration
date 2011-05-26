@@ -115,7 +115,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Release\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration-gecko-2.0.dll&#x0D;&#x0A;"
+				CommandLine="copy &quot;Gecko 2.0\zoteroWinWordIntegration.dll&quot; ..\..\components\zoteroWinWordIntegration-gecko-2.0.dll&#x0D;&#x0A;"
 				Outputs="..\..\components\zoteroWinWordIntegration-gecko-2.0.dll"
 			/>
 			<Tool
@@ -205,8 +205,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Release\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration-gecko-5.0.dll&#x0D;&#x0A;"
-				Outputs="..\..\components\zoteroWinWordIntegration-gecko-5.0.dll"
+				CommandLine="copy &quot;Gecko 5.0\zoteroWinWordIntegration.dll&quot; ..\..\components-new\zoteroWinWordIntegration-gecko-5.0.dll&#x0D;&#x0A;"
+				Outputs="..\..\components-new\zoteroWinWordIntegration-gecko-5.0.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
