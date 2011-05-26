@@ -102,7 +102,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
+			Name="Gecko 2.0|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
@@ -115,8 +115,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Release\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
-				Outputs="..\..\components\zoteroWinWordIntegration.dll"
+				CommandLine="copy Release\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration-gecko-2.0.dll&#x0D;&#x0A;"
+				Outputs="..\..\components\zoteroWinWordIntegration-gecko-2.0.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -134,7 +134,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="0"
-				AdditionalIncludeDirectories="&quot;..\xulrunner-sdk\include&quot;;&quot;..\xulrunner-sdk\sdk\include&quot;;&quot;..\xulrunner-sdk\include\xpcom&quot;"
+				AdditionalIncludeDirectories="&quot;..\xulrunner-2.0-sdk\include&quot;;&quot;..\xulrunner-2.0-sdk\sdk\include&quot;;&quot;..\xulrunner-2.0-sdk\include\xpcom&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
 				StringPooling="true"
 				ExceptionHandling="2"
@@ -160,7 +160,97 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\xulrunner-sdk\lib&quot;;&quot;..\xulrunner-sdk\sdk\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\xulrunner-2.0-sdk\lib&quot;;&quot;..\xulrunner-2.0-sdk\sdk\lib&quot;"
+				EnableUAC="false"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="false"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Gecko 5.0|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			UseOfMFC="1"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="copy Release\zoteroWinWordIntegration.dll ..\..\components\zoteroWinWordIntegration-gecko-5.0.dll&#x0D;&#x0A;"
+				Outputs="..\..\components\zoteroWinWordIntegration-gecko-5.0.dll"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="0"
+				AdditionalIncludeDirectories="&quot;..\xulrunner-5.0-sdk\include&quot;;&quot;..\xulrunner-5.0-sdk\sdk\include&quot;;&quot;..\xulrunner-5.0-sdk\include\xpcom&quot;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="&quot;..\xulrunner-5.0-sdk\lib&quot;;&quot;..\xulrunner-5.0-sdk\sdk\lib&quot;"
 				EnableUAC="false"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="false"
