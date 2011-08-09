@@ -98,6 +98,18 @@ NS_IMETHODIMP zoteroWinWordField::RemoveCode()
 	ZOTERO_EXCEPTION_CATCHER_END
 }
 
+/* void getText (); */
+NS_IMETHODIMP zoteroWinWordField::GetText(PRUnichar **_retval NS_OUTPARAM)
+{
+	ZOTERO_EXCEPTION_CATCHER_START
+	CStringW fieldText = comTextRange.get_Text();
+	long size = fieldText.GetLength()+1;
+	*_retval = (PRUnichar *) NS_Alloc(size * sizeof(PRUnichar));
+	lstrcpyn(*_retval, (LPCTSTR) fieldText, size);
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
+}
+
 /* void setText (in wstring text, in boolean isRich); */
 NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
 {
@@ -362,20 +374,22 @@ void zoteroWinWordField::init(bool needCode)
 	}
 	
 	// get code
-	CStringW prefix;
-	if(wcsncmp(rawCode, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0) {
-		prefix = FIELD_PREFIX;
-	} else if(wcsncmp(rawCode, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
-		prefix = BACKUP_FIELD_PREFIX;
+	long startIndex = rawCode.Find(FIELD_PREFIX);
+	if(startIndex != -1) {
+		startIndex += FIELD_PREFIX.GetLength();
+	} else {
+		startIndex = rawCode.Find(BACKUP_FIELD_PREFIX);
+		if(startIndex != -1) {
+			startIndex += BACKUP_FIELD_PREFIX.GetLength();
+		}
 	}
 	
-	if(!prefix.IsEmpty()) {
+	if(startIndex != -1) {
 		long codeLength = rawCode.GetLength();
 		if(rawCode[codeLength-1] == ' ') {
-			long prefixLength = prefix.GetLength();
-			code = rawCode.Mid(prefixLength, codeLength-prefixLength-1);
+			code = rawCode.Mid(startIndex, codeLength-startIndex-1);
 		} else {
-			code = rawCode.Mid(prefix.GetLength());
+			code = rawCode.Mid(startIndex);
 		}
 	}
 }
@@ -480,8 +494,7 @@ void zoteroWinWordFieldEnumerator::fetchNextItem(short i) {
 		CField field = var.pdispVal;
 		CRange codeRange = field.get_Code();
 		CString codeString = codeRange.get_Text();
-		if(wcsncmp(codeString, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0
-				|| wcsncmp(codeString, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
+		if(codeString.Find(FIELD_PREFIX) != -1 || codeString.Find(BACKUP_FIELD_PREFIX) != -1) {
 			doc->AddRef();
 			fieldItem[i] = new zoteroWinWordField(doc, field, codeRange, codeString);
 		} else {

@@ -268,8 +268,8 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 					&& testFieldStart < selectionEnd && testFieldEnd < selectionEnd)) continue;
 			
 			// otherwise, check for an appropriate code
-			if(wcsncmp(testFieldCodeText, FIELD_PREFIX, FIELD_PREFIX.GetLength()) == 0
-					|| wcsncmp(testFieldCodeText, BACKUP_FIELD_PREFIX, BACKUP_FIELD_PREFIX.GetLength()) == 0) {
+			if(testFieldCodeText.Find(FIELD_PREFIX) != -1
+					|| testFieldCodeText.Find(BACKUP_FIELD_PREFIX) != -1) {
 				*_retval = new zoteroWinWordField(this, testField);
 				AddRef();
 				(*_retval)->AddRef();

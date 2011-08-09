@@ -40,9 +40,9 @@
 #define ZOTEROWINWORDDOCUMENT_CID  { 0x295b47af, 0xa084, 0x41b1, 0xb2, 0x6c, 0xb0, 0xce, 0xfa, 0x3, 0x92, 0x46 }
 
 const CString FIELD_PREFIX = _T(" ADDIN ZOTERO_");
-const CString BACKUP_FIELD_PREFIX = _T(" ADDIN CITE_");
+const CString BACKUP_FIELD_PREFIX = _T(" CSL_");
 const CString BOOKMARK_PREFIX = _T("ZOTERO_");
-const CString BACKUP_BOOKMARK_PREFIX = _T("CITE_");
+const CString BACKUP_BOOKMARK_PREFIX = _T("CSL_");
 const CString PREFS_PROPERTY = _T("ZOTERO_PREF");
 const CString BACKUP_PREFS_PROPERTY = _T("CITE_PREF");
 const CString BOOKMARK_REFERENCE_PROPERTY = _T("ZOTERO_BREF_");

@@ -6,23 +6,32 @@
 						George Mason University, Fairfax, Virginia, USA
 						http://zotero.org
 	
-	Zotero is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Affero General Public License as published by
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 	
-	Zotero is distributed in the hope that it will be useful,
+	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU Affero General Public License for more details.
+	GNU General Public License for more details.
 	
-	You should have received a copy of the GNU Affero General Public License
-	along with Zotero.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
     ***** END LICENSE BLOCK *****
 */
 
-var ZoteroWinWordIntegration = new function() {
+var EXPORTED_SYMBOLS = ["Installer"];
+var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
+var ZoteroPluginInstaller = Components.utils.import("resource://zotero-winword-integration/installer_common.jsm").ZoteroPluginInstaller;
+var Installer = function(failSilently, force) {
+	return new ZoteroPluginInstaller(Plugin,
+		failSilently !== undefined ? failSilently : Zotero.isStandalone,
+		force);
+}
+
+var Plugin = new function() {
 	this.EXTENSION_STRING = "Zotero WinWord Integration";
 	this.EXTENSION_ID = "zoteroWinWordIntegration@zotero.org";
 	this.EXTENSION_PREF_BRANCH = "extensions.zoteroWinWordIntegration.";

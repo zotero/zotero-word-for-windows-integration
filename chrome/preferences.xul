@@ -7,14 +7,15 @@
 			<caption label="Microsoft Word for Windows"/>
 			<description id="wordProcessors-winWordIntegration-description" width="45em" />
 			<hbox pack="center">
-				<button id="wordProcessors-winWordIntegration-install" oncommand="updateWinWordIntegration(new ZoteroPluginInstaller(ZoteroWinWordIntegration, false, true));"/>
+				<button id="wordProcessors-winWordIntegration-install" oncommand="updateWinWordIntegration(new ZoteroWinWordInstaller(false, true));"/>
 			</hbox>
 			<script src="chrome://zotero-winword-integration/content/common.js"/>
 			<script src="chrome://zotero-winword-integration/content/winWord.js"/>
 			<script>
 			<![CDATA[
+			var ZoteroWinWordInstaller = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
 			window.addEventListener("load", function() {
-				var zpi = new ZoteroPluginInstaller(ZoteroWinWordIntegration, true);
+				var zpi = new ZoteroWinWordInstaller(true);
 				updateWinWordIntegration(zpi);
 			}, false);
 			

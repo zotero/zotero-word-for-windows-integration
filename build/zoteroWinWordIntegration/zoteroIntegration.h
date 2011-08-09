@@ -1,5 +1,5 @@
 /*
- * DO NOT EDIT.  THIS FILE IS GENERATED FROM /Users/simon/Desktop/Development/FS/zotero/extension/trunk/idl/zoteroIntegration.idl
+ * DO NOT EDIT.  THIS FILE IS GENERATED FROM zoteroIntegration.idl
  */
 
 #ifndef __gen_zoteroIntegration_h__
@@ -54,6 +54,12 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void) = 0;
 
   /**
+   * Gets the text inside this field, preferably with formatting, but potentially without
+   */
+  /* wstring getText (); */
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM) = 0;
+
+  /**
    * Sets the text inside this field to a specified plain text string or pseudo-RTF formatted text
    * string.
    */
@@ -61,11 +67,14 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich) = 0;
 
   /**
-   * This field's code.
+   * Gets field's code.
    */
   /* wstring getCode (); */
   NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM) = 0;
 
+  /**
+   * Sets field's code
+   */
   /* void setCode (in wstring code); */
   NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code) = 0;
 
@@ -90,6 +99,7 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD Delete(void); \
   NS_SCRIPTABLE NS_IMETHOD Select(void); \
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void); \
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM); \
   NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich); \
   NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM); \
   NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code); \
@@ -101,6 +111,7 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD Delete(void) { return _to Delete(); } \
   NS_SCRIPTABLE NS_IMETHOD Select(void) { return _to Select(); } \
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void) { return _to RemoveCode(); } \
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM) { return _to GetText(_retval); } \
   NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich) { return _to SetText(text, isRich); } \
   NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM) { return _to GetCode(_retval); } \
   NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code) { return _to SetCode(code); } \
@@ -112,6 +123,7 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD Delete(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Delete(); } \
   NS_SCRIPTABLE NS_IMETHOD Select(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Select(); } \
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->RemoveCode(); } \
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetText(_retval); } \
   NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetText(text, isRich); } \
   NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetCode(_retval); } \
   NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetCode(code); } \
@@ -164,6 +176,12 @@ NS_IMETHODIMP _MYCLASS_::Select()
 
 /* void removeCode (); */
 NS_IMETHODIMP _MYCLASS_::RemoveCode()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* wstring getText (); */
+NS_IMETHODIMP _MYCLASS_::GetText(PRUnichar **_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -242,11 +260,14 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports 
   NS_SCRIPTABLE NS_IMETHOD CursorInField(const char *fieldType, zoteroIntegrationField **_retval NS_OUTPARAM) = 0;
 
   /**
-   * The document data property from the current document.
+   * Get document data property from the current document
    */
   /* wstring getDocumentData (); */
   NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar **_retval NS_OUTPARAM) = 0;
 
+  /**
+   * Set document data property
+   */
   /* void setDocumentData (in wstring data); */
   NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar *data) = 0;
 
