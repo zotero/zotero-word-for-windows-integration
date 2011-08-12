@@ -10,6 +10,7 @@ Global
 		Gecko 5.0|Win32 = Gecko 5.0|Win32
 		Gecko 6.0|Win32 = Gecko 6.0|Win32
 		Gecko 7.0|Win32 = Gecko 7.0|Win32
+		Gecko 8.0|Win32 = Gecko 8.0|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -22,6 +23,8 @@ Global
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 6.0|Win32.Build.0 = Gecko 6.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 7.0|Win32.ActiveCfg = Gecko 7.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 7.0|Win32.Build.0 = Gecko 7.0|Win32
+		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 8.0|Win32.ActiveCfg = Gecko 8.0|Win32
+		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 8.0|Win32.Build.0 = Gecko 8.0|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
