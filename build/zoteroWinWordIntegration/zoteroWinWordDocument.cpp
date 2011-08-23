@@ -229,7 +229,28 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			// might only be one field in the entire doc
 			long rangeEndIndex = rangeEnd.get_Start();
 			if(range.get_Start() == rangeEndIndex) {
-				range = range.GoToPrevious(3);		// move a line back
+				long storyType = range.get_StoryType();
+				if(storyType == 2) {
+					CFootnotes notes = selectionRange.get_Footnotes();
+					long nNotes = notes.get_Count();
+					CFootnote startNote = notes.Item(1);
+					CFootnote endNote = notes.Item(nNotes);
+					range = startNote.get_Range();
+					range = range.get_Duplicate();
+					rangeEnd = endNote.get_Range();
+					rangeEndIndex = rangeEnd.get_End();
+				} else if(storyType == 3) {
+					CEndnotes notes = selectionRange.get_Endnotes();
+					long nNotes = notes.get_Count();
+					CEndnote startNote = notes.Item(1);
+					CEndnote endNote = notes.Item(nNotes);
+					range = startNote.get_Range();
+					range = range.get_Duplicate();
+					rangeEnd = endNote.get_Range();
+					rangeEndIndex = rangeEnd.get_End();
+				} else {
+					range = range.GoToPrevious(3);		// move a line back
+				}
 			}
 			if(rangeEndIndex < selectionEnd) {
 				rangeEndIndex = selectionEnd;		// span at least to selection end
