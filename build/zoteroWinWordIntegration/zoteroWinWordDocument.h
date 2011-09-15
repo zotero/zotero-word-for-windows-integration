@@ -34,6 +34,7 @@
 #pragma once
 #include "stdafx.h"
 #include "resource.h"
+#include "nsCOMPtr.h"
 
 #define ZOTEROWINWORDDOCUMENT_CONTRACTID "@zotero.org/Zotero/integration/document?agent=WinWord;1"
 #define ZOTEROWINWORDDOCUMENT_CLASSNAME "WinWord Document"
@@ -75,9 +76,15 @@ private:
 	bool currentScreenUpdatingStatus;
 	void initFromActiveObject();
 	void initFilter();
-
 	~zoteroWinWordDocument();
 
 protected:
 	/* additional members */
 };
+
+struct zoteroFieldThreadData {
+	char *fieldType;
+	nsIObserver *observer;
+	zoteroWinWordDocument *doc;
+};
+void getFieldsAsyncThread(void *threadData);

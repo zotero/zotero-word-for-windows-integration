@@ -26,7 +26,6 @@
     ***** END LICENSE BLOCK *****
 */
 
-#include "nsCOMPtr.h"
 #include "nsIConsoleService.h"
 #include "nsServiceManagerUtils.h"
 
@@ -34,6 +33,10 @@
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
 #include "zoteroException.h"
+
+#ifndef __gen_nsIProxyObjectManager_h__
+#include "nsIProxyObjectManager.h"
+#endif
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 
@@ -403,6 +406,22 @@ NS_IMETHODIMP zoteroWinWordDocument::GetFields(const char *fieldType, nsISimpleE
 
 	AddRef();
 	(*_retval)->AddRef();
+	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
+}
+
+/* nsISimpleEnumerator getFieldsAsync (in string fieldType, in nsIObserver observer); */
+NS_IMETHODIMP zoteroWinWordDocument::GetFieldsAsync(const char *fieldType, nsIObserver *observer)
+{
+	ZOTERO_EXCEPTION_CATCHER_START
+
+	nsISimpleEnumerator *enumerator;
+	nsresult rv = GetFields(fieldType, &enumerator);
+	if(NS_FAILED(rv)) return rv;
+
+	rv = observer->Observe(enumerator, "fields-available", NULL);
+	if(NS_FAILED(rv)) return rv;
+
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
 }

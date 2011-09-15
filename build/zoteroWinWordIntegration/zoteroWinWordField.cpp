@@ -233,6 +233,18 @@ NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, PRBool *
 	ZOTERO_EXCEPTION_CATCHER_END
 }
 
+/* zoteroIntegrationField getNextField (); */
+NS_IMETHODIMP zoteroWinWordField::GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* zoteroIntegrationField getPreviousField (); */
+NS_IMETHODIMP zoteroWinWordField::GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
 /* End of implementation class template. */
 
 bool zoteroWinWordField::operator<(zoteroWinWordField &other) {

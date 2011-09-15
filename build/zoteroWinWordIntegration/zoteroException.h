@@ -64,6 +64,15 @@ private:
 		return NS_ERROR_FAILURE; \
 	}
 
+#define ZOTERO_EXCEPTION_CATCHER_END_VOID \
+	} catch(CException *exception) { \
+		zoteroException *zException = new zoteroException(exception, __FUNCTION__, __FILE__); \
+		zException->report(); \
+		return; \
+	} catch(...) { \
+		return; \
+	}
+
 #define ZOTERO_THROW_EXCEPTION(string) \
 	zoteroException *zException = new zoteroException(string, __FUNCTION__, __FILE__); \
 	zException->report();
