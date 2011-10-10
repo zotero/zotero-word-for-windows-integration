@@ -69,13 +69,18 @@ public:
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
+	void prepareReadFieldCode();
 
 private:
 	CApplication comApp;
 	CCustomProperties comProperties;
+	CView0 comView;
+	bool restoreShowInsertionsAndDeletions;
+	bool showInsertionsAndDeletionsStatus;
 	bool currentScreenUpdatingStatus;
-	void initFromActiveObject();
 	void initFilter();
+	void initFromActiveObject();
+	void retrieveDocumentInfo();
 	~zoteroWinWordDocument();
 
 protected:

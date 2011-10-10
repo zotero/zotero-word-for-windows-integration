@@ -102,9 +102,11 @@ public:
 	zoteroWinWordFieldEnumerator(zoteroWinWordDocument *aDoc);
 
 private:
+	unsigned short collectionIndex;
 	IEnumVARIANT *fieldEnum[3];
 	~zoteroWinWordFieldEnumerator();
 
 protected:
+	void fetchNextCollection();
 	void fetchNextItem(short i);
 };

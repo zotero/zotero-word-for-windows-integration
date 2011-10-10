@@ -114,11 +114,8 @@ zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
 	} else {
 		// attach our class to the running Word instance
 		comDoc.AttachDispatch(pDisp);
-		
-		// get some useful things
 		comApp = comDoc.get_Application();
-		comProperties = comDoc.get_CustomDocumentProperties();
-		currentScreenUpdatingStatus = true;
+		retrieveDocumentInfo();
 	}
 }
 
@@ -216,6 +213,8 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 	CSelection selection = comApp.get_Selection();
 	
 	if(strcmp(fieldType, "Field") == 0) {
+		prepareReadFieldCode();
+
 		CFields rangeFields = selection.get_Fields();
 		long selectionStart = selection.get_Start();
 		long selectionEnd = selection.get_End();
@@ -512,6 +511,10 @@ NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineInden
 /* void cleanup (); */
 NS_IMETHODIMP zoteroWinWordDocument::Cleanup()
 {
+	if(restoreShowInsertionsAndDeletions && !showInsertionsAndDeletionsStatus) {
+		comView.put_ShowInsertionsAndDeletions(true);
+		showInsertionsAndDeletionsStatus = true;
+	}
 	setScreenUpdatingStatus(true);
 	return NS_OK;
 }
@@ -618,7 +621,9 @@ nsresult zoteroWinWordDocument::makeNewField(const char *fieldType, CRange inser
 	return NS_OK;
 }
 
-/* turn on or off screenUpdating */
+/**
+ * Turn on or off screenUpdating
+ */
 void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 	if(status != currentScreenUpdatingStatus) {
 		comApp.put_ScreenUpdating(status);
@@ -626,28 +631,14 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 	}
 }
 
-/* attaches this document to the active document of the first launched WinWord instance */
-void zoteroWinWordDocument::initFromActiveObject() {
-	IUnknown *pUnk = NULL;
-	IDispatch *pDisp = NULL;
-	// get the class ID for Word
-	CLSID clsid;
-	CLSIDFromProgID(L"Word.Application", &clsid); 
-	// get running Word instance
-	GetActiveObject(clsid, NULL, (IUnknown**)&pUnk);
-	if(pUnk == NULL) {
-		ZOTERO_THROW_EXCEPTION("Could not find a running Word instance.");
-		throw NS_ERROR_FAILURE;
+/**
+ * Gets document info after comApp has been set
+ */
+void zoteroWinWordDocument::prepareReadFieldCode() {
+	if(showInsertionsAndDeletionsStatus) {
+		comView.put_ShowInsertionsAndDeletions(false);
+		showInsertionsAndDeletionsStatus = false;
 	}
-	pUnk->QueryInterface(IID_IDispatch, (void **)&pDisp);
-	// attach our class to the running Word instance
-	comApp.AttachDispatch(pDisp);
-	pUnk->Release();
-	
-	// get some useful things
-	comDoc = comApp.get_ActiveDocument();
-	comProperties = comDoc.get_CustomDocumentProperties();
-	currentScreenUpdatingStatus = true;
 }
 
 /**
@@ -664,4 +655,44 @@ void zoteroWinWordDocument::initFilter() {
 	} else {
 		filterRefs++;
 	}
+}
+
+/**
+ * Attaches this document to the active document of the first launched WinWord instance
+ */
+void zoteroWinWordDocument::initFromActiveObject() {
+	IUnknown *pUnk = NULL;
+	IDispatch *pDisp = NULL;
+	// get the class ID for Word
+	CLSID clsid;
+	CLSIDFromProgID(L"Word.Application", &clsid); 
+	// get running Word instance
+	GetActiveObject(clsid, NULL, (IUnknown**)&pUnk);
+	if(pUnk == NULL) {
+		ZOTERO_THROW_EXCEPTION("Could not find a running Word instance.");
+		throw NS_ERROR_FAILURE;
+	}
+	pUnk->QueryInterface(IID_IDispatch, (void **)&pDisp);
+	// attach our class to the running Word instance
+	comApp.AttachDispatch(pDisp);
+	pUnk->Release();
+
+	comDoc = comApp.get_ActiveDocument();
+	retrieveDocumentInfo();
+}
+
+/**
+ * Gets document info after comApp has been set
+ */
+void zoteroWinWordDocument::retrieveDocumentInfo() {
+	// get some useful things
+	comProperties = comDoc.get_CustomDocumentProperties();
+	currentScreenUpdatingStatus = true;
+
+	// disable ShowInsertionsAndDeletions if necessary
+	CWindow0 comWindow = comApp.get_ActiveWindow();
+	comView = comWindow.get_View();
+	restoreShowInsertionsAndDeletions =
+		showInsertionsAndDeletionsStatus =
+		comView.get_ShowInsertionsAndDeletions() == TRUE;
 }

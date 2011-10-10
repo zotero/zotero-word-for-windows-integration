@@ -57,3 +57,5 @@
 #include "CStyles.h"
 #include "CTabStop.h"
 #include "CTabStops.h"
+#include "CView0.h"
+#include "CWindow0.h"

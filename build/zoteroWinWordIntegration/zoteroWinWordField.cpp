@@ -236,12 +236,14 @@ NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, PRBool *
 /* zoteroIntegrationField getNextField (); */
 NS_IMETHODIMP zoteroWinWordField::GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM)
 {
+	doc->prepareReadFieldCode();
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField getPreviousField (); */
 NS_IMETHODIMP zoteroWinWordField::GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM)
 {
+	doc->prepareReadFieldCode();
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
@@ -376,6 +378,7 @@ void zoteroWinWordField::init(bool needCode)
 
 	// get ranges
 	if(needCode) {
+		doc->prepareReadFieldCode();
 		comCodeRange = comField.get_Code();
 	}
 	comTextRange = comField.get_Result();
@@ -470,6 +473,9 @@ NS_IMETHODIMP zoteroWinWordEnumerator::HasMoreElements(PRBool *_retval) {
 zoteroWinWordFieldEnumerator::zoteroWinWordFieldEnumerator() {}
 zoteroWinWordFieldEnumerator::zoteroWinWordFieldEnumerator(zoteroWinWordDocument *aDoc) {
 	doc = aDoc;
+	
+	doc->prepareReadFieldCode();
+
 	CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
 	CRange comStoryRange;
 	CFields comFields;
