@@ -636,7 +636,31 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
  */
 void zoteroWinWordDocument::prepareReadFieldCode() {
 	if(showInsertionsAndDeletionsStatus) {
-		comView.put_ShowInsertionsAndDeletions(false);
+		if(isWord2010) {
+			// Ugh. We can't turn off track changes in Word 2010 if the cursor is in a note.
+			CSelection selection = comApp.get_Selection();
+			if(selection.get_StoryType() != 1) {
+				// Duplicate old selection range
+				CRange selectionRange = selection.get_Range();
+				CRange duplicateRange = selectionRange.get_Duplicate();
+				
+				// Select main text range
+				CStoryRanges storyRanges = comDoc.get_StoryRanges();
+				CRange mainTextRange = storyRanges.Item(1);
+				mainTextRange.Select();
+				
+				// Turn off "Show Insertions and Deletions"
+				comView.put_ShowInsertionsAndDeletions(false);
+				
+				// Move selection back to note
+				duplicateRange.Select();
+			} else {
+				comView.put_ShowInsertionsAndDeletions(false);
+			}
+		} else {
+			comView.put_ShowInsertionsAndDeletions(false);
+		}
+
 		showInsertionsAndDeletionsStatus = false;
 	}
 }
@@ -689,10 +713,21 @@ void zoteroWinWordDocument::retrieveDocumentInfo() {
 	comProperties = comDoc.get_CustomDocumentProperties();
 	currentScreenUpdatingStatus = true;
 
+	CString version = comApp.get_Version();
+	CString frontVersion = version.Left(version.Find(_T('.')));
+	int frontVersionInt = _ttoi(frontVersion);
+	isWord2010 = frontVersionInt >= 14;
+
 	// disable ShowInsertionsAndDeletions if necessary
 	CWindow0 comWindow = comApp.get_ActiveWindow();
 	comView = comWindow.get_View();
-	restoreShowInsertionsAndDeletions =
-		showInsertionsAndDeletionsStatus =
-		comView.get_ShowInsertionsAndDeletions() == TRUE;
+	try {
+		restoreShowInsertionsAndDeletions =
+			showInsertionsAndDeletionsStatus =
+			comView.get_ShowInsertionsAndDeletions() == TRUE;
+	} catch(COleDispatchException *e) {
+		e->Delete();
+		restoreShowInsertionsAndDeletions =
+			showInsertionsAndDeletionsStatus = false;
+	}
 }

@@ -75,6 +75,7 @@ private:
 	CApplication comApp;
 	CCustomProperties comProperties;
 	CView0 comView;
+	bool isWord2010;
 	bool restoreShowInsertionsAndDeletions;
 	bool showInsertionsAndDeletionsStatus;
 	bool currentScreenUpdatingStatus;
