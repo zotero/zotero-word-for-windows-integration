@@ -725,7 +725,7 @@ void zoteroWinWordDocument::retrieveDocumentInfo() {
 		restoreShowInsertionsAndDeletions =
 			showInsertionsAndDeletionsStatus =
 			comView.get_ShowInsertionsAndDeletions() == TRUE;
-	} catch(COleDispatchException *e) {
+	} catch(CException *e) {
 		e->Delete();
 		restoreShowInsertionsAndDeletions =
 			showInsertionsAndDeletionsStatus = false;
