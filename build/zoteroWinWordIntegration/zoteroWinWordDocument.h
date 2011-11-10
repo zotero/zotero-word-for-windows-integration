@@ -69,7 +69,7 @@ public:
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
-	void prepareReadFieldCode();
+	void setShowInsertionsAndDeletionsStatus(bool status);
 
 private:
 	CApplication comApp;
