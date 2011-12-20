@@ -8,9 +8,8 @@ resource	zotero-winword-integration resource/
 
 interfaces  components/zoteroIntegration.xpt
 
-binary-component components-7.0/zoteroWinWordIntegration.dll application=zotero@chnm.gmu.edu
-binary-component components-9.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=9.0a1
-binary-component components-8.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=8.0a1
+binary-component components-9.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} platformversion>=9.0a1
+binary-component components-8.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} platformversion>=8.0a1
 binary-component components-7.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=7.0a1
 binary-component components-6.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=6.0a1
 binary-component components-5.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=5.0a1
