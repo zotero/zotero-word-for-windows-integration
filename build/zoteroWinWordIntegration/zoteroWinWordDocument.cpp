@@ -213,7 +213,7 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 	CSelection selection = comApp.get_Selection();
 	
 	if(strcmp(fieldType, "Field") == 0) {
-		prepareReadFieldCode();
+		setShowInsertionsAndDeletionsStatus(false);
 
 		CFields rangeFields = selection.get_Fields();
 		long selectionStart = selection.get_Start();
@@ -511,12 +511,11 @@ NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineInden
 /* void cleanup (); */
 NS_IMETHODIMP zoteroWinWordDocument::Cleanup()
 {
-	if(restoreShowInsertionsAndDeletions && !showInsertionsAndDeletionsStatus) {
-		comView.put_ShowInsertionsAndDeletions(true);
-		showInsertionsAndDeletionsStatus = true;
-	}
+	ZOTERO_EXCEPTION_CATCHER_START
+	setShowInsertionsAndDeletionsStatus(restoreShowInsertionsAndDeletions);
 	setScreenUpdatingStatus(true);
 	return NS_OK;
+	ZOTERO_EXCEPTION_CATCHER_END
 }
 
 /* End of implementation class template. */
@@ -632,37 +631,36 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 }
 
 /**
- * Gets document info after comApp has been set
+ * Turn on or off showInsertionsAndDeletions
  */
-void zoteroWinWordDocument::prepareReadFieldCode() {
-	if(showInsertionsAndDeletionsStatus) {
-		if(isWord2010) {
-			// Ugh. We can't turn off track changes in Word 2010 if the cursor is in a note.
-			CSelection selection = comApp.get_Selection();
-			if(selection.get_StoryType() != 1) {
-				// Duplicate old selection range
-				CRange selectionRange = selection.get_Range();
-				CRange duplicateRange = selectionRange.get_Duplicate();
-				
-				// Select main text range
-				CStoryRanges storyRanges = comDoc.get_StoryRanges();
-				CRange mainTextRange = storyRanges.Item(1);
-				mainTextRange.Select();
-				
-				// Turn off "Show Insertions and Deletions"
-				comView.put_ShowInsertionsAndDeletions(false);
-				
-				// Move selection back to note
-				duplicateRange.Select();
-			} else {
-				comView.put_ShowInsertionsAndDeletions(false);
-			}
+void zoteroWinWordDocument::setShowInsertionsAndDeletionsStatus(bool status) {
+	if(showInsertionsAndDeletionsStatus == status) return;
+	
+	if(isWord2010) {
+		// Ugh. We can't turn off track changes in Word 2010 if the cursor is in a note.
+		CSelection selection = comApp.get_Selection();
+		if(selection.get_StoryType() != 1) {
+			// Duplicate old selection range
+			CRange selectionRange = selection.get_Range();
+			CRange duplicateRange = selectionRange.get_Duplicate();
+			
+			// Select main text range
+			CStoryRanges storyRanges = comDoc.get_StoryRanges();
+			CRange mainTextRange = storyRanges.Item(1);
+			mainTextRange.Select();
+			
+			// Turn off "Show Insertions and Deletions"
+			comView.put_ShowInsertionsAndDeletions(status);
+			
+			// Move selection back to note
+			duplicateRange.Select();
 		} else {
-			comView.put_ShowInsertionsAndDeletions(false);
+			comView.put_ShowInsertionsAndDeletions(status);
 		}
-
-		showInsertionsAndDeletionsStatus = false;
+	} else {
+		comView.put_ShowInsertionsAndDeletions(status);
 	}
+	showInsertionsAndDeletionsStatus = status;
 }
 
 /**
