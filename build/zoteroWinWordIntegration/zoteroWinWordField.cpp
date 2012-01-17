@@ -457,7 +457,7 @@ NS_IMETHODIMP zoteroWinWordEnumerator::GetNext(nsISupports **_retval) {
 	ZOTERO_EXCEPTION_CATCHER_END
 }
 
-NS_IMETHODIMP zoteroWinWordEnumerator::HasMoreElements(PRBool *_retval) {
+NS_IMETHODIMP zoteroWinWordEnumerator::HasMoreElements(bool *_retval) {
 	ZOTERO_EXCEPTION_CATCHER_START
 	*_retval = false;
 	for(short i=0; i<3; i++) {

@@ -432,7 +432,7 @@ NS_IMETHODIMP zoteroWinWordDocument::Convert(nsISimpleEnumerator *fields, const 
 	setScreenUpdatingStatus(false);
 
 	long i = 0;
-	PRBool moreElements;
+	bool moreElements;
 	nsISupports *xpcomField;
 	zoteroWinWordField *field;
 	zoteroWinWordBookmark *bookmark;
