@@ -92,9 +92,10 @@ ZoteroPluginInstaller.prototype = {
 				return;
 			}
 			
+			var version = this.prefBranch.getCharPref("version");			
 			if(this.force || (
 					(
-						this.prefBranch.getCharPref("version") != this._version
+						versionComparator.compare(version, this._addon.LAST_INSTALLED_FILE_UPDATE) < 0
 						|| (!Zotero.isStandalone && !this.prefBranch.getBoolPref("installed"))
 					)
 					&& !this.prefBranch.getBoolPref("skipInstallation")
