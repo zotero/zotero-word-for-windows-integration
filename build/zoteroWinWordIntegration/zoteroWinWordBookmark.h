@@ -54,7 +54,7 @@ public:
 	NS_IMETHODIMP RemoveCode();
 	NS_IMETHODIMP SetCode(const PRUnichar *code);
 	NS_IMETHODIMP GetCode(PRUnichar **_retval);
-	NS_IMETHODIMP SetText(const PRUnichar *text, PRBool isRich);
+	NS_IMETHODIMP SetText(const PRUnichar *text, bool isRich);
 	CRange getFieldRange();
 
 private:

@@ -30,81 +30,43 @@
   {0xaedb37a0, 0x48bb, 0x11de, \
     { 0x8a, 0x39, 0x08, 0x00, 0x20, 0x0c, 0x9a, 0x66 }}
 
-/**
- * The zoteroIntegrationField interface corresponds to a field containing an individual citation
- * or bibliography.
- */
 class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
  public: 
 
   NS_DECLARE_STATIC_IID_ACCESSOR(ZOTEROINTEGRATIONFIELD_IID)
 
-  /**
-   * Deletes this field and its contents.
-   */
   /* void delete (); */
   NS_SCRIPTABLE NS_IMETHOD Delete(void) = 0;
 
-  /**
-   * Selects this field.
-   */
   /* void select (); */
   NS_SCRIPTABLE NS_IMETHOD Select(void) = 0;
 
-  /**
-   * Removes this field, but maintains the field's contents.
-   */
   /* void removeCode (); */
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void) = 0;
 
-  /**
-   * Gets the text inside this field, preferably with formatting, but potentially without
-   */
   /* wstring getText (); */
-  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Sets the text inside this field to a specified plain text string or pseudo-RTF formatted text
-   * string.
-   */
   /* void setText (in wstring text, in boolean isRich); */
-  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich) = 0;
+  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar * text, bool isRich) = 0;
 
-  /**
-   * Gets field's code.
-   */
   /* wstring getCode (); */
-  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Sets field's code
-   */
   /* void setCode (in wstring code); */
-  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code) = 0;
+  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar * code) = 0;
 
-  /**
-   * This field's note index, if it is in a footnote or endnote; otherwise zero.
-   */
   /* unsigned long getNoteIndex (); */
   NS_SCRIPTABLE NS_IMETHOD GetNoteIndex(PRUint32 *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Returns true if this field and the passed field are actually references to the same field.
-   */
   /* boolean equals (in zoteroIntegrationField field); */
-  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, PRBool *_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, bool *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Gets the next field in the document
-   */
   /* zoteroIntegrationField getNextField (); */
-  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Gets the previous field in the document
-   */
   /* zoteroIntegrationField getPreviousField (); */
-  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField * *_retval NS_OUTPARAM) = 0;
 
 };
 
@@ -115,42 +77,42 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationField : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD Delete(void); \
   NS_SCRIPTABLE NS_IMETHOD Select(void); \
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void); \
-  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich); \
-  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code); \
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar * text, bool isRich); \
+  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar * code); \
   NS_SCRIPTABLE NS_IMETHOD GetNoteIndex(PRUint32 *_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, PRBool *_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM); 
+  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, bool *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField * *_retval NS_OUTPARAM); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_ZOTEROINTEGRATIONFIELD(_to) \
   NS_SCRIPTABLE NS_IMETHOD Delete(void) { return _to Delete(); } \
   NS_SCRIPTABLE NS_IMETHOD Select(void) { return _to Select(); } \
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void) { return _to RemoveCode(); } \
-  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM) { return _to GetText(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich) { return _to SetText(text, isRich); } \
-  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM) { return _to GetCode(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code) { return _to SetCode(code); } \
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar * *_retval NS_OUTPARAM) { return _to GetText(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar * text, bool isRich) { return _to SetText(text, isRich); } \
+  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar * *_retval NS_OUTPARAM) { return _to GetCode(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar * code) { return _to SetCode(code); } \
   NS_SCRIPTABLE NS_IMETHOD GetNoteIndex(PRUint32 *_retval NS_OUTPARAM) { return _to GetNoteIndex(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, PRBool *_retval NS_OUTPARAM) { return _to Equals(field, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM) { return _to GetNextField(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM) { return _to GetPreviousField(_retval); } 
+  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, bool *_retval NS_OUTPARAM) { return _to Equals(field, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField * *_retval NS_OUTPARAM) { return _to GetNextField(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField * *_retval NS_OUTPARAM) { return _to GetPreviousField(_retval); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_ZOTEROINTEGRATIONFIELD(_to) \
   NS_SCRIPTABLE NS_IMETHOD Delete(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Delete(); } \
   NS_SCRIPTABLE NS_IMETHOD Select(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Select(); } \
   NS_SCRIPTABLE NS_IMETHOD RemoveCode(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->RemoveCode(); } \
-  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetText(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar *text, PRBool isRich) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetText(text, isRich); } \
-  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetCode(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar *code) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetCode(code); } \
+  NS_SCRIPTABLE NS_IMETHOD GetText(PRUnichar * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetText(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetText(const PRUnichar * text, bool isRich) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetText(text, isRich); } \
+  NS_SCRIPTABLE NS_IMETHOD GetCode(PRUnichar * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetCode(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetCode(const PRUnichar * code) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetCode(code); } \
   NS_SCRIPTABLE NS_IMETHOD GetNoteIndex(PRUint32 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetNoteIndex(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, PRBool *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->Equals(field, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetNextField(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetPreviousField(_retval); } 
+  NS_SCRIPTABLE NS_IMETHOD Equals(zoteroIntegrationField *field, bool *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->Equals(field, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetNextField(zoteroIntegrationField * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetNextField(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetPreviousField(zoteroIntegrationField * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetPreviousField(_retval); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -203,25 +165,25 @@ NS_IMETHODIMP _MYCLASS_::RemoveCode()
 }
 
 /* wstring getText (); */
-NS_IMETHODIMP _MYCLASS_::GetText(PRUnichar **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetText(PRUnichar * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* void setText (in wstring text, in boolean isRich); */
-NS_IMETHODIMP _MYCLASS_::SetText(const PRUnichar *text, PRBool isRich)
+NS_IMETHODIMP _MYCLASS_::SetText(const PRUnichar * text, bool isRich)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* wstring getCode (); */
-NS_IMETHODIMP _MYCLASS_::GetCode(PRUnichar **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetCode(PRUnichar * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* void setCode (in wstring code); */
-NS_IMETHODIMP _MYCLASS_::SetCode(const PRUnichar *code)
+NS_IMETHODIMP _MYCLASS_::SetCode(const PRUnichar * code)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -233,19 +195,19 @@ NS_IMETHODIMP _MYCLASS_::GetNoteIndex(PRUint32 *_retval NS_OUTPARAM)
 }
 
 /* boolean equals (in zoteroIntegrationField field); */
-NS_IMETHODIMP _MYCLASS_::Equals(zoteroIntegrationField *field, PRBool *_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::Equals(zoteroIntegrationField *field, bool *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField getNextField (); */
-NS_IMETHODIMP _MYCLASS_::GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetNextField(zoteroIntegrationField * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField getPreviousField (); */
-NS_IMETHODIMP _MYCLASS_::GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetPreviousField(zoteroIntegrationField * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -261,106 +223,58 @@ NS_IMETHODIMP _MYCLASS_::GetPreviousField(zoteroIntegrationField **_retval NS_OU
   {0xbe1c5c1f, 0x9ed2, 0x4154, \
     { 0x98, 0xfb, 0x82, 0x2d, 0x1f, 0xed, 0xe5, 0x69 }}
 
-/**
- * The zoteroIntegrationDocument interface corresponds to a single word processing document.
- */
 class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports {
  public: 
 
   NS_DECLARE_STATIC_IID_ACCESSOR(ZOTEROINTEGRATIONDOCUMENT_IID)
 
-  /**
-   * Displays a dialog in the word processing application
-   */
   /* short displayAlert (in wstring dialogText, in unsigned short icon, in unsigned short buttons); */
-  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar *dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar * dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Brings this document to the foreground (if necessary to return after displaying a dialog)
-   */
   /* void activate (); */
   NS_SCRIPTABLE NS_IMETHOD Activate(void) = 0;
 
-  /**
-   * Determines whether a field can be inserted at the current position.
-   */
   /* boolean canInsertField (in string fieldType); */
-  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char *fieldType, PRBool *_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char * fieldType, bool *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Returns the field in which the cursor resides, or NULL if none.
-   */
   /* zoteroIntegrationField cursorInField (in string fieldType); */
-  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char *fieldType, zoteroIntegrationField **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char * fieldType, zoteroIntegrationField * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Get document data property from the current document
-   */
   /* wstring getDocumentData (); */
-  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Set document data property
-   */
   /* void setDocumentData (in wstring data); */
-  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar *data) = 0;
+  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar * data) = 0;
 
-  /**
-   * Inserts a field at the given position and initializes the field object.
-   */
   /* zoteroIntegrationField insertField (in string fieldType, in unsigned short noteType); */
-  NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD InsertField(const char * fieldType, PRUint16 noteType, zoteroIntegrationField * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Gets all fields present in the document.
-   */
   /* nsISimpleEnumerator getFields (in string fieldType); */
-  NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetFields(const char * fieldType, nsISimpleEnumerator * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * Gets all fields present in the document. The observer will receive notifications for two 
-   * topics: "fields-progress", with the document as the subject and percent progress as data, and
-   * "fields-available", with an nsISimpleEnumerator of fields as the subject and the length as 
-   * data
-   */
   /* void getFieldsAsync (in string fieldType, in nsIObserver observer); */
-  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char *fieldType, nsIObserver *observer) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char * fieldType, nsIObserver *observer) = 0;
 
-  /**
-   * Converts all fields in a document to a different fieldType or noteType
-   */
   /* void convert (in nsISimpleEnumerator fields, in string toFieldType, [array, size_is (count)] in unsigned short toNoteType, in unsigned long count); */
-  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count) = 0;
+  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char * toFieldType, PRUint16 *toNoteType, PRUint32 count) = 0;
 
-  /**
-   * Sets the bibliography style, overwriting the current values for this document
-   */
   /* void setBibliographyStyle (in long firstLineIndent, in long bodyIndent, in unsigned long lineSpacing, in unsigned long entrySpacing, [array, size_is (tabStopCount)] in long tabStops, in unsigned long tabStopCount); */
   NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount) = 0;
 
-  /**
-   * Runs on function completion to clean up everything integration played with.
-   */
   /* void cleanup (); */
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void) = 0;
 
-  enum { DIALOG_ICON_STOP = 0U };
-
-  enum { DIALOG_ICON_NOTICE = 1U };
-
-  enum { DIALOG_ICON_CAUTION = 2U };
-
-  enum { DIALOG_BUTTONS_OK = 0U };
-
-  enum { DIALOG_BUTTONS_OK_CANCEL = 1U };
-
-  enum { DIALOG_BUTTONS_YES_NO = 2U };
-
-  enum { DIALOG_BUTTONS_YES_NO_CANCEL = 3U };
-
-  enum { NOTE_FOOTNOTE = 1U };
-
-  enum { NOTE_ENDNOTE = 2U };
+  enum {
+    DIALOG_ICON_STOP = 0U,
+    DIALOG_ICON_NOTICE = 1U,
+    DIALOG_ICON_CAUTION = 2U,
+    DIALOG_BUTTONS_OK = 0U,
+    DIALOG_BUTTONS_OK_CANCEL = 1U,
+    DIALOG_BUTTONS_YES_NO = 2U,
+    DIALOG_BUTTONS_YES_NO_CANCEL = 3U,
+    NOTE_FOOTNOTE = 1U,
+    NOTE_ENDNOTE = 2U
+  };
 
 };
 
@@ -368,46 +282,46 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationDocument : public nsISupports 
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_ZOTEROINTEGRATIONDOCUMENT \
-  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar *dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar * dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM); \
   NS_SCRIPTABLE NS_IMETHOD Activate(void); \
-  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char *fieldType, PRBool *_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char *fieldType, zoteroIntegrationField **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar *data); \
-  NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char *fieldType, nsIObserver *observer); \
-  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count); \
+  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char * fieldType, bool *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char * fieldType, zoteroIntegrationField * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar * data); \
+  NS_SCRIPTABLE NS_IMETHOD InsertField(const char * fieldType, PRUint16 noteType, zoteroIntegrationField * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD GetFields(const char * fieldType, nsISimpleEnumerator * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char * fieldType, nsIObserver *observer); \
+  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char * toFieldType, PRUint16 *toNoteType, PRUint32 count); \
   NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount); \
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void); \
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_ZOTEROINTEGRATIONDOCUMENT(_to) \
-  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar *dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM) { return _to DisplayAlert(dialogText, icon, buttons, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar * dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM) { return _to DisplayAlert(dialogText, icon, buttons, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD Activate(void) { return _to Activate(); } \
-  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char *fieldType, PRBool *_retval NS_OUTPARAM) { return _to CanInsertField(fieldType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char *fieldType, zoteroIntegrationField **_retval NS_OUTPARAM) { return _to CursorInField(fieldType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar **_retval NS_OUTPARAM) { return _to GetDocumentData(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar *data) { return _to SetDocumentData(data); } \
-  NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM) { return _to InsertField(fieldType, noteType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM) { return _to GetFields(fieldType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char *fieldType, nsIObserver *observer) { return _to GetFieldsAsync(fieldType, observer); } \
-  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count) { return _to Convert(fields, toFieldType, toNoteType, count); } \
+  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char * fieldType, bool *_retval NS_OUTPARAM) { return _to CanInsertField(fieldType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char * fieldType, zoteroIntegrationField * *_retval NS_OUTPARAM) { return _to CursorInField(fieldType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar * *_retval NS_OUTPARAM) { return _to GetDocumentData(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar * data) { return _to SetDocumentData(data); } \
+  NS_SCRIPTABLE NS_IMETHOD InsertField(const char * fieldType, PRUint16 noteType, zoteroIntegrationField * *_retval NS_OUTPARAM) { return _to InsertField(fieldType, noteType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetFields(const char * fieldType, nsISimpleEnumerator * *_retval NS_OUTPARAM) { return _to GetFields(fieldType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char * fieldType, nsIObserver *observer) { return _to GetFieldsAsync(fieldType, observer); } \
+  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char * toFieldType, PRUint16 *toNoteType, PRUint32 count) { return _to Convert(fields, toFieldType, toNoteType, count); } \
   NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount) { return _to SetBibliographyStyle(firstLineIndent, bodyIndent, lineSpacing, entrySpacing, tabStops, tabStopCount); } \
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void) { return _to Cleanup(); } \
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_ZOTEROINTEGRATIONDOCUMENT(_to) \
-  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar *dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->DisplayAlert(dialogText, icon, buttons, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD DisplayAlert(const PRUnichar * dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->DisplayAlert(dialogText, icon, buttons, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD Activate(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Activate(); } \
-  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char *fieldType, PRBool *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->CanInsertField(fieldType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char *fieldType, zoteroIntegrationField **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->CursorInField(fieldType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetDocumentData(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar *data) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetDocumentData(data); } \
-  NS_SCRIPTABLE NS_IMETHOD InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->InsertField(fieldType, noteType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFields(fieldType, _retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char *fieldType, nsIObserver *observer) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFieldsAsync(fieldType, observer); } \
-  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count) { return !_to ? NS_ERROR_NULL_POINTER : _to->Convert(fields, toFieldType, toNoteType, count); } \
+  NS_SCRIPTABLE NS_IMETHOD CanInsertField(const char * fieldType, bool *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->CanInsertField(fieldType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD CursorInField(const char * fieldType, zoteroIntegrationField * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->CursorInField(fieldType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetDocumentData(PRUnichar * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetDocumentData(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetDocumentData(const PRUnichar * data) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetDocumentData(data); } \
+  NS_SCRIPTABLE NS_IMETHOD InsertField(const char * fieldType, PRUint16 noteType, zoteroIntegrationField * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->InsertField(fieldType, noteType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetFields(const char * fieldType, nsISimpleEnumerator * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFields(fieldType, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetFieldsAsync(const char * fieldType, nsIObserver *observer) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFieldsAsync(fieldType, observer); } \
+  NS_SCRIPTABLE NS_IMETHOD Convert(nsISimpleEnumerator *fields, const char * toFieldType, PRUint16 *toNoteType, PRUint32 count) { return !_to ? NS_ERROR_NULL_POINTER : _to->Convert(fields, toFieldType, toNoteType, count); } \
   NS_SCRIPTABLE NS_IMETHOD SetBibliographyStyle(PRInt32 firstLineIndent, PRInt32 bodyIndent, PRUint32 lineSpacing, PRUint32 entrySpacing, PRInt32 *tabStops, PRUint32 tabStopCount) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetBibliographyStyle(firstLineIndent, bodyIndent, lineSpacing, entrySpacing, tabStops, tabStopCount); } \
   NS_SCRIPTABLE NS_IMETHOD Cleanup(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Cleanup(); } \
 
@@ -444,7 +358,7 @@ _MYCLASS_::~_MYCLASS_()
 }
 
 /* short displayAlert (in wstring dialogText, in unsigned short icon, in unsigned short buttons); */
-NS_IMETHODIMP _MYCLASS_::DisplayAlert(const PRUnichar *dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::DisplayAlert(const PRUnichar * dialogText, PRUint16 icon, PRUint16 buttons, PRInt16 *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -456,49 +370,49 @@ NS_IMETHODIMP _MYCLASS_::Activate()
 }
 
 /* boolean canInsertField (in string fieldType); */
-NS_IMETHODIMP _MYCLASS_::CanInsertField(const char *fieldType, PRBool *_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::CanInsertField(const char * fieldType, bool *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField cursorInField (in string fieldType); */
-NS_IMETHODIMP _MYCLASS_::CursorInField(const char *fieldType, zoteroIntegrationField **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::CursorInField(const char * fieldType, zoteroIntegrationField * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* wstring getDocumentData (); */
-NS_IMETHODIMP _MYCLASS_::GetDocumentData(PRUnichar **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetDocumentData(PRUnichar * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* void setDocumentData (in wstring data); */
-NS_IMETHODIMP _MYCLASS_::SetDocumentData(const PRUnichar *data)
+NS_IMETHODIMP _MYCLASS_::SetDocumentData(const PRUnichar * data)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField insertField (in string fieldType, in unsigned short noteType); */
-NS_IMETHODIMP _MYCLASS_::InsertField(const char *fieldType, PRUint16 noteType, zoteroIntegrationField **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::InsertField(const char * fieldType, PRUint16 noteType, zoteroIntegrationField * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* nsISimpleEnumerator getFields (in string fieldType); */
-NS_IMETHODIMP _MYCLASS_::GetFields(const char *fieldType, nsISimpleEnumerator **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetFields(const char * fieldType, nsISimpleEnumerator * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* void getFieldsAsync (in string fieldType, in nsIObserver observer); */
-NS_IMETHODIMP _MYCLASS_::GetFieldsAsync(const char *fieldType, nsIObserver *observer)
+NS_IMETHODIMP _MYCLASS_::GetFieldsAsync(const char * fieldType, nsIObserver *observer)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* void convert (in nsISimpleEnumerator fields, in string toFieldType, [array, size_is (count)] in unsigned short toNoteType, in unsigned long count); */
-NS_IMETHODIMP _MYCLASS_::Convert(nsISimpleEnumerator *fields, const char *toFieldType, PRUint16 *toNoteType, PRUint32 count)
+NS_IMETHODIMP _MYCLASS_::Convert(nsISimpleEnumerator *fields, const char * toFieldType, PRUint16 *toNoteType, PRUint32 count)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -526,9 +440,6 @@ NS_IMETHODIMP _MYCLASS_::Cleanup()
   {0x7b258e57, 0x20cf, 0x4a73, \
     { 0x84, 0x20, 0x5d, 0x06, 0xa5, 0x38, 0xc2, 0x5e }}
 
-/**
- * The zoteroIntegrationApplication interface corresponds to a word processing application.
- */
 class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationApplication : public nsISupports {
  public: 
 
@@ -540,17 +451,11 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationApplication : public nsISuppor
   /* readonly attribute ACString secondaryFieldType; */
   NS_SCRIPTABLE NS_IMETHOD GetSecondaryFieldType(nsACString & aSecondaryFieldType) = 0;
 
-  /**
-   * The active document.
-   */
   /* zoteroIntegrationDocument getActiveDocument (); */
-  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument * *_retval NS_OUTPARAM) = 0;
 
-  /**
-   * A document by some app-specific identifier.
-   */
   /* zoteroIntegrationDocument getDocument (in wstring documentIdentifier); */
-  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar *documentIdentifier, zoteroIntegrationDocument **_retval NS_OUTPARAM) = 0;
+  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar * documentIdentifier, zoteroIntegrationDocument * *_retval NS_OUTPARAM) = 0;
 
 };
 
@@ -560,22 +465,22 @@ class NS_NO_VTABLE NS_SCRIPTABLE zoteroIntegrationApplication : public nsISuppor
 #define NS_DECL_ZOTEROINTEGRATIONAPPLICATION \
   NS_SCRIPTABLE NS_IMETHOD GetPrimaryFieldType(nsACString & aPrimaryFieldType); \
   NS_SCRIPTABLE NS_IMETHOD GetSecondaryFieldType(nsACString & aSecondaryFieldType); \
-  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument **_retval NS_OUTPARAM); \
-  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar *documentIdentifier, zoteroIntegrationDocument **_retval NS_OUTPARAM); 
+  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument * *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar * documentIdentifier, zoteroIntegrationDocument * *_retval NS_OUTPARAM); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_ZOTEROINTEGRATIONAPPLICATION(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetPrimaryFieldType(nsACString & aPrimaryFieldType) { return _to GetPrimaryFieldType(aPrimaryFieldType); } \
   NS_SCRIPTABLE NS_IMETHOD GetSecondaryFieldType(nsACString & aSecondaryFieldType) { return _to GetSecondaryFieldType(aSecondaryFieldType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument **_retval NS_OUTPARAM) { return _to GetActiveDocument(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar *documentIdentifier, zoteroIntegrationDocument **_retval NS_OUTPARAM) { return _to GetDocument(documentIdentifier, _retval); } 
+  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument * *_retval NS_OUTPARAM) { return _to GetActiveDocument(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar * documentIdentifier, zoteroIntegrationDocument * *_retval NS_OUTPARAM) { return _to GetDocument(documentIdentifier, _retval); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_ZOTEROINTEGRATIONAPPLICATION(_to) \
   NS_SCRIPTABLE NS_IMETHOD GetPrimaryFieldType(nsACString & aPrimaryFieldType) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetPrimaryFieldType(aPrimaryFieldType); } \
   NS_SCRIPTABLE NS_IMETHOD GetSecondaryFieldType(nsACString & aSecondaryFieldType) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetSecondaryFieldType(aSecondaryFieldType); } \
-  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetActiveDocument(_retval); } \
-  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar *documentIdentifier, zoteroIntegrationDocument **_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetDocument(documentIdentifier, _retval); } 
+  NS_SCRIPTABLE NS_IMETHOD GetActiveDocument(zoteroIntegrationDocument * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetActiveDocument(_retval); } \
+  NS_SCRIPTABLE NS_IMETHOD GetDocument(const PRUnichar * documentIdentifier, zoteroIntegrationDocument * *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetDocument(documentIdentifier, _retval); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -622,13 +527,13 @@ NS_IMETHODIMP _MYCLASS_::GetSecondaryFieldType(nsACString & aSecondaryFieldType)
 }
 
 /* zoteroIntegrationDocument getActiveDocument (); */
-NS_IMETHODIMP _MYCLASS_::GetActiveDocument(zoteroIntegrationDocument **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetActiveDocument(zoteroIntegrationDocument * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationDocument getDocument (in wstring documentIdentifier); */
-NS_IMETHODIMP _MYCLASS_::GetDocument(const PRUnichar *documentIdentifier, zoteroIntegrationDocument **_retval NS_OUTPARAM)
+NS_IMETHODIMP _MYCLASS_::GetDocument(const PRUnichar * documentIdentifier, zoteroIntegrationDocument * *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

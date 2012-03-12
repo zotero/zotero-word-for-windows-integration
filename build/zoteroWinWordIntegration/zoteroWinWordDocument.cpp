@@ -190,7 +190,7 @@ NS_IMETHODIMP zoteroWinWordDocument::Activate()
 }
 
 /* boolean canInsertField (in string fieldType); */
-NS_IMETHODIMP zoteroWinWordDocument::CanInsertField(const char *fieldType, PRBool *_retval)
+NS_IMETHODIMP zoteroWinWordDocument::CanInsertField(const char *fieldType, bool *_retval)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
 	CSelection selection = comApp.get_Selection();

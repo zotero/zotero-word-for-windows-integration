@@ -91,7 +91,7 @@ NS_IMETHODIMP zoteroWinWordBookmark::SetCode(const PRUnichar *code)
 }
 
 /* void setText (in wstring text, in boolean isRich); */
-NS_IMETHODIMP zoteroWinWordBookmark::SetText(const PRUnichar *text, PRBool isRich)
+NS_IMETHODIMP zoteroWinWordBookmark::SetText(const PRUnichar *text, bool isRich)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
 	doc->setScreenUpdatingStatus(false);

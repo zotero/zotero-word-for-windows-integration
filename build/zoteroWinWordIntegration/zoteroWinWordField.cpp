@@ -111,7 +111,7 @@ NS_IMETHODIMP zoteroWinWordField::GetText(PRUnichar **_retval NS_OUTPARAM)
 }
 
 /* void setText (in wstring text, in boolean isRich); */
-NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, PRBool isRich)
+NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, bool isRich)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
 	doc->setScreenUpdatingStatus(false);
@@ -224,11 +224,11 @@ NS_IMETHODIMP zoteroWinWordField::GetNoteIndex(PRUint32 *_retval)
 }
 
 /* boolean equals (in zoteroIntegrationField field); */
-NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, PRBool *_retval)
+NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, bool *_retval)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
 	zoteroWinWordField *winWordField = static_cast<zoteroWinWordField*>(field);
-	*_retval = comTextRange.IsEqual(winWordField->comTextRange);
+	*_retval = comTextRange.IsEqual(winWordField->comTextRange) == TRUE;
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
 }
