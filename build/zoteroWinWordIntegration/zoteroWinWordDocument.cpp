@@ -34,10 +34,6 @@
 #include "zoteroWinWordBookmark.h"
 #include "zoteroException.h"
 
-#ifndef __gen_nsIProxyObjectManager_h__
-#include "nsIProxyObjectManager.h"
-#endif
-
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 
 /* Global filter, since this applies on a per-application basis
