@@ -9,6 +9,7 @@ Global
 		Gecko 10.0|Win32 = Gecko 10.0|Win32
 		Gecko 11.0|Win32 = Gecko 11.0|Win32
 		Gecko 12.0|Win32 = Gecko 12.0|Win32
+		Gecko 13.0|Win32 = Gecko 13.0|Win32
 		Gecko 2.0|Win32 = Gecko 2.0|Win32
 		Gecko 5.0|Win32 = Gecko 5.0|Win32
 		Gecko 6.0|Win32 = Gecko 6.0|Win32
@@ -25,6 +26,8 @@ Global
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 11.0|Win32.Build.0 = Gecko 11.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 12.0|Win32.ActiveCfg = Gecko 12.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 12.0|Win32.Build.0 = Gecko 12.0|Win32
+		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 13.0|Win32.ActiveCfg = Gecko 13.0|Win32
+		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 13.0|Win32.Build.0 = Gecko 13.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 2.0|Win32.ActiveCfg = Gecko 2.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 2.0|Win32.Build.0 = Gecko 2.0|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 5.0|Win32.ActiveCfg = Gecko 5.0|Win32
