@@ -480,11 +480,20 @@ NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineInden
 	CStyles styles = comDoc.get_Styles();
 	CStyle style;
 	try {
-		style = styles.Item(BIBLIOGRAPHY_STYLE);
+		if(wordVersion >= 13) {
+			try {
+				style = styles.Item(BIBLIOGRAPHY_STYLE_ENUM);
+			} catch(COleDispatchException* e) {
+				e->Delete();
+				style = styles.Item(BIBLIOGRAPHY_STYLE_NAME);
+			}
+		} else {
+			style = styles.Item(BIBLIOGRAPHY_STYLE_NAME);
+		}
 	} catch(COleDispatchException* e) {
-		style = styles.Add(BIBLIOGRAPHY_STYLE,
-			COleVariant((short) 1) /* wdStyleTypeParagraph */);
 		e->Delete();
+		style = styles.Add(BIBLIOGRAPHY_STYLE_NAME,
+			COleVariant((short) 1) /* wdStyleTypeParagraph */);
 	}
 	CParagraphFormat paraFormat = style.get_ParagraphFormat();
 	paraFormat.put_FirstLineIndent(((float) firstLineIndent)/20);
@@ -632,7 +641,7 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 void zoteroWinWordDocument::setShowInsertionsAndDeletionsStatus(bool status) {
 	if(showInsertionsAndDeletionsStatus == status) return;
 	
-	if(isWord2010) {
+	if(wordVersion >= 14) {
 		// Ugh. We can't turn off track changes in Word 2010 if the cursor is in a note.
 		CSelection selection = comApp.get_Selection();
 		if(selection.get_StoryType() != 1) {
@@ -709,8 +718,7 @@ void zoteroWinWordDocument::retrieveDocumentInfo() {
 
 	CString version = comApp.get_Version();
 	CString frontVersion = version.Left(version.Find(_T('.')));
-	int frontVersionInt = _ttoi(frontVersion);
-	isWord2010 = frontVersionInt >= 14;
+	wordVersion = _ttoi(frontVersion);
 
 	// disable ShowInsertionsAndDeletions if necessary
 	CWindow0 comWindow = comApp.get_ActiveWindow();

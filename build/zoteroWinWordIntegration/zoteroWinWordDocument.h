@@ -50,7 +50,8 @@ const CString BOOKMARK_REFERENCE_PROPERTY = _T("ZOTERO_BREF_");
 const CString BACKUP_BOOKMARK_REFERENCE_PROPERTY = _T("CITE_BREF_");
 const CString FIELD_PLACEHOLDER = _T("{Citation}");
 const CString BIBLIOGRAPHY_CODE = _T("BIBL");
-#define BIBLIOGRAPHY_STYLE L"Bibliography"
+const CString BIBLIOGRAPHY_STYLE_NAME = _T("Bibliography");
+#define BIBLIOGRAPHY_STYLE_ENUM -266 /**WdBuiltinStyle.wdStyleBibliography**/
 #define MAX_PROPERTY_LENGTH 255
 
 /* Header file */
@@ -70,14 +71,15 @@ public:
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
 	void setShowInsertionsAndDeletionsStatus(bool status);
+	long wordVersion;
 
 private:
 	CApplication comApp;
 	CCustomProperties comProperties;
 	CView0 comView;
-	bool isWord2010;
 	bool restoreShowInsertionsAndDeletions;
 	bool showInsertionsAndDeletionsStatus;
+	long revisionsView;
 	bool currentScreenUpdatingStatus;
 	void initFilter();
 	void initFromActiveObject();

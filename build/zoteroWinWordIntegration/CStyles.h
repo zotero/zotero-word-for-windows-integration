@@ -58,6 +58,13 @@ public:
 		InvokeHelper(0x0, DISPATCH_METHOD, VT_DISPATCH, (void*)&result, parms, Index);
 		return result;
 	}
+	LPDISPATCH Item(long Index)
+	{
+		LPDISPATCH result;
+		static BYTE parms[] = VTS_I4 ;
+		InvokeHelper(0x0, DISPATCH_METHOD, VT_DISPATCH, (void*)&result, parms, Index);
+		return result;
+	}
 	LPDISPATCH Add(LPCTSTR Name, VARIANT * Type)
 	{
 		LPDISPATCH result;

@@ -169,7 +169,15 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, bool isRich)
 		if(wcsncmp(code, BIBLIOGRAPHY_CODE, BIBLIOGRAPHY_CODE.GetLength()) == 0) {
 			// set style on bibliography
 			try {
-				comTextRange.put_Style(L"Bibliography");
+				if(doc->wordVersion >= 13) {
+					try {
+						comTextRange.put_Style(BIBLIOGRAPHY_STYLE_ENUM);
+					} catch(...) {
+						comTextRange.put_Style(BIBLIOGRAPHY_STYLE_NAME);
+					}
+				} else {
+					comTextRange.put_Style(BIBLIOGRAPHY_STYLE_NAME);
+				}
 			} catch(...) {}
 		}
 	} else {

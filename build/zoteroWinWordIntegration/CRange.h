@@ -307,6 +307,11 @@ public:
 		static BYTE parms[] = VTS_BSTR ;
 		InvokeHelper(0x97, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
 	}
+	void put_Style(long newValue)
+	{
+		static BYTE parms[] = VTS_I4 ;
+		InvokeHelper(0x97, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
+	}
 	long get_StoryLength()
 	{
 		long result;
