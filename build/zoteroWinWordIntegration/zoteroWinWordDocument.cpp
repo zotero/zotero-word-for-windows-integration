@@ -209,7 +209,7 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 	CSelection selection = comApp.get_Selection();
 	
 	if(strcmp(fieldType, "Field") == 0) {
-		setstatusShowRevisions(false);
+		setShowRevisions(false);
 
 		CFields rangeFields = selection.get_Fields();
 		long selectionStart = selection.get_Start();
@@ -517,7 +517,7 @@ NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineInden
 NS_IMETHODIMP zoteroWinWordDocument::Cleanup()
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	setstatusShowRevisions(restoreShowRevisions);
+	setShowRevisions(restoreShowRevisions);
 	setScreenUpdatingStatus(true);
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
@@ -638,7 +638,7 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 /**
  * Turn on or off showInsertionsAndDeletions
  */
-void zoteroWinWordDocument::setstatusShowRevisions(bool status) {
+void zoteroWinWordDocument::setShowRevisions(bool status) {
 	if(statusShowRevisions == status) return;
 	
 	if(wordVersion >= 14) {

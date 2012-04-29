@@ -70,7 +70,7 @@ public:
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
-	void setstatusShowRevisions(bool status);
+	void setShowRevisions(bool status);
 	long wordVersion;
 
 private:
