@@ -1,10 +1,10 @@
 /*
     ***** BEGIN LICENSE BLOCK *****
 	
-	Copyright (c) 2009  Zotero
-	                    Center for History and New Media
-						George Mason University, Fairfax, Virginia, USA
-						http://zotero.org
+	Copyright (c) 2009-2012  Zotero
+	                         Center for History and New Media
+						     George Mason University, Fairfax, Virginia, USA
+						     http://zotero.org
 	
 	Zotero is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Affero General Public License as published by
@@ -169,7 +169,9 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, bool isRich)
 		if(wcsncmp(code, BIBLIOGRAPHY_CODE, BIBLIOGRAPHY_CODE.GetLength()) == 0) {
 			// set style on bibliography
 			try {
-				if(doc->wordVersion >= 13) {
+				if(doc->wordVersion >= 12) {
+					// In Word 2007+, we should use WdBuiltinStyle.wdStyleBibliography
+					// instead of "Bibliography" to reference the bibliography style.
 					try {
 						comTextRange.put_Style(BIBLIOGRAPHY_STYLE_ENUM);
 					} catch(...) {
@@ -244,14 +246,14 @@ NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, bool *_r
 /* zoteroIntegrationField getNextField (); */
 NS_IMETHODIMP zoteroWinWordField::GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM)
 {
-	doc->setShowInsertionsAndDeletionsStatus(false);
+	doc->setstatusShowRevisions(false);
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField getPreviousField (); */
 NS_IMETHODIMP zoteroWinWordField::GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM)
 {
-	doc->setShowInsertionsAndDeletionsStatus(false);
+	doc->setstatusShowRevisions(false);
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
@@ -386,7 +388,7 @@ void zoteroWinWordField::init(bool needCode)
 
 	// get ranges
 	if(needCode) {
-		doc->setShowInsertionsAndDeletionsStatus(false);
+		doc->setstatusShowRevisions(false);
 		comCodeRange = comField.get_Code();
 	}
 	comTextRange = comField.get_Result();
@@ -482,7 +484,7 @@ zoteroWinWordFieldEnumerator::zoteroWinWordFieldEnumerator() {}
 zoteroWinWordFieldEnumerator::zoteroWinWordFieldEnumerator(zoteroWinWordDocument *aDoc) {
 	doc = aDoc;
 	
-	doc->setShowInsertionsAndDeletionsStatus(false);
+	doc->setstatusShowRevisions(false);
 
 	CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
 	CRange comStoryRange;

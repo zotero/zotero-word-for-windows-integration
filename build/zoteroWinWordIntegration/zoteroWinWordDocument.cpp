@@ -209,7 +209,7 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 	CSelection selection = comApp.get_Selection();
 	
 	if(strcmp(fieldType, "Field") == 0) {
-		setShowInsertionsAndDeletionsStatus(false);
+		setstatusShowRevisions(false);
 
 		CFields rangeFields = selection.get_Fields();
 		long selectionStart = selection.get_Start();
@@ -517,7 +517,7 @@ NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineInden
 NS_IMETHODIMP zoteroWinWordDocument::Cleanup()
 {
 	ZOTERO_EXCEPTION_CATCHER_START
-	setShowInsertionsAndDeletionsStatus(restoreShowInsertionsAndDeletions);
+	setstatusShowRevisions(restoreShowRevisions);
 	setScreenUpdatingStatus(true);
 	return NS_OK;
 	ZOTERO_EXCEPTION_CATCHER_END
@@ -638,8 +638,8 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 /**
  * Turn on or off showInsertionsAndDeletions
  */
-void zoteroWinWordDocument::setShowInsertionsAndDeletionsStatus(bool status) {
-	if(showInsertionsAndDeletionsStatus == status) return;
+void zoteroWinWordDocument::setstatusShowRevisions(bool status) {
+	if(statusShowRevisions == status) return;
 	
 	if(wordVersion >= 14) {
 		// Ugh. We can't turn off track changes in Word 2010 if the cursor is in a note.
@@ -655,17 +655,17 @@ void zoteroWinWordDocument::setShowInsertionsAndDeletionsStatus(bool status) {
 			mainTextRange.Select();
 			
 			// Turn off "Show Insertions and Deletions"
-			comView.put_ShowInsertionsAndDeletions(status);
+			comDoc.put_ShowRevisions(status);
 			
 			// Move selection back to note
 			duplicateRange.Select();
 		} else {
-			comView.put_ShowInsertionsAndDeletions(status);
+			comDoc.put_ShowRevisions(status);
 		}
 	} else {
-		comView.put_ShowInsertionsAndDeletions(status);
+		comDoc.put_ShowRevisions(status);
 	}
-	showInsertionsAndDeletionsStatus = status;
+	statusShowRevisions = status;
 }
 
 /**
@@ -722,14 +722,13 @@ void zoteroWinWordDocument::retrieveDocumentInfo() {
 
 	// disable ShowInsertionsAndDeletions if necessary
 	CWindow0 comWindow = comApp.get_ActiveWindow();
-	comView = comWindow.get_View();
 	try {
-		restoreShowInsertionsAndDeletions =
-			showInsertionsAndDeletionsStatus =
-			comView.get_ShowInsertionsAndDeletions() == TRUE;
+		restoreShowRevisions =
+			statusShowRevisions =
+			comDoc.get_ShowRevisions() == TRUE;
 	} catch(CException *e) {
 		e->Delete();
-		restoreShowInsertionsAndDeletions =
-			showInsertionsAndDeletionsStatus = false;
+		restoreShowRevisions =
+			statusShowRevisions = false;
 	}
 }

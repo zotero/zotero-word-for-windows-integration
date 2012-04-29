@@ -70,16 +70,14 @@ public:
 	CString getRandomString(int length);
 	nsresult makeNewField(const char *fieldType, CRange insertRange, zoteroIntegrationField **_retval);
 	void setScreenUpdatingStatus(bool status);
-	void setShowInsertionsAndDeletionsStatus(bool status);
+	void setstatusShowRevisions(bool status);
 	long wordVersion;
 
 private:
 	CApplication comApp;
 	CCustomProperties comProperties;
-	CView0 comView;
-	bool restoreShowInsertionsAndDeletions;
-	bool showInsertionsAndDeletionsStatus;
-	long revisionsView;
+	bool restoreShowRevisions;
+	bool statusShowRevisions;
 	bool currentScreenUpdatingStatus;
 	void initFilter();
 	void initFromActiveObject();
