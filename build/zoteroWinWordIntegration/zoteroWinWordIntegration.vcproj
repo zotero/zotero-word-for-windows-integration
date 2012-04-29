@@ -29,8 +29,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components-10.0\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
-				Outputs="..\..\components-10.0\zoteroWinWordIntegration.dll"
+				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components-12.0\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
+				Outputs="..\..\components-12.0\zoteroWinWordIntegration.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;..\xulrunner-10.0-sdk\include&quot;;&quot;..\xulrunner-10.0-sdk\sdk\include&quot;;&quot;..\xulrunner-10.0-sdk\include\xpcom&quot;"
+				AdditionalIncludeDirectories="&quot;..\xulrunner-12.0-sdk\include&quot;;&quot;..\xulrunner-12.0-sdk\sdk\include&quot;;&quot;..\xulrunner-12.0-sdk\include\xpcom&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
 				IgnoreStandardIncludePath="false"
 				MinimalRebuild="true"

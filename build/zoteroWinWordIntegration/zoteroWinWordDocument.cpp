@@ -636,7 +636,7 @@ void zoteroWinWordDocument::setScreenUpdatingStatus(bool status) {
 }
 
 /**
- * Turn on or off showInsertionsAndDeletions
+ * Turn on or off ShowRevisions
  */
 void zoteroWinWordDocument::setShowRevisions(bool status) {
 	if(statusShowRevisions == status) return;
@@ -719,9 +719,19 @@ void zoteroWinWordDocument::retrieveDocumentInfo() {
 	CString version = comApp.get_Version();
 	CString frontVersion = version.Left(version.Find(_T('.')));
 	wordVersion = _ttoi(frontVersion);
-
-	// disable ShowInsertionsAndDeletions if necessary
+	
+	// Switch to wdRevisionsViewFinal, since wdRevisionsViewOriginal won't contain new fields
 	CWindow0 comWindow = comApp.get_ActiveWindow();
+	CView0 comView = comWindow.get_View();
+	try {
+		if(comView.get_RevisionsView() != 0 /*wdRevisionsViewFinal*/) {
+			comView.put_RevisionsView(0);
+		}
+	} catch(CException *e) {
+		e->Delete();
+	}
+
+	// Disable ShowRevisions if necessary
 	try {
 		restoreShowRevisions =
 			statusShowRevisions =
