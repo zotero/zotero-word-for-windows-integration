@@ -364,14 +364,20 @@ NS_IMETHODIMP zoteroWinWordDocument::InsertField(const char *fieldType, PRUint16
 			CFootnotes notes = comDoc.get_Footnotes();
 			CFootnote note = notes.Add(insertRange, covOptional, covOptional);
 			// move cursor back to main text
-			insertRange.Select();
+			CRange referenceRange = note.get_Reference();
+			CRange dupRange = referenceRange.get_Duplicate();
+			dupRange.Collapse(0 /*wdCollapseEnd*/);
+			dupRange.Select();
 			// now inserting field into note
 			insertRange = note.get_Range();
 		} else if(noteType == zoteroIntegrationDocument::NOTE_ENDNOTE) {
 			CEndnotes notes = comDoc.get_Endnotes();
 			CEndnote note = notes.Add(insertRange, covOptional, covOptional);
 			// move cursor back to main text
-			insertRange.Select();
+			CRange referenceRange = note.get_Reference();
+			CRange dupRange = referenceRange.get_Duplicate();
+			dupRange.Collapse(0 /*wdCollapseEnd*/);
+			dupRange.Select();
 			// now inserting field into note
 			insertRange = note.get_Range();
 		}
