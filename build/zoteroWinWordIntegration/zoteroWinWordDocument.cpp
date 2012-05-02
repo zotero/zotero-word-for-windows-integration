@@ -486,7 +486,7 @@ NS_IMETHODIMP zoteroWinWordDocument::SetBibliographyStyle(PRInt32 firstLineInden
 	CStyles styles = comDoc.get_Styles();
 	CStyle style;
 	try {
-		if(wordVersion >= 13) {
+		if(wordVersion >= 12) {
 			try {
 				style = styles.Item(BIBLIOGRAPHY_STYLE_ENUM);
 			} catch(COleDispatchException* e) {
