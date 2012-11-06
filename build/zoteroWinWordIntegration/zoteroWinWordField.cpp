@@ -99,7 +99,7 @@ NS_IMETHODIMP zoteroWinWordField::RemoveCode()
 }
 
 /* void getText (); */
-NS_IMETHODIMP zoteroWinWordField::GetText(PRUnichar **_retval NS_OUTPARAM)
+NS_IMETHODIMP zoteroWinWordField::GetText(PRUnichar **_retval)
 {
 	ZOTERO_EXCEPTION_CATCHER_START
 	CStringW fieldText = comTextRange.get_Text();
@@ -244,14 +244,14 @@ NS_IMETHODIMP zoteroWinWordField::Equals(zoteroIntegrationField *field, bool *_r
 }
 
 /* zoteroIntegrationField getNextField (); */
-NS_IMETHODIMP zoteroWinWordField::GetNextField(zoteroIntegrationField **_retval NS_OUTPARAM)
+NS_IMETHODIMP zoteroWinWordField::GetNextField(zoteroIntegrationField **_retval)
 {
 	doc->setShowRevisions(false);
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* zoteroIntegrationField getPreviousField (); */
-NS_IMETHODIMP zoteroWinWordField::GetPreviousField(zoteroIntegrationField **_retval NS_OUTPARAM)
+NS_IMETHODIMP zoteroWinWordField::GetPreviousField(zoteroIntegrationField **_retval)
 {
 	doc->setShowRevisions(false);
     return NS_ERROR_NOT_IMPLEMENTED;

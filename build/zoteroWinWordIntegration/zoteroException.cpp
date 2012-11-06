@@ -111,40 +111,40 @@ NS_IMETHODIMP zoteroException::GetFilename(char * *aFilename)
 /* readonly attribute PRUint32 lineNumber; */
 NS_IMETHODIMP zoteroException::GetLineNumber(PRUint32 *aLineNumber)
 {
-	*aLineNumber = nsnull;
+	*aLineNumber = NULL;
 	return NS_OK;
 }
 
 /* readonly attribute PRUint32 columnNumber; */
 NS_IMETHODIMP zoteroException::GetColumnNumber(PRUint32 *aColumnNumber)
 {
-	*aColumnNumber = nsnull;
+	*aColumnNumber = NULL;
 	return NS_OK;
 }
 
 /* readonly attribute nsIStackFrame location; */
 NS_IMETHODIMP zoteroException::GetLocation(nsIStackFrame * *aLocation)
 {
-	*aLocation = nsnull;
+	*aLocation = NULL;
 	return NS_OK;
 }
 
 /* readonly attribute nsIException inner; */
 NS_IMETHODIMP zoteroException::GetInner(nsIException * *aInner)
 {
-	*aInner = nsnull;
+	*aInner = NULL;
 	return NS_OK;
 }
 
 /* readonly attribute nsISupports data; */
 NS_IMETHODIMP zoteroException::GetData(nsISupports * *aData)
 {
-	*aData = nsnull;
+	*aData = NULL;
 	return NS_OK;
 }
 
 /* string toString (); */
-NS_IMETHODIMP zoteroException::ToString(char **_retval NS_OUTPARAM)
+NS_IMETHODIMP zoteroException::ToString(char **_retval)
 {
 	*_retval = (char *) NS_Alloc(2048);
 	_snprintf_s(*_retval, 2048, _TRUNCATE, "[zoteroWinWordIntegration Exception... \"%s\"  code: \"%d\"  function: \"%s\"  location: \"%s\"]", message, errorID, function, filename);

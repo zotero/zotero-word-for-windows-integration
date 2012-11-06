@@ -29,8 +29,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components-12.0\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
-				Outputs="..\..\components-12.0\zoteroWinWordIntegration.dll"
+				CommandLine="copy Debug\zoteroWinWordIntegration.dll ..\..\components-15.0\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
+				Outputs="..\..\components-15.0\zoteroWinWordIntegration.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;..\xulrunner-12.0-sdk\include&quot;;&quot;..\xulrunner-12.0-sdk\sdk\include&quot;;&quot;..\xulrunner-12.0-sdk\include\xpcom&quot;"
+				AdditionalIncludeDirectories="&quot;..\xulrunner-15.0-sdk\include&quot;;&quot;..\xulrunner-12.0-sdk\sdk\include&quot;;&quot;..\xulrunner-15.0-sdk\include\xpcom&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
 				IgnoreStandardIncludePath="false"
 				MinimalRebuild="true"
@@ -73,7 +73,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\xulrunner-10.0-sdk\lib&quot;;&quot;..\xulrunner-10.0-sdk\sdk\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\xulrunner-15.0-sdk\lib&quot;;&quot;..\xulrunner-15.0-sdk\sdk\lib&quot;"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -1241,6 +1241,187 @@
 				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\xulrunner-16.0-sdk\lib&quot;;&quot;..\xulrunner-16.0-sdk\sdk\lib&quot;"
+				EnableUAC="false"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="false"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Gecko 17.0|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			UseOfMFC="1"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="copy &quot;Gecko 17.0\zoteroWinWordIntegration.dll&quot; ..\..\components-17.0\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
+				Outputs="..\..\components-17.0\zoteroWinWordIntegration.dll"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="0"
+				AdditionalIncludeDirectories="&quot;..\xulrunner-17.0-sdk\include&quot;;&quot;..\xulrunner-17.0-sdk\sdk\include&quot;;&quot;..\xulrunner-17.0-sdk\include\xpcom&quot;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="&quot;..\xulrunner-17.0-sdk\lib&quot;;&quot;..\xulrunner-17.0-sdk\sdk\lib&quot;"
+				EnableUAC="false"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="false"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Gecko 18.0|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			UseOfMFC="1"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="copy &quot;Gecko 18.0\zoteroWinWordIntegration.dll&quot; ..\..\components-18.0\zoteroWinWordIntegration.dll&#x0D;&#x0A;"
+				Outputs="..\..\components-18.0\zoteroWinWordIntegration.dll"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="0"
+				AdditionalIncludeDirectories="&quot;..\xulrunner-18.0-sdk\include&quot;;&quot;..\xulrunner-18.0-sdk\sdk\include&quot;;&quot;..\xulrunner-18.0-sdk\include\xpcom&quot;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;XP_WIN;XP_WIN32;MOZ_NO_MOZALLOC"
+				StringPooling="true"
+				ExceptionHandling="2"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				PerUserRedirection="true"
+				AdditionalDependencies="nspr4.lib xpcom.lib xpcomglue_s_nomozalloc.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="&quot;..\xulrunner-18.0-sdk\lib&quot;;&quot;..\xulrunner-18.0-sdk\sdk\lib&quot;"
 				EnableUAC="false"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="false"
