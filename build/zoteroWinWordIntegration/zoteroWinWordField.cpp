@@ -143,8 +143,20 @@ NS_IMETHODIMP zoteroWinWordField::SetText(const PRUnichar *text, bool isRich)
 		delete[] writeBuffer;
 
 		// read from file into range
-		comTextRange.put_Text(L"");
-		comTextRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
+		if(doc->wordVersion >= 15) {
+			// In Word 2013, text does not get inserted into ranges
+			comTextRange.put_Text(L"  ");
+			CRange toDelete = comTextRange.get_Duplicate();
+			toDelete.Collapse(0);
+			CRange comDupRange = comTextRange.get_Duplicate();
+			comDupRange.MoveEnd(1, -1);
+			comDupRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
+			toDelete.MoveStart(1, -1);
+			toDelete.put_Text(L"");
+		} else {
+			comTextRange.put_Text(L"");
+			comTextRange.InsertFile(tempFile, &covOptional, &covFalse, &covFalse, &covFalse);
+		}
 		CFile::Remove(tempFile);
 
 		// put font back on
