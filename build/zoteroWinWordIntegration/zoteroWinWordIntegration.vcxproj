@@ -21,11 +21,13 @@
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -140,12 +142,11 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\zoteroWinWordIntegration%40zotero.org\build\zoteroWinWordIntegration\utilities.cpp" />
     <ClCompile Include="document.cpp" />
     <ClCompile Include="field.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\zoteroWinWordIntegration%40zotero.org\build\zoteroWinWordIntegration\zoteroWinWordIntegration.h" />
     <ClInclude Include="CApplication.h" />
     <ClInclude Include="CBookmark0.h" />
     <ClInclude Include="CBookmarks.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="CWindow0.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="zoteroWinWordIntegration.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="zoteroWinWordIntegration.rc" />

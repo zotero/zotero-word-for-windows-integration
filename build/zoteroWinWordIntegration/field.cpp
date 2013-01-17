@@ -301,13 +301,26 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 		delete[] utf8String;
 
 		// Read from file into range
-		field->comContentRange.put_Text(L"");
-		field->comContentRange.InsertFile(getTemporaryFilePath(), &covOptional, &covFalse, &covFalse, &covFalse);
-		if(field->comBookmark) {
-			field->comContentRange = field->comBookmark.get_Range();
-			field->comCodeRange = field->comContentRange;
+		if(!(field->comBookmark) && (field->doc)->wordVersion >= 15) {
+			// In Word 2013, text does not get inserted into ranges
+			field->comContentRange.put_Text(L"  ");
+			CRange toDelete = field->comContentRange.get_Duplicate();
+			toDelete.Collapse(0);
+			CRange comDupRange = field->comContentRange.get_Duplicate();
+			comDupRange.MoveEnd(1, -1);
+			comDupRange.InsertFile(getTemporaryFilePath(), &covOptional, &covFalse, &covFalse, &covFalse);
+			toDelete.MoveStart(1, -1);
+			toDelete.put_Text(L"");
 		} else {
-			field->comContentRange = field->comField.get_Result();
+			field->comContentRange.put_Text(L"");
+			field->comContentRange.InsertFile(getTemporaryFilePath(), &covOptional, &covFalse, &covFalse, &covFalse);
+
+			if(field->comBookmark) {
+				field->comContentRange = field->comBookmark.get_Range();
+				field->comCodeRange = field->comContentRange;
+			} else {
+				field->comContentRange = field->comField.get_Result();
+			}
 		}
 
 		// Put font back on
