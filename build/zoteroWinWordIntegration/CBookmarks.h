@@ -1,7 +1,7 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
-#import "C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\OFFICE12\\MSO.DLL" auto_rename
+#import "C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Office14\\MSO.DLL" auto_rename
 #import "C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\VBA\\VBA6\\VBE6EXT.OLB" auto_rename
-#import "C:\\Program Files (x86)\\Microsoft Office\\Office12\\MSWORD.OLB" auto_rename
+#import "C:\\Program Files (x86)\\Microsoft Office 2010\\Office14\\MSWORD.OLB" auto_rename
 
 // CBookmarks wrapper class
 
@@ -78,6 +78,13 @@ public:
 		LPDISPATCH result;
 		static BYTE parms[] = VTS_I4 ;
 		InvokeHelper(0x0, DISPATCH_METHOD, VT_DISPATCH, (void*)&result, parms, Index);
+		return result;
+	}
+	LPDISPATCH Item(LPCTSTR Name)
+	{
+		LPDISPATCH result;
+		static BYTE parms[] = VTS_BSTR ;
+		InvokeHelper(0x0, DISPATCH_METHOD, VT_DISPATCH, (void*)&result, parms, Name);
 		return result;
 	}
 	LPDISPATCH Add(LPCTSTR Name, LPDISPATCH Range)
