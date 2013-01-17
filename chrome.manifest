@@ -8,6 +8,8 @@ resource	zotero-winword-integration resource/
 
 interfaces  components/zoteroIntegration.xpt
 
+binary-component components-20.0/zoteroWinWordIntegration.dll platformversion>=20.0a1
+binary-component components-19.0/zoteroWinWordIntegration.dll platformversion>=19.0a1
 binary-component components-18.0/zoteroWinWordIntegration.dll platformversion>=18.0a1
 binary-component components-17.0/zoteroWinWordIntegration.dll platformversion>=17.0a1
 binary-component components-16.0/zoteroWinWordIntegration.dll platformversion>=16.0a1
