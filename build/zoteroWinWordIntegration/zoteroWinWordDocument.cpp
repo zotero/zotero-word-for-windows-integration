@@ -52,7 +52,19 @@ zoteroWinWordDocument::zoteroWinWordDocument()
 
 zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
 	initFilter();
-	// attach to a specific document
+	// Attach to a specific document
+	// Convert path to document to a UNC path
+	DWORD bufferLength = 1024;
+	wchar_t buffer[1024];
+	UNIVERSAL_NAME_INFO* unameInfo = (UNIVERSAL_NAME_INFO*) &buffer;
+	wchar_t *canonicalPath;
+	if(WNetGetUniversalName(docName, UNIVERSAL_NAME_INFO_LEVEL, unameInfo, &bufferLength) == NO_ERROR) {
+		canonicalPath = unameInfo->lpUniversalName;
+	} else {
+		wcscpy_s(buffer, bufferLength, docName);
+		canonicalPath = buffer;
+	}
+
 	// Get a BindCtx.
 	IBindCtx *pbc;
 	HRESULT hr = CreateBindCtx(0, &pbc);
@@ -90,7 +102,7 @@ zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
 		LPOLESTR pName;
 		pmon->GetDisplayName(pbc, NULL, &pName);
 
-		if(wcscmp(pName, docName) == 0) {
+		if(wcscmp(pName, canonicalPath) == 0) {
 			hr = pmon->BindToObject(pbc, NULL, IID_IDispatch, (void **)&pDisp);
 			pmon->Release();
 			break;
@@ -105,7 +117,10 @@ zoteroWinWordDocument::zoteroWinWordDocument(const PRUnichar *docName) {
 	
 	if(pDisp == NULL) {
 		nsCOMPtr<nsIConsoleService> consoleService = do_GetService(NS_CONSOLESERVICE_CONTRACTID);
-		consoleService->LogStringMessage(L"Zotero WinWord Integration: getDocument() could not find document in ROT");
+		wchar_t buf[1100];
+		if(swprintf(buf, 1100, L"Zotero WinWord Integration: getDocument() could not find document \"%s\" in ROT", canonicalPath) != -1) {
+			consoleService->LogStringMessage(buf);
+		}
 		initFromActiveObject();
 	} else {
 		// attach our class to the running Word instance
