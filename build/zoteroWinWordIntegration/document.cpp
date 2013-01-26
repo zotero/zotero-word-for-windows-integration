@@ -56,6 +56,18 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 
 	if(documentName != NULL) {
 		// Try to attach to a specific document by finding it in the Running Object Table.
+		// Convert path to document to a UNC path
+		DWORD bufferLength = 1024;
+		wchar_t buffer[1024];
+		UNIVERSAL_NAME_INFO* unameInfo = (UNIVERSAL_NAME_INFO*) &buffer;
+		wchar_t *canonicalPath;
+		if(WNetGetUniversalName(documentName, UNIVERSAL_NAME_INFO_LEVEL, unameInfo, &bufferLength) == NO_ERROR) {
+			canonicalPath = unameInfo->lpUniversalName;
+		} else {
+			wcscpy_s(buffer, bufferLength, documentName);
+			canonicalPath = buffer;
+		}
+
 		// Get a BindCtx.
 		IBindCtx *pbc;
 		HRESULT hr = CreateBindCtx(0, &pbc);
@@ -90,7 +102,7 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 			LPOLESTR pName;
 			pmon->GetDisplayName(pbc, NULL, &pName);
 
-			if(wcscmp(pName, documentName) == 0) {
+			if(wcscmp(pName, canonicalPath) == 0) {
 				hr = pmon->BindToObject(pbc, NULL, IID_IDispatch, (void **)&pDisp);
 				pmon->Release();
 				break;

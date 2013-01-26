@@ -173,7 +173,6 @@
     <ClInclude Include="CView0.h" />
     <ClInclude Include="CWindow0.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="zoteroWinWordIntegration.h" />
   </ItemGroup>
   <ItemGroup>
