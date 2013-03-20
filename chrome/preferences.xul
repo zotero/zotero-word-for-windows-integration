@@ -13,18 +13,21 @@
 			<script src="chrome://zotero-winword-integration/content/winWord.js"/>
 			<script>
 			<![CDATA[
-			var ZoteroWinWordInstaller = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
-			window.addEventListener("load", function() {
-				var zpi = new ZoteroWinWordInstaller(true);
-				updateWinWordIntegration(zpi);
-			}, false);
-			
-			function updateWinWordIntegration(zpi) {
-				var isInstalled = zpi.isInstalled();
-				document.getElementById("wordProcessors-winWordIntegration-description").textContent =
-					"The Zotero Word for Windows add-on is "+(isInstalled ? "" : "not ")+"currently installed.";
-				document.getElementById("wordProcessors-winWordIntegration-install").label =
-					(isInstalled ? "Reinstall" : "Install")+" Word Add-in";
+			var ZoteroWinWordInstaller;
+			if(!ZoteroWinWordInstaller)
+				ZoteroWinWordInstaller = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
+				window.addEventListener("load", function() {
+					var zpi = new ZoteroWinWordInstaller(true);
+					updateWinWordIntegration(zpi);
+				}, false);
+				
+				function updateWinWordIntegration(zpi) {
+					var isInstalled = zpi.isInstalled();
+					document.getElementById("wordProcessors-winWordIntegration-description").textContent =
+						"The Zotero Word for Windows add-on is "+(isInstalled ? "" : "not ")+"currently installed.";
+					document.getElementById("wordProcessors-winWordIntegration-install").label =
+						(isInstalled ? "Reinstall" : "Install")+" Word Add-in";
+				}
 			}
 			]]>
 			</script>
