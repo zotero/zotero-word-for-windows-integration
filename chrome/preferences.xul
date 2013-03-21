@@ -1,33 +1,18 @@
 <?xml version="1.0"?>
 <overlay id="winWordIntegration"
-         xmlns:html="http://www.w3.org/1999/xhtml"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<tabpanel id="wordProcessors">
-		<groupbox id="wordProcessors-winWordIntegration" position="1">
-			<caption label="Microsoft Word for Windows"/>
-			<description id="wordProcessors-winWordIntegration-description" width="45em" />
-			<hbox pack="center">
-				<button id="wordProcessors-winWordIntegration-install" oncommand="updateWinWordIntegration(new ZoteroWinWordInstaller(false, true));"/>
-			</hbox>
-			<script src="chrome://zotero-winword-integration/content/common.js"/>
-			<script src="chrome://zotero-winword-integration/content/winWord.js"/>
-			<script>
-			<![CDATA[
-			var ZoteroWinWordInstaller = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
-			window.addEventListener("load", function() {
-				var zpi = new ZoteroWinWordInstaller(true);
-				updateWinWordIntegration(zpi);
-			}, false);
-			
-			function updateWinWordIntegration(zpi) {
-				var isInstalled = zpi.isInstalled();
-				document.getElementById("wordProcessors-winWordIntegration-description").textContent =
-					"The Zotero Word for Windows add-on is "+(isInstalled ? "" : "not ")+"currently installed.";
-				document.getElementById("wordProcessors-winWordIntegration-install").label =
-					(isInstalled ? "Reinstall" : "Install")+" Word Add-in";
+	<script>
+	<![CDATA[
+	document.addEventListener("DOMContentLoaded", function() {
+		document.getElementById("zotero-prefpane-cite").addEventListener("paneload", function() {
+			try {
+				var installer = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
+				(new installer(true)).showPreferences(document);
+			} catch(e) {
+				Zotero.logError(e);
 			}
-			]]>
-			</script>
-		</groupbox>
-	</tabpanel>
+		}, false);
+	}, false);
+	]]>
+	</script>
 </overlay>

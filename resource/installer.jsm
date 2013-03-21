@@ -32,7 +32,7 @@ var Installer = function(failSilently, force) {
 }
 
 var Plugin = new function() {
-	this.EXTENSION_STRING = "Zotero WinWord Integration";
+	this.EXTENSION_STRING = "Zotero Word for Windows Integration";
 	this.EXTENSION_ID = "zoteroWinWordIntegration@zotero.org";
 	this.EXTENSION_PREF_BRANCH = "extensions.zoteroWinWordIntegration.";
 	this.EXTENSION_DIR = "zotero-winword-integration";
@@ -45,7 +45,7 @@ var Plugin = new function() {
 		minVersion: "2.1a1.SVN",
 		required: true
 	}, {
-		name: "Zotero OpenOffice Integration",
+		name: "Zotero LibreOffice Integration",
 		url: "zotero.org/support/word_processor_plugin_installation",
 		id: "zoteroOpenOfficeIntegration@zotero.org",
 		minVersion: "3.5b2.SVN",
