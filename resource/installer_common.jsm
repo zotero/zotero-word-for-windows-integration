@@ -180,10 +180,39 @@ ZoteroPluginInstaller.prototype = {
 			(error ? error : 'Installation could not be completed because an error occurred. Please ensure that '+this._addon.APP+' is closed, and then restart '+Zotero.appName+'.'));
 	},
 	
-	"cancelled":function(error) {
+	"cancelled":function(dontSkipInstallation) {
 		installationInProgress = false;
 		this.closeProgressWindow();
-		if(!this.force) this.prefBranch.setBoolPref("skipInstallation", true);
+		if(!this.force && !dontSkipInstallation) this.prefBranch.setBoolPref("skipInstallation", true);
+	},
+
+	"showPreferences":function(document) {
+		var isInstalled = this.isInstalled(),
+			groupbox = document.createElement("groupbox");
+
+		var caption = document.createElement("caption");
+		caption.setAttribute("label", this._addon.APP);
+		groupbox.appendChild(caption);
+
+		var description = document.createElement("description");
+		description.style.width = "45em";
+		description.appendChild(document.createTextNode(
+			"The "+this._addon.APP+" add-in is "+(isInstalled ? "" : "not ")+"currently installed."));
+		groupbox.appendChild(description);
+
+		var hbox = document.createElement("hbox");
+		hbox.setAttribute("pack", "center");
+		var button = document.createElement("button");
+		button.setAttribute("label", (isInstalled ? "Reinstall" : "Install")+" "+this._addon.APP+" Add-in");
+		button.addEventListener("command", function() {
+			var zpi = new ZoteroPluginInstaller(this._addon, false, true);
+			zpi.showPreferences(document);
+		}, false);
+		hbox.appendChild(button);
+		groupbox.appendChild(hbox);
+
+		var tabpanel = document.getElementById("wordProcessors");
+		tabpanel.insertBefore(groupbox, tabpanel.firstChild);
 	},
 	
 	"_firstRunListener":function() {
