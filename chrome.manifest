@@ -8,20 +8,8 @@ resource	zotero-winword-integration resource/
 
 interfaces  components/zoteroIntegration.xpt
 
+binary-component components-21.0/zoteroWinWordIntegration.dll platformversion>=21.0a1
 binary-component components-20.0/zoteroWinWordIntegration.dll platformversion>=20.0a1
 binary-component components-19.0/zoteroWinWordIntegration.dll platformversion>=19.0a1
 binary-component components-18.0/zoteroWinWordIntegration.dll platformversion>=18.0a1
 binary-component components-17.0/zoteroWinWordIntegration.dll platformversion>=17.0a1
-binary-component components-16.0/zoteroWinWordIntegration.dll platformversion>=16.0a1
-binary-component components-15.0/zoteroWinWordIntegration.dll platformversion>=15.0a1
-binary-component components-14.0/zoteroWinWordIntegration.dll platformversion>=14.0a1
-binary-component components-13.0/zoteroWinWordIntegration.dll platformversion>=13.0a1
-binary-component components-12.0/zoteroWinWordIntegration.dll platformversion>=12.0a1
-binary-component components-11.0/zoteroWinWordIntegration.dll platformversion>=11.0a1
-binary-component components-10.0/zoteroWinWordIntegration.dll platformversion>=10.0a1
-binary-component components-9.0/zoteroWinWordIntegration.dll platformversion>=9.0a1
-binary-component components-8.0/zoteroWinWordIntegration.dll platformversion>=8.0a1
-binary-component components-7.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=7.0a1
-binary-component components-6.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=6.0a1
-binary-component components-5.0/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion>=5.0a1
-binary-component components/zoteroWinWordIntegration.dll application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=4.*
