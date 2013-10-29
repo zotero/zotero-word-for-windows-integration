@@ -29,15 +29,11 @@
 #pragma once
 #include "stdafx.h"
 #include "resource.h"
-#ifndef __gen_nsIException_h__
-#include "nsIException.h"
-#endif
 
-class zoteroException : public nsIException
+class zoteroException
 {
 public:
 	NS_DECL_ISUPPORTS
-	NS_DECL_NSIEXCEPTION
 	
 	zoteroException();
 	zoteroException(char *message, char *aFunction, char *aFilename);

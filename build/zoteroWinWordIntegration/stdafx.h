@@ -37,8 +37,6 @@
 #include <afxcmn.h>                     // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#define UINT32_MAX 4294967295u
-
 #include "CApplication.h"
 #include "CBookmark0.h"
 #include "CBookmarks.h"
