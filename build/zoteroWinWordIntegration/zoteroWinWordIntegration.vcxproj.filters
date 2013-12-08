@@ -137,6 +137,9 @@
     <ClInclude Include="zoteroWinWordField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zoteroWinWordIntegrationErrorHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="zoteroWinWordIntegration.rc">
