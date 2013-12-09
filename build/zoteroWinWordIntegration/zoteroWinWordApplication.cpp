@@ -25,10 +25,9 @@
     
     ***** END LICENSE BLOCK *****
 */
-
+#include "nsStringAPI.h"
 #include "zoteroWinWordApplication.h"
 #include "zoteroWinWordDocument.h"
-#include "nsStringAPI.h"
 #include "zoteroException.h"
 
 /* Implementation file */

@@ -29,24 +29,17 @@
 #pragma once
 #include "stdafx.h"
 #include "resource.h"
-#ifndef __gen_nsIException_h__
-#include "nsIException.h"
-#endif
 
-class zoteroException : public nsIException
+class zoteroException
 {
 public:
-	NS_DECL_ISUPPORTS
-	NS_DECL_NSIEXCEPTION
-	
-	zoteroException();
 	zoteroException(char *message, char *aFunction, char *aFilename);
 	zoteroException(CException *exception, char *aFunction, char *aFilename);
 	void report();
 	char *message;
 	char *function;
 	char *filename;
-	uint errorID;
+	unsigned int errorID;
 	bool freeMessage;
 private:
 	~zoteroException();
@@ -59,7 +52,7 @@ private:
 	} catch(CException *exception) { \
 		zoteroException *zException = new zoteroException(exception, __FUNCTION__, __FILE__); \
 		zException->report(); \
-		return NS_ERROR_FAILURE; \
+		return NS_ERROR_XPC_JS_THREW_STRING; \
 	} catch(...) { \
 		return NS_ERROR_FAILURE; \
 	}
