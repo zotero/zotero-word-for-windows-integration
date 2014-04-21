@@ -229,6 +229,7 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 		CFields rangeFields = selection.get_Fields();
 		long selectionStart = selection.get_Start();
 		long selectionEnd = selection.get_End();
+		long selectionStoryType = selection.get_StoryType();
 		
 		long rangeFieldCount = rangeFields.get_Count();
 		if(!rangeFieldCount) {
@@ -240,33 +241,19 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			rangeEnd = rangeEnd.GoToNext(7);						// go to next field
 
 			// might only be one field in the entire doc
+			long rangeStartIndex = range.get_Start();
 			long rangeEndIndex = rangeEnd.get_Start();
-			if(range.get_Start() == rangeEndIndex) {
-				long storyType = range.get_StoryType();
-				if(storyType == 2) {
-					CFootnotes notes = selectionRange.get_Footnotes();
-					long nNotes = notes.get_Count();
-					CFootnote startNote = notes.Item(1);
-					CFootnote endNote = notes.Item(nNotes);
-					range = startNote.get_Range();
-					range = range.get_Duplicate();
-					rangeEnd = endNote.get_Range();
-					rangeEndIndex = rangeEnd.get_End();
-				} else if(storyType == 3) {
-					CEndnotes notes = selectionRange.get_Endnotes();
-					long nNotes = notes.get_Count();
-					CEndnote startNote = notes.Item(1);
-					CEndnote endNote = notes.Item(nNotes);
-					range = startNote.get_Range();
-					range = range.get_Duplicate();
-					rangeEnd = endNote.get_Range();
-					rangeEndIndex = rangeEnd.get_End();
-				} else {
-					range = range.GoToPrevious(3);		// move a line back
+			if(rangeStartIndex == selectionStart ||
+			   rangeEndIndex == selectionEnd) {
+				CStoryRanges storyRanges = comDoc.get_StoryRanges();
+				CRange storyRange = storyRanges.Item(selectionStoryType);
+				range = storyRange.get_Duplicate();
+				if(rangeStartIndex != selectionStart) {
+					range.put_Start(rangeStartIndex);
 				}
-			}
-			if(rangeEndIndex < selectionEnd) {
-				rangeEndIndex = selectionEnd;		// span at least to selection end
+				if(rangeEndIndex == selectionEnd) {
+					rangeEndIndex = range.get_End();
+				}
 			}
 
 			// make range span from previous field to next field
@@ -296,10 +283,11 @@ NS_IMETHODIMP zoteroWinWordDocument::CursorInField(const char *fieldType, zotero
 			long testFieldEnd = testFieldResult.get_End();
 			
 			// if there is no overlap, continue
-			if((testFieldStart > selectionStart && testFieldEnd > selectionEnd
-					&& testFieldStart > selectionEnd && testFieldEnd > selectionEnd)
-					|| (testFieldStart < selectionStart && testFieldEnd < selectionEnd
-					&& testFieldStart < selectionEnd && testFieldEnd < selectionEnd)) continue;
+			if(testFieldCode.get_StoryType() != selectionStoryType ||
+			   (testFieldStart > selectionStart && testFieldEnd > selectionEnd &&
+				testFieldStart > selectionEnd && testFieldEnd > selectionEnd) ||
+			   (testFieldStart < selectionStart && testFieldEnd < selectionEnd &&
+				testFieldStart < selectionEnd && testFieldEnd < selectionEnd)) continue;
 			
 			// otherwise, check for an appropriate code
 			if(testFieldCodeText.Find(FIELD_PREFIX) != -1
