@@ -26,13 +26,13 @@
     ***** END LICENSE BLOCK *****
 */
 
+#include "stdafx.h"
 #ifndef _ZOTEROINTEGRATION_H_
 #define _ZOTEROINTEGRATION_H_
 #include "zoteroIntegration.h"
 #endif
 
 #pragma once
-#include "stdafx.h"
 #include "resource.h"
 #include "nsCOMPtr.h"
 

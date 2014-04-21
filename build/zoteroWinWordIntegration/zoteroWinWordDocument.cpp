@@ -26,13 +26,13 @@
     ***** END LICENSE BLOCK *****
 */
 
-#include "nsIConsoleService.h"
-#include "nsServiceManagerUtils.h"
-
 #include "zoteroWinWordDocument.h"
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
 #include "zoteroException.h"
+
+#include "nsIConsoleService.h"
+#include "nsServiceManagerUtils.h"
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 

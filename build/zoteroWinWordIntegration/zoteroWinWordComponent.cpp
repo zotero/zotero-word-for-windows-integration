@@ -26,9 +26,6 @@
     ***** END LICENSE BLOCK *****
 */
 
-#include "mozilla/ModuleUtils.h"
-#include "nsIClassInfoImpl.h"
-
 /**
  * Components to be registered
  */
@@ -36,6 +33,9 @@
 #include "zoteroWinWordDocument.h"
 #include "zoteroWinWordField.h"
 #include "zoteroWinWordBookmark.h"
+
+#include "mozilla/ModuleUtils.h"
+#include "nsIClassInfoImpl.h"
 
 NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordApplication)
 NS_GENERIC_FACTORY_CONSTRUCTOR(zoteroWinWordDocument)

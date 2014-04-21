@@ -26,12 +26,12 @@
     ***** END LICENSE BLOCK *****
 */
 
+#include "stdafx.h"
 #ifndef _ZOTEROINTEGRATION_H_
 #define _ZOTEROINTEGRATION_H_
 #include "zoteroIntegration.h"
 #endif
 
-#include "stdafx.h"
 #include "resource.h"
 
 #define ZOTEROWINWORDAPPLICATION_CONTRACTID "@zotero.org/Zotero/integration/application?agent=WinWord;1"
