@@ -34,8 +34,8 @@
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 static COleVariant covTrue((short)TRUE), covFalse((short)FALSE);
 /* Implementation file */
-NS_IMPL_ISUPPORTS1(zoteroWinWordField, zoteroIntegrationField)
-NS_IMPL_ISUPPORTS1(zoteroWinWordEnumerator, nsISimpleEnumerator)
+NS_IMPL_ISUPPORTS(zoteroWinWordField, zoteroIntegrationField)
+NS_IMPL_ISUPPORTS(zoteroWinWordEnumerator, nsISimpleEnumerator)
 
 zoteroWinWordField::zoteroWinWordField() {}
 zoteroWinWordField::zoteroWinWordField(zoteroWinWordDocument *aDoc, CField field)

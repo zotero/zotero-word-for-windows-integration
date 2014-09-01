@@ -694,10 +694,10 @@ public:
 	{
 		InvokeHelper(0x80, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
 	}
-	long Expand(VARIANT * Unit)
+	long Expand(long Unit)
 	{
 		long result;
-		static BYTE parms[] = VTS_PVARIANT ;
+		static BYTE parms[] = VTS_I4 ;
 		InvokeHelper(0x81, DISPATCH_METHOD, VT_I4, (void*)&result, parms, Unit);
 		return result;
 	}

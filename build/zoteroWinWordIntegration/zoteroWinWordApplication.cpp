@@ -31,7 +31,7 @@
 #include "nsStringAPI.h"
 
 /* Implementation file */
-NS_IMPL_ISUPPORTS1(zoteroWinWordApplication, zoteroIntegrationApplication)
+NS_IMPL_ISUPPORTS(zoteroWinWordApplication, zoteroIntegrationApplication)
 
 zoteroWinWordApplication::zoteroWinWordApplication()
 {

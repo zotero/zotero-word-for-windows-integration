@@ -42,7 +42,7 @@ COleMessageFilter *filter = NULL;
 short filterRefs = 0;
 
 /* Implementation file */
-NS_IMPL_ISUPPORTS1(zoteroWinWordDocument, zoteroIntegrationDocument)
+NS_IMPL_ISUPPORTS(zoteroWinWordDocument, zoteroIntegrationDocument)
 
 zoteroWinWordDocument::zoteroWinWordDocument()
 {
@@ -444,7 +444,7 @@ NS_IMETHODIMP zoteroWinWordDocument::Convert(nsISimpleEnumerator *fields, const 
 
 	while(fields->HasMoreElements(&moreElements) == NS_OK && moreElements) {
 		fields->GetNext((nsISupports **)&xpcomField);
-		if(xpcomField->QueryInterface(zoteroIntegrationField::COMTypeInfo<int>::kIID, (void **)&field) != NS_OK) {
+		if(xpcomField->QueryInterface(zoteroIntegrationField::COMTypeInfo<zoteroIntegrationField,int>::kIID, (void **)&field) != NS_OK) {
 			return NS_ERROR_CANNOT_CONVERT_DATA;
 		}
 		xpcomField->Release();
