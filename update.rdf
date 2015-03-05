@@ -6,12 +6,12 @@
     <RDF:Seq>
       <RDF:li>
         <RDF:Description>
-          <version>3.1.18.SOURCE</version>
+          <version>3.1.19.SOURCE</version>
           <targetApplication>
             <RDF:Description>
               <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
               <minVersion>31</minVersion>
-              <maxVersion>37.*</maxVersion>
+              <maxVersion>38.*</maxVersion>
               <updateLink>http://download.zotero.org/integration/Zotero-WinWord-Plugin.xpi</updateLink>
               <updateHash>sha1:</updateHash>
             </RDF:Description>
