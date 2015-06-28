@@ -9,6 +9,7 @@ resource	zotero-winword-integration resource/
 interfaces  components/zoteroIntegration.xpt
 interfaces  components/zoteroWinWordIntegrationErrorHandler.xpt
 
+binary-component components-39.0/zoteroWinWordIntegration.dll platformversion>=39.0a1 appversion<40.0a1
 binary-component components-38.0/zoteroWinWordIntegration.dll platformversion>=38.0a1 appversion<39.0a1
 binary-component components-37.0/zoteroWinWordIntegration.dll platformversion>=37.0a1 appversion<38.0a1
 binary-component components-36.0/zoteroWinWordIntegration.dll platformversion>=36.0a1 appversion<37.0a1
