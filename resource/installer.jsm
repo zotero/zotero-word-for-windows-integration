@@ -124,7 +124,6 @@ var Plugin = new function() {
 		
 		for each(var startupFolder in startupFolders) {
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsILocalFile);
-			if(oldDot.equals(dot)) continue;
 			oldDot.append("Zotero.dot");
 			if(oldDot.exists()) {
 				try {

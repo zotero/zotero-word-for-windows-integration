@@ -1,44 +1,18 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zoteroWinWordIntegration", "zoteroWinWordIntegration.vcxproj", "{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
-		Gecko 31.0|Win32 = Gecko 31.0|Win32
-		Gecko 32.0|Win32 = Gecko 32.0|Win32
-		Gecko 33.0|Win32 = Gecko 33.0|Win32
-		Gecko 34.0|Win32 = Gecko 34.0|Win32
-		Gecko 35.0|Win32 = Gecko 35.0|Win32
-		Gecko 36.0|Win32 = Gecko 36.0|Win32
-		Gecko 37.0|Win32 = Gecko 37.0|Win32
-		Gecko 38.0|Win32 = Gecko 38.0|Win32
-		Gecko 39.0|Win32 = Gecko 39.0|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Debug|Win32.Build.0 = Debug|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 31.0|Win32.ActiveCfg = Gecko 31.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 31.0|Win32.Build.0 = Gecko 31.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 32.0|Win32.ActiveCfg = Gecko 32.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 32.0|Win32.Build.0 = Gecko 32.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 33.0|Win32.ActiveCfg = Gecko 33.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 33.0|Win32.Build.0 = Gecko 33.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 34.0|Win32.ActiveCfg = Gecko 34.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 34.0|Win32.Build.0 = Gecko 34.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 35.0|Win32.ActiveCfg = Gecko 35.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 35.0|Win32.Build.0 = Gecko 35.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 36.0|Win32.ActiveCfg = Gecko 36.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 36.0|Win32.Build.0 = Gecko 36.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 37.0|Win32.ActiveCfg = Gecko 37.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 37.0|Win32.Build.0 = Gecko 37.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 38.0|Win32.ActiveCfg = Gecko 38.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 38.0|Win32.Build.0 = Gecko 38.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 39.0|Win32.ActiveCfg = Gecko 39.0|Win32
-		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Gecko 39.0|Win32.Build.0 = Gecko 39.0|Win32
+		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Release|Win32.ActiveCfg = Release|Win32
+		{4B6DED58-2B58-417C-84CA-BDEFCBB0F16A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
