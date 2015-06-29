@@ -248,23 +248,34 @@ ZoteroPluginInstaller.prototype = {
 	"_checkVersions":function() {
 		for(var i=0; i<this._addon.REQUIRED_ADDONS.length; i++) {
 			var checkAddon = this._addon.REQUIRED_ADDONS[i];
+			var comp, err;
 			
 			// check versions
 			try {
-				var comp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+				comp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 					.getService(Components.interfaces.nsIVersionComparator)
 					.compare((checkAddon.id == "zotero@chnm.gmu.edu" ? Zotero.version : this._addons[i+1].version), checkAddon.minVersion);
 			} catch(e) {
-				var comp = null;
+				comp = null;
 			}
 			
 			if((comp === null && checkAddon.required) || comp < 0) {
 				if(checkAddon.required === false) {
-					var err = Zotero.getString("zotero.preferences.wordProcessors.incompatibleVersions1",
-						[this._addon.EXTENSION_STRING, this._addons[0].version, checkAddon.name, checkAddon.minVersion, checkAddon.url]);
+					try {
+						err = Zotero.getString("zotero.preferences.wordProcessors.incompatibleVersions1",
+							[this._addon.EXTENSION_STRING, this._addons[0].version, checkAddon.name, checkAddon.minVersion, checkAddon.url]);
+					} catch(e) {
+						err = this._addon.EXTENSION_STRING+' '+this._addons[0].version+' is incompatible with versions of '+checkAddon.name+
+							' before '+checkAddon.minVersion+'. Please remove '+checkAddon.name+', or download the latest version from '+checkAddon.url+'.';
+					}
 				} else {
-					var err = Zotero.getString("zotero.preferences.wordProcessors.incompatibleVersions2",
-						[this._addon.EXTENSION_STRING, this._addons[0].version, checkAddon.name, checkAddon.minVersion, checkAddon.url]);
+					try {
+						err = Zotero.getString("zotero.preferences.wordProcessors.incompatibleVersions2",
+							[this._addon.EXTENSION_STRING, this._addons[0].version, checkAddon.name, checkAddon.minVersion, checkAddon.url]);
+					} catch(e) {
+						err = this._addon.EXTENSION_STRING+' '+this._addons[0].version+' requires '+checkAddon.name+' '+checkAddon.minVersion+
+							' or later to run. Please download the latest version of '+checkAddon.name+' from '+checkAddon.url+'.';
+					}
 				}
 				this.error(err, true);
 				if(this.failSilently) {
