@@ -7,6 +7,20 @@ content		zotero-winword-integration chrome/
 resource	zotero-winword-integration resource/
 
 interfaces  components/zoteroIntegration.xpt
+interfaces  components/zoteroWinWordIntegrationErrorHandler.xpt
 
-component	{c7a7eec5-f073-4db4-b383-f866f4b96b1c}							components/zoteroWinWordIntegration.js
-contract	@zotero.org/Zotero/integration/application?agent=WinWord;1 	{c7a7eec5-f073-4db4-b383-f866f4b96b1c}
+binary-component components-39.0/zoteroWinWordIntegration.dll platformversion>=39.0a1 appversion<40.0a1
+binary-component components-38.0/zoteroWinWordIntegration.dll platformversion>=38.0a1 appversion<39.0a1
+binary-component components-37.0/zoteroWinWordIntegration.dll platformversion>=37.0a1 appversion<38.0a1
+binary-component components-36.0/zoteroWinWordIntegration.dll platformversion>=36.0a1 appversion<37.0a1
+binary-component components-35.0/zoteroWinWordIntegration.dll platformversion>=35.0a1 appversion<36.0a1
+binary-component components-34.0/zoteroWinWordIntegration.dll platformversion>=34.0a1 appversion<35.0a1
+binary-component components-33.0/zoteroWinWordIntegration.dll platformversion>=33.0a1 appversion<34.0a1
+binary-component components-32.0/zoteroWinWordIntegration.dll platformversion>=32.0a1 appversion<33.0a1
+binary-component components-31.0/zoteroWinWordIntegration.dll platformversion>=31.0a1 appversion<32.0a1
+
+component	{f123467c-0e8f-471a-89cb-c5c71f157f80}					components/errorHandler.js platformversion<40.0a1
+contract	@zotero.org/Zotero/integration/winWordErrorHandler;1 	{f123467c-0e8f-471a-89cb-c5c71f157f80} platformversion<40.0a1
+
+component	{c7a7eec5-f073-4db4-b383-f866f4b96b1c}							components/zoteroWinWordIntegration.js platformversion>=40.0a1
+contract	@zotero.org/Zotero/integration/application?agent=WinWord;1 	{c7a7eec5-f073-4db4-b383-f866f4b96b1c} platformversion>=40.0a1
