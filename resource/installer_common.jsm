@@ -157,10 +157,13 @@ ZoteroPluginInstaller.prototype = {
 		this.prefBranch.setBoolPref("installed", true);
 		this.prefBranch.setBoolPref("skipInstallation", false);
 		if(this.force && !this._addon.DISABLE_PROGRESS_WINDOW) {
-			Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				.getService(Components.interfaces.nsIPromptService)
-				.alert(null, this._addon.EXTENSION_STRING,
-				Zotero.getString("zotero.preferences.wordProcessors.installationSuccess"));
+			var addon = this._addon;
+			setTimeout(function() {
+				Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Components.interfaces.nsIPromptService)
+					.alert(null, addon.EXTENSION_STRING,
+					Zotero.getString("zotero.preferences.wordProcessors.installationSuccess"));
+			}, 0);
 		}
 	},
 	
@@ -174,10 +177,13 @@ ZoteroPluginInstaller.prototype = {
 		if(this.failSilently) return;
 		if(this._errorDisplayed) return;
 		this._errorDisplayed = true;
-		Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService)
-			.alert(null, this._addon.EXTENSION_STRING,
-			(error ? error : Zotero.getString("zotero.preferences.wordProcessors.installationError",[this._addon.APP, Zotero.appName])));
+		var addon = this._addon;
+		setTimeout(function() {
+			Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Components.interfaces.nsIPromptService)
+				.alert(null, addon.EXTENSION_STRING,
+				(error ? error : Zotero.getString("zotero.preferences.wordProcessors.installationError", [addon.APP, Zotero.appName])));
+		}, 0);
 	},
 	
 	"cancelled":function(dontSkipInstallation) {
