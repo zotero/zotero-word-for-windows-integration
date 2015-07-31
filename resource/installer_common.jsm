@@ -157,10 +157,13 @@ ZoteroPluginInstaller.prototype = {
 		this.prefBranch.setBoolPref("installed", true);
 		this.prefBranch.setBoolPref("skipInstallation", false);
 		if(this.force && !this._addon.DISABLE_PROGRESS_WINDOW) {
-			Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				.getService(Components.interfaces.nsIPromptService)
-				.alert(null, this._addon.EXTENSION_STRING,
-				'Installation was successful.');
+			var addon = this._addon;
+			setTimeout(function() {
+				Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Components.interfaces.nsIPromptService)
+					.alert(null, addon.EXTENSION_STRING,
+					Zotero.getString("zotero.preferences.wordProcessors.installationSuccess"));
+			}, 0);
 		}
 	},
 	
@@ -174,10 +177,13 @@ ZoteroPluginInstaller.prototype = {
 		if(this.failSilently) return;
 		if(this._errorDisplayed) return;
 		this._errorDisplayed = true;
-		Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService)
-			.alert(null, this._addon.EXTENSION_STRING,
-			(error ? error : 'Installation could not be completed because an error occurred. Please ensure that '+this._addon.APP+' is closed, and then restart '+Zotero.appName+'.'));
+		var addon = this._addon;
+		setTimeout(function() {
+			Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Components.interfaces.nsIPromptService)
+				.alert(null, addon.EXTENSION_STRING,
+				(error ? error : Zotero.getString("zotero.preferences.wordProcessors.installationError", [addon.APP, Zotero.appName])));
+		}, 0);
 	},
 	
 	"cancelled":function(dontSkipInstallation) {
@@ -198,14 +204,19 @@ ZoteroPluginInstaller.prototype = {
 		var description = document.createElement("description");
 		description.style.width = "45em";
 		description.appendChild(document.createTextNode(
-			"The "+this._addon.APP+" add-in is "+(isInstalled ? "" : "not ")+"currently installed."));
+			isInstalled ?
+				Zotero.getString('zotero.preferences.wordProcessors.installed', this._addon.APP) :
+				Zotero.getString('zotero.preferences.wordProcessors.notInstalled', this._addon.APP)));
 		groupbox.appendChild(description);
 
 		var hbox = document.createElement("hbox");
 		hbox.setAttribute("pack", "center");
 		var button = document.createElement("button"),
 			addon = this._addon;
-		button.setAttribute("label", (isInstalled ? "Reinstall" : "Install")+" "+this._addon.APP+" Add-in");
+		button.setAttribute("label", 
+			(isInstalled ?
+				Zotero.getString('zotero.preferences.wordProcessors.reinstall', this._addon.APP) :
+				Zotero.getString('zotero.preferences.wordProcessors.install', this._addon.APP)));
 		button.addEventListener("command", function() {
 			var zpi = new ZoteroPluginInstaller(addon, false, true);
 			zpi.showPreferences(document);
@@ -224,7 +235,7 @@ ZoteroPluginInstaller.prototype = {
 	
 	"_firstRunListener":function() {
 		this._progressWindowLabel = this._progressWindow.document.getElementById("progress-label");
-		this._progressWindowLabel.value = "Installing "+this._addon.EXTENSION_STRING+"...";
+		this._progressWindowLabel.value = Zotero.getString('zotero.preferences.wordProcessors.installing', this._addon.EXTENSION_STRING);
 		var me = this;
 		setTimeout(function() {
 			me._progressWindow.focus();
@@ -243,23 +254,34 @@ ZoteroPluginInstaller.prototype = {
 	"_checkVersions":function() {
 		for(var i=0; i<this._addon.REQUIRED_ADDONS.length; i++) {
 			var checkAddon = this._addon.REQUIRED_ADDONS[i];
+			var comp, err;
 			
 			// check versions
 			try {
-				var comp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+				comp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 					.getService(Components.interfaces.nsIVersionComparator)
 					.compare((checkAddon.id == "zotero@chnm.gmu.edu" ? Zotero.version : this._addons[i+1].version), checkAddon.minVersion);
 			} catch(e) {
-				var comp = null;
+				comp = null;
 			}
 			
 			if((comp === null && checkAddon.required) || comp < 0) {
 				if(checkAddon.required === false) {
-					var err = this._addon.EXTENSION_STRING+' '+this._addons[0].version+' is incompatible with versions of '+checkAddon.name+
-						' before '+checkAddon.minVersion+'. Please remove '+checkAddon.name+', or download the latest version from '+checkAddon.url+'.';
+					try {
+						err = Zotero.getString("zotero.preferences.wordProcessors.incompatibleVersions1",
+							[this._addon.EXTENSION_STRING, this._addons[0].version, checkAddon.name, checkAddon.minVersion, checkAddon.url]);
+					} catch(e) {
+						err = this._addon.EXTENSION_STRING+' '+this._addons[0].version+' is incompatible with versions of '+checkAddon.name+
+							' before '+checkAddon.minVersion+'. Please remove '+checkAddon.name+', or download the latest version from '+checkAddon.url+'.';
+					}
 				} else {
-					var err = this._addon.EXTENSION_STRING+' '+this._addons[0].version+' requires '+checkAddon.name+' '+checkAddon.minVersion+
-						' or later to run. Please download the latest version of '+checkAddon.name+' from '+checkAddon.url+'.';
+					try {
+						err = Zotero.getString("zotero.preferences.wordProcessors.incompatibleVersions2",
+							[this._addon.EXTENSION_STRING, this._addons[0].version, checkAddon.name, checkAddon.minVersion, checkAddon.url]);
+					} catch(e) {
+						err = this._addon.EXTENSION_STRING+' '+this._addons[0].version+' requires '+checkAddon.name+' '+checkAddon.minVersion+
+							' or later to run. Please download the latest version of '+checkAddon.name+' from '+checkAddon.url+'.';
+					}
 				}
 				this.error(err, true);
 				if(this.failSilently) {

@@ -1,7 +1,7 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
 #import "C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Office14\\MSO.DLL" auto_rename
 #import "C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\VBA\\VBA6\\VBE6EXT.OLB" auto_rename
-#import "C:\\Program Files (x86)\\Microsoft Office 2010\\Office14\\MSWORD.OLB" auto_rename
+#import "C:\\Program Files (x86)\\Microsoft Office\\Office14\\MSWORD.OLB" auto_rename
 
 // CRange wrapper class
 
@@ -694,10 +694,10 @@ public:
 	{
 		InvokeHelper(0x80, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
 	}
-	long Expand(VARIANT * Unit)
+	long Expand(long Unit)
 	{
 		long result;
-		static BYTE parms[] = VTS_PVARIANT ;
+		static BYTE parms[] = VTS_I4 ;
 		InvokeHelper(0x81, DISPATCH_METHOD, VT_I4, (void*)&result, parms, Unit);
 		return result;
 	}

@@ -15,22 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="zoteroException.cpp">
+    <ClCompile Include="document.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zoteroWinWordApplication.cpp">
+    <ClCompile Include="field.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zoteroWinWordBookmark.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zoteroWinWordComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zoteroWinWordDocument.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zoteroWinWordField.cpp">
+    <ClCompile Include="utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,31 +104,7 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroIntegration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroWinWordApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroWinWordBookmark.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroWinWordDocument.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroWinWordField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zoteroWinWordIntegrationErrorHandler.h">
+    <ClInclude Include="zoteroWinWordIntegration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
