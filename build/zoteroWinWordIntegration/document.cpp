@@ -358,14 +358,14 @@ statusCode __stdcall cursorInField(document_t *doc, const wchar_t fieldType[],
 			long rangeStartIndex = range.get_Start();
 			long rangeEndIndex = rangeEnd.get_Start();
 			if (rangeStartIndex == selectionStart ||
-				rangeEndIndex == selectionEnd) {
+				rangeEndIndex <= selectionEnd) {
 				CStoryRanges storyRanges = doc->comDoc.get_StoryRanges();
 				CRange storyRange = storyRanges.Item(selectionStoryType);
 				range = storyRange.get_Duplicate();
 				if (rangeStartIndex != selectionStart) {
 					range.put_Start(rangeStartIndex);
 				}
-				if (rangeEndIndex == selectionEnd) {
+				if (rangeEndIndex <= selectionEnd) {
 					rangeEndIndex = range.get_End();
 				}
 			}
@@ -397,10 +397,7 @@ statusCode __stdcall cursorInField(document_t *doc, const wchar_t fieldType[],
 			
 			// If there is no overlap, continue
 			if (testFieldCode.get_StoryType() != selectionStoryType ||
-				(testFieldStart > selectionStart && testFieldEnd > selectionEnd &&
-				testFieldStart > selectionEnd && testFieldEnd > selectionEnd) ||
-				(testFieldStart < selectionStart && testFieldEnd < selectionEnd &&
-				testFieldStart < selectionEnd && testFieldEnd < selectionEnd)) continue;
+				testFieldStart > selectionEnd || testFieldEnd < selectionStart) continue;
 			
 			// Otherwise, check for an appropriate code
 			statusCode status = initField(doc, testField, -1, false, returnValue);
