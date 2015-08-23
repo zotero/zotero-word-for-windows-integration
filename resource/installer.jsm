@@ -51,7 +51,7 @@ var Plugin = new function() {
 		minVersion: "3.5b2.SVN",
 		required: false
 	}];
-	this.LAST_INSTALLED_FILE_UPDATE = "3.1.3";
+	this.LAST_INSTALLED_FILE_UPDATE = "3.5pre";
 	
 	var zoteroPluginInstaller;
 	
