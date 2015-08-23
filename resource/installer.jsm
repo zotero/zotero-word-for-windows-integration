@@ -61,7 +61,9 @@ var Plugin = new function() {
 		// get Zotero.dot file
 		var dot = zpi.getAddonPath(this.EXTENSION_ID);
 		dot.append("install");
+		var dotm = dot.clone();
 		dot.append("Zotero.dot");
+		dotm.append("Zotero.dotm");
 
 		// find Word Startup folders (see http://support.microsoft.com/kb/210860)
 		var appData = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -73,12 +75,14 @@ var Plugin = new function() {
 		var addDefaultStartupFolder = false;
 		var wrk = Components.classes["@mozilla.org/windows-registry-key;1"]
 			.createInstance(Components.interfaces.nsIWindowsRegKey);
-		for(var i=9; i<=14; i++) {
+		var installedVersions = [];
+		for(var i=9; i<=20; i++) {
 			var path = null;
 			try {
 				wrk.open(Components.interfaces.nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
 					"Software\\Microsoft\\Office\\"+i+".0\\Word\\Options",
 					Components.interfaces.nsIWindowsRegKey.ACCESS_READ);
+				installedVersions.push(i);
 				try {
 					path = wrk.readStringValue("STARTUP-PATH");
 				} finally {
@@ -114,6 +118,27 @@ var Plugin = new function() {
 				}
 			}
 		}
+
+		if(installedVersions.length == 0) {
+			// If we did not find an installed version in HKCU, look in HKLM
+			for(var i=9; i<=20; i++) {
+				try {
+					wrk.open(Components.interfaces.nsIWindowsRegKey.ROOT_KEY_LOCAL_MACHINE,
+						"Software\\Microsoft\\Office\\"+i+".0\\Word",
+						Components.interfaces.nsIWindowsRegKey.ACCESS_READ);
+					installedVersions.push(i);
+					wrk.close();
+					addDefaultStartupFolder = true;
+				} catch(e) {}
+			}
+		}
+
+		var installDot = false;
+		var installDotm = false;
+		for(var version of installedVersions) {
+			if(version < 12) installDot = true;
+			if(version >= 12) installDotm = true;
+		}
 		
 		if(startupFolders.length == 0 || addDefaultStartupFolder) {
 			// if not in the registry, append Microsoft/Word/Startup to %AppData% (default location)
@@ -122,20 +147,26 @@ var Plugin = new function() {
 			startupFolders.push(startupFolder);
 		}
 		
-		for each(var startupFolder in startupFolders) {
+		for(var startupFolder of startupFolders) {
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsILocalFile);
-			if(oldDot.equals(dot)) continue;
+			var oldDotm = oldDot.clone();
 			oldDot.append("Zotero.dot");
-			if(oldDot.exists()) {
-				try {
-					oldDot.remove(false);
-				} catch(e) {
-					throw "Could not remove "+oldDot.path;
+			oldDotm.append("Zotero.dotm");
+
+			for(var template of [oldDot, oldDotm]) {
+				if(template.equals(dot)) continue;
+				if(template.exists()) {
+					try {
+						template.remove(false);
+					} catch(e) {
+						throw "Could not remove "+template.path;
+					}
 				}
 			}
-			
+
 			// copy Zotero.dot file to Word Startup folder
-			dot.copyTo(startupFolder, "Zotero.dot");
+			if(installDot) dot.copyTo(startupFolder, "Zotero.dot");
+			if(installDotm) dotm.copyTo(startupFolder, "Zotero.dotm");
 		}
 		
 		zpi.success();
