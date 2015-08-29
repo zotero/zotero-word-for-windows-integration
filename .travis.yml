@@ -1,0 +1,2 @@
+language: generic
+script: ./unpack_dotm.sh && ./check_dotm_src.sh

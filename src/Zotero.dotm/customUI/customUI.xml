@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="ZoteroRibbon.ZoteroInitRibbon">
+<ribbon>
+	<tabs>
+		<tab id="ZoteroTab" getLabel="ZoteroRibbon.ZoteroTabLabel" insertBeforeMso="TabAddIns">
+			<group id="ZoteroGroup" label="Zotero">
+				<button id="InsertZoteroCitationButton" label="Insert Citation" size="large" image="insertZoteroCitation" onAction="ZoteroRibbon.ZoteroRibbonInsertCitation" getVisible="ZoteroRibbon.ZoteroInsertCitationVisible" getEnabled="ZoteroRibbon.ZoteroCitationEnabled" supertip="Insert a new citation at the current cursor position"/>
+				<button id="EditZoteroCitationButton" label="Edit Citation" size="large" image="editZoteroCitation" onAction="ZoteroRibbon.ZoteroRibbonEditCitation" getVisible="ZoteroRibbon.ZoteroEditCitationVisible" getEnabled="ZoteroRibbon.ZoteroCitationEnabled" supertip="Edit the selected citation"/>
+				<button id="ZoteroSetDocPrefs" label="Document Preferences" image="setZoteroDocPrefs" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale"/>
+				<button id="InsertZoteroBibliographyButton" label="Insert Bibliography" image="insertZoteroBibliography" onAction="ZoteroRibbon.ZoteroRibbonInsertBibliography" getVisible="ZoteroRibbon.ZoteroInsertBibliographyVisible" getEnabled="ZoteroRibbon.ZoteroBibliographyEnabled" supertip="Insert a new bibliography at the current cursor position"/>
+				<button id="EditZoteroBibliographyButton" label="Edit Bibliography" image="editZoteroBibliography" onAction="ZoteroRibbon.ZoteroRibbonEditBibliography" getVisible="ZoteroRibbon.ZoteroEditBibliographyVisible" getEnabled="ZoteroRibbon.ZoteroBibliographyEnabled" supertip="Edit the selected bibliography"/>
+				<button id="ZoteroRemoveCodes" label="Remove Field Codes" image="removeZoteroCodes" getEnabled="ZoteroRibbon.ZoteroRefreshEnabled" onAction="ZoteroRibbon.ZoteroRibbonRemoveCodes" supertip="Remove all Zotero field codes"/>
+				<button id="RefreshZotero" label="Refresh" imageMso="RecordsRefreshRecords" getEnabled="ZoteroRibbon.ZoteroRefreshEnabled" onAction="ZoteroRibbon.ZoteroRibbonRefresh" supertip="Update all citations to reflect changes"/>
+			</group>
+		</tab>
+	</tabs>
+</ribbon>
+</customUI>
