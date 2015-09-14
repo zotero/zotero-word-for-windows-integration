@@ -1,0 +1,20 @@
+ID="{1B3C1231-1226-4316-B6E8-D0021E2C61FB}"
+Document=ThisDocument/&H00000000
+Module=Zotero
+Module=ZoteroRibbon
+Class=AppEventHandler
+Name="Project"
+HelpContextID="0"
+VersionCompatible32="393222000"
+CMG="5E5CC4A87C58DE5CDE5CDE5CDE5C"
+DPB="BCBE2606DA65DB65DB65"
+GC="1A1880ECDFEDDFED20"
+
+[Host Extender Info]
+&H00000001={3832D640-CF90-11CF-8E43-00A0C911005A};VBE;&H00000000
+
+[Workspace]
+ThisDocument=175, 175, 1558, 712, C
+Zotero=238, 229, 1326, 1421, C
+ZoteroRibbon=333, 313, 1850, 1644, C
+AppEventHandler=326, 81, 1995, 1597, C

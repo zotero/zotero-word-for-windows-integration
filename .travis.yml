@@ -1,0 +1,2 @@
+language: generic
+script: ./unpack_templates.sh && ./check_template_src.sh

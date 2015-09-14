@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<wne:vbaSuppData xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml">
+  <wne:mcds>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROREFRESH" wne:name="Project.Zotero.ZoteroRefresh" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROREMOVECODES" wne:name="Project.Zotero.ZoteroRemoveCodes" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROSETDOCPREFS" wne:name="Project.Zotero.ZoteroSetDocPrefs" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROEDITCITATION" wne:name="Project.Zotero.ZoteroEditCitation" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROINSERTCITATION" wne:name="Project.Zotero.ZoteroInsertCitation" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROEDITBIBLIOGRAPHY" wne:name="Project.Zotero.ZoteroEditBibliography" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROINSERTBIBLIOGRAPHY" wne:name="Project.Zotero.ZoteroInsertBibliography" wne:bEncrypt="00" wne:cmg="56"/>
+  </wne:mcds>
+</wne:vbaSuppData>
