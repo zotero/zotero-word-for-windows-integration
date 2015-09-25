@@ -392,8 +392,8 @@ statusCode __stdcall cursorInField(document_t *doc, const wchar_t fieldType[],
 				continue;
 			}
 
-			long testFieldStart = testFieldCode.get_Start();
-			long testFieldEnd = testFieldResult.get_End();
+			long testFieldStart = testFieldCode.get_Start()-1;
+			long testFieldEnd = testFieldResult.get_End()+1;
 			
 			// If there is no overlap, continue
 			if (testFieldCode.get_StoryType() != selectionStoryType ||
