@@ -5,8 +5,9 @@
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROREMOVECODES" wne:name="Project.Zotero.ZoteroRemoveCodes" wne:bEncrypt="00" wne:cmg="56"/>
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROSETDOCPREFS" wne:name="Project.Zotero.ZoteroSetDocPrefs" wne:bEncrypt="00" wne:cmg="56"/>
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROEDITCITATION" wne:name="Project.Zotero.ZoteroEditCitation" wne:bEncrypt="00" wne:cmg="56"/>
-    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROINSERTCITATION" wne:name="Project.Zotero.ZoteroInsertCitation" wne:bEncrypt="00" wne:cmg="56"/>
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROEDITBIBLIOGRAPHY" wne:name="Project.Zotero.ZoteroEditBibliography" wne:bEncrypt="00" wne:cmg="56"/>
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROINSERTBIBLIOGRAPHY" wne:name="Project.Zotero.ZoteroInsertBibliography" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROINSERTCITATION" wne:name="Project.Zotero.ZoteroInsertCitation" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROADDEDITCITATION" wne:name="Project.Zotero.ZoteroAddEditCitation" wne:bEncrypt="00" wne:cmg="56"/>
   </wne:mcds>
 </wne:vbaSuppData>

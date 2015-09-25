@@ -253,7 +253,7 @@
   <a:extraClrSchemeLst/>
   <a:extLst>
     <a:ext uri="{05A4C25C-085E-4340-85A3-A5531E510DB2}">
-      <thm15:themeFamily xmlns="" xmlns:thm15="http://schemas.microsoft.com/office/thememl/2012/main" name="Office Theme" id="{62F939B6-93AF-4DB8-9C6B-D6C7DFDC589F}" vid="{4A3C46E8-61CC-4603-A589-7422A47A8E4A}"/>
+      <thm15:themeFamily xmlns:thm15="http://schemas.microsoft.com/office/thememl/2012/main" xmlns="" name="Office Theme" id="{62F939B6-93AF-4DB8-9C6B-D6C7DFDC589F}" vid="{4A3C46E8-61CC-4603-A589-7422A47A8E4A}"/>
     </a:ext>
   </a:extLst>
 </a:theme>

@@ -42,7 +42,7 @@ var Plugin = new function() {
 		name: "Zotero",
 		url: "zotero.org",
 		id: "zotero@chnm.gmu.edu",
-		minVersion: "4.0.27.SOURCE",
+		minVersion: "4.0.28.6.SOURCE",
 		required: true
 	}, {
 		name: "Zotero LibreOffice Integration",

@@ -80,6 +80,10 @@ Public Sub ZoteroEditCitation()
     Call ZoteroCommand("editCitation", True)
 End Sub
 
+Public Sub ZoteroAddEditCitation()
+    Call ZoteroCommand("addEditCitation", True)
+End Sub
+
 Public Sub ZoteroEditBibliography()
     Call ZoteroCommand("editBibliography", True)
 End Sub
