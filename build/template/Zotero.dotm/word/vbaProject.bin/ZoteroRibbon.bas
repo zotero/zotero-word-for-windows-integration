@@ -44,8 +44,14 @@ Sub getZoteroFieldAtSelection(ByRef isCitation As Boolean, ByRef isBibliography 
         ' range that would span any field
         Dim rg As Range, rgEnd As Range, _
             rgStartIndex As Long, rgEndIndex As Long
+        
+        ' There is a bug in Word that can cause this to clear the selection highlighting
+        Application.ScreenUpdating = False
+        On Error GoTo Finally
         Set rg = selectionRg.Duplicate.GoToPrevious(wdGoToField)
         Set rgEnd = selectionRg.Duplicate.GoToNext(wdGoToField)
+Finally:
+        Application.ScreenUpdating = True
         
         ' Might be only one field in the entire doc
         rgStartIndex = rg.Start

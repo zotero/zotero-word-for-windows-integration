@@ -1,3 +1,3 @@
-[submodule "tools/officeparser"]
-	path = tools/officeparser
+[submodule "build/tools/officeparser"]
+	path = build/tools/officeparser
 	url = https://github.com/unixfreak0037/officeparser.git

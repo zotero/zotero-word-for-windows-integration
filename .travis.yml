@@ -1,2 +1,2 @@
 language: generic
-script: ./unpack_templates.sh && ./check_template_src.sh
+script: build/template/unpack_templates.sh && build/template/check_template_src.sh
