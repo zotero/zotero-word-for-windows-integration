@@ -48,6 +48,7 @@ Public WithEvents App As Word.Application
 Attribute App.VB_VarHelpID = -1
 
 Private Sub App_WindowSelectionChange(ByVal Sel As Selection)
+    System.Cursor = wdCursorIBeam
     Call UpdateRibbon
 End Sub
 

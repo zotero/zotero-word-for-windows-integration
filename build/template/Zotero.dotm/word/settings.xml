@@ -9,31 +9,53 @@
   </w:compat>
   <w:rsids>
     <w:rsidRoot w:val="00E343F5"/>
+    <w:rsid w:val="000057D6"/>
+    <w:rsid w:val="00006137"/>
     <w:rsid w:val="00010A07"/>
     <w:rsid w:val="000848C9"/>
+    <w:rsid w:val="000E7EF1"/>
     <w:rsid w:val="001A77E3"/>
+    <w:rsid w:val="0023752C"/>
+    <w:rsid w:val="00237AEC"/>
+    <w:rsid w:val="002B0F3E"/>
     <w:rsid w:val="00440E43"/>
     <w:rsid w:val="00496152"/>
     <w:rsid w:val="00501298"/>
     <w:rsid w:val="0052406F"/>
     <w:rsid w:val="00614D6A"/>
+    <w:rsid w:val="00640235"/>
+    <w:rsid w:val="00687E05"/>
     <w:rsid w:val="006A49EA"/>
+    <w:rsid w:val="00746515"/>
+    <w:rsid w:val="0079409D"/>
+    <w:rsid w:val="007D22BB"/>
+    <w:rsid w:val="008454CD"/>
+    <w:rsid w:val="008A5829"/>
     <w:rsid w:val="008F3EBC"/>
+    <w:rsid w:val="0097705A"/>
     <w:rsid w:val="00A96C88"/>
     <w:rsid w:val="00A96DED"/>
     <w:rsid w:val="00AF003B"/>
     <w:rsid w:val="00B16DFA"/>
+    <w:rsid w:val="00B5666C"/>
     <w:rsid w:val="00B934C6"/>
+    <w:rsid w:val="00BC537F"/>
     <w:rsid w:val="00BE0CD8"/>
     <w:rsid w:val="00C72586"/>
     <w:rsid w:val="00CB4F7B"/>
     <w:rsid w:val="00CC79D3"/>
     <w:rsid w:val="00CF0338"/>
+    <w:rsid w:val="00D260C5"/>
+    <w:rsid w:val="00D57A7F"/>
+    <w:rsid w:val="00D85A5A"/>
     <w:rsid w:val="00D86B26"/>
     <w:rsid w:val="00E252BA"/>
     <w:rsid w:val="00E343F5"/>
+    <w:rsid w:val="00E90164"/>
     <w:rsid w:val="00EA2F6A"/>
+    <w:rsid w:val="00EE33F9"/>
     <w:rsid w:val="00F501FA"/>
+    <w:rsid w:val="00F8593A"/>
     <w:rsid w:val="00FD0A49"/>
   </w:rsids>
   <m:mathPr>

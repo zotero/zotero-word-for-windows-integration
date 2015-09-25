@@ -51,6 +51,7 @@ Sub getZoteroFieldAtSelection(ByRef isCitation As Boolean, ByRef isBibliography 
         Set rg = selectionRg.Duplicate.GoToPrevious(wdGoToField)
         Set rgEnd = selectionRg.Duplicate.GoToNext(wdGoToField)
 Finally:
+        On Error GoTo 0
         Application.ScreenUpdating = True
         
         ' Might be only one field in the entire doc
