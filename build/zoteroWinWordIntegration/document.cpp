@@ -766,9 +766,9 @@ statusCode __stdcall setBibliographyStyle(document_t *doc, long firstLineIndent,
 
 statusCode __stdcall cleanup(document_t *doc) {
 	HANDLE_EXCEPTIONS_BEGIN
-	if(doc->statusShowRevisions) {
-		doc->comDoc.put_ShowRevisions(false);
-		doc->statusShowRevisions = false;
+	if(doc->restoreShowRevisions) {
+		doc->comDoc.put_ShowRevisions(true);
+		doc->statusShowRevisions = true;
 	}
 	setScreenUpdatingStatus(doc, true);
 	deleteTemporaryFile();
