@@ -128,7 +128,7 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
         End If
     Next
     If ThWnd = 0 Then
-        MsgBox ("Word could not communicate with Zotero. Please ensure Firefox or Zotero Standalone is running and try again. If this problem persists, visit http://www.zotero.org/support/word_processor_plugin_troubleshooting")
+        MsgBox ("Word could not communicate with Zotero. Please ensure Zotero is running and try again. If this problem persists, visit http://www.zotero.org/support/word_processor_plugin_troubleshooting")
         Exit Sub
     End If
     
