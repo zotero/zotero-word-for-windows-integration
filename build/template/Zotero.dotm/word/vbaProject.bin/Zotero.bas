@@ -120,7 +120,7 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
     appNames(1) = "Zotero"
     appNames(2) = "Firefox"
     appNames(3) = "Browser"
-    appNames(4) = "Minefield"
+    appNames(4) = "firefox-dev"
     For i = 1 To 4
         ThWnd = FindWindow(appNames(i) & "MessageWindow", vbNullString)
         If ThWnd <> 0 Then
@@ -128,7 +128,7 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
         End If
     Next
     If ThWnd = 0 Then
-        MsgBox ("Word could not communicate with Zotero. Please ensure Zotero is running and try again. If this problem persists, visit https://www.zotero.org/support/word_processor_plugin_troubleshooting")
+        MsgBox ("Word could not communicate with Zotero. Please ensure Zotero is running and try again. If this problem persists, see https://www.zotero.org/support/word_processor_plugin_troubleshooting")
         Exit Sub
     End If
     
@@ -167,3 +167,4 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
         End If
     End If
 End Sub
+
