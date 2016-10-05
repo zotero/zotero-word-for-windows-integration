@@ -22,7 +22,7 @@ This is a Firefox add-on that consists of a library written in C++ that communic
 
 ## To Modify/Build the Templates
 - Open the template from inside Microsoft Word
-- Go to View->Macros->View Macros (Ribbonized Word) or Tools->Macros->View Macros () and click "Edit" for one of the Zotero macros
+- Go to View->Macros->View Macros (Ribbonized Word) or Tools->Macros->View Macros (Word 2003) and click "Edit" for one of the Zotero macros
 - Edit/replace code as desired
 - Go to Debug->Compile Project to ensure there are no code errors
 - Run `build/template/unpack_templates.sh`
