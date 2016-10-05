@@ -43,7 +43,11 @@ function init() {
 	var fileURI = resHandler.getSubstitution("zotero-winword-integration")
 		.QueryInterface(Components.interfaces.nsIFileURL);
 	libPath = fileURI.file;
-	libPath.append("libzoteroWinWordIntegration.dll");
+	if (Zotero.platform == "Win64") {
+		libPath.append("libzoteroWinWordIntegration_x64.dll");
+	} else {
+		libPath.append("libzoteroWinWordIntegration.dll");
+	}
 	
 	lib = ctypes.open(libPath.path);
 	

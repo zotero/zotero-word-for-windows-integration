@@ -10,4 +10,7 @@ This is a Firefox add-on that consists of a library written in C++ that communic
 - Open `build/zoteroWinWordIntegration/zoteroWinWordIntegration.sln`
 - Change `imports.h `to point to the appropriate files (may be in different places with newer Office)
 - Set to Release configuration in the dropdown in the toolbar
+- Set to Win32 target in dropdown to the right of Release dropdown
+- Build->Build Solution
+- Set to x64 target in dropdown
 - Build->Build Solution

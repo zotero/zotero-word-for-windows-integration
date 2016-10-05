@@ -78,7 +78,7 @@ statusCode initField(document_t *doc, CField comField, short noteType,
 					
 					// Get code
 					int rawCodeLength = rawCode.GetLength();
-					int codeStart = location + wcslen(FIELD_PREFIXES[i]);
+					int codeStart = location + ((int) wcslen(FIELD_PREFIXES[i]));
 					int codeLength = rawCodeLength - codeStart;
 					
 					// Sometimes there is a space at the end of the code, which
@@ -150,7 +150,7 @@ statusCode initBookmark(document_t *doc, CBookmark0 comBookmark, short noteType,
 
 						// Get code
 						int rawCodeLength = propertyValue.GetLength();
-						int codeStart = location + wcslen(BOOKMARK_PREFIXES[i]);
+						int codeStart = location + ((int) wcslen(BOOKMARK_PREFIXES[i]));
 						int codeLength = rawCodeLength - codeStart;
 
 						CString code = propertyValue.Mid(codeStart, codeLength);
