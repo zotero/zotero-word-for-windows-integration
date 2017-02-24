@@ -27,12 +27,8 @@ Sub ZoteroRibbonAddEditCitation(button As IRibbonControl)
     Call ZoteroAddEditCitation
 End Sub
 
-Sub ZoteroRibbonInsertBibliography(button As IRibbonControl)
-    Call ZoteroInsertBibliography
-End Sub
-
-Sub ZoteroRibbonEditBibliography(button As IRibbonControl)
-    Call ZoteroEditBibliography
+Sub ZoteroRibbonAddEditBibliography(button As IRibbonControl)
+    Call ZoteroAddEditBibliography
 End Sub
 
 Sub ZoteroRibbonSetDocPrefs(button As IRibbonControl)
