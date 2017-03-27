@@ -26,3 +26,20 @@ This is a Firefox add-on that consists of a library written in C++ that communic
 - Edit/replace code as desired
 - Go to Debug->Compile Project to ensure there are no code errors
 - Run `build/template/unpack_templates.sh`
+
+## Development Starter's Guide
+
+Start by opening the dotm/dot template in Word. Word templates have support for custom macros 
+and adding UI elements to call the macros, which is how the extension is implemented on Word. 
+RibbonUI can be edited by extracting the dotm file or using the [Custom UI editor](http://openxmldeveloper.org/blog/b/openxmldeveloper/archive/2009/08/06/7293.aspx). 
+To edit the .dot template UI Word for Windows 2003 is needed. 
+In VBA macro code you will find that [SendMessage](https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx)
+protocol is used to issue commands to Zotero process from Word. These commands are received in [zotero-service.js](https://github.com/zotero/zotero/blob/eaf8d3696359dcea0edaa2fd9bc1e4cf5d985014/components/zotero-service.js#L516-L516)
+where they are passed to integration.js.
+
+Zotero talks to Word via [js-ctype bindings](https://github.com/zotero/zotero-word-for-windows-integration/blob/4f07be4bfaa3f37897a5af5371ea20353214f23e/components/zoteroWinWordIntegration.js#L52-L52)
+to a C++ OLE Automation based [library](https://github.com/zotero/zotero-word-for-windows-integration/blob/8d1807584d02f3b10715dd9895413c04349d45e8/build/zoteroWinWordIntegration/zoteroWinWordIntegration.h).
+Visual Studio 2015 currently does not recognize the MFC part of the project properly, so generating new header 
+files used to interact with Word is not possible. This would usually be done by adding a new MFC Class from Typelib.
+The removal of stdafx.cpp in [this commit](https://github.com/zotero/zotero-word-for-windows-integration/commit/4f07be4bfaa3f37897a5af5371ea20353214f23e)
+may be the cause.
