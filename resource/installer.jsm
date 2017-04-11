@@ -24,7 +24,7 @@
 
 var EXPORTED_SYMBOLS = ["Installer"];
 var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
-var ZoteroPluginInstaller = Components.utils.import("resource://zotero-winword-integration/installer_common.jsm").ZoteroPluginInstaller;
+var ZoteroPluginInstaller = Components.utils.import("resource://zotero/word-processor-plugin-installer.js").ZoteroPluginInstaller;
 var Installer = function(failSilently, force) {
 	return new ZoteroPluginInstaller(Plugin,
 		failSilently !== undefined ? failSilently : Zotero.isStandalone,
