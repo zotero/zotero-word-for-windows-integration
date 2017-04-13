@@ -1,6 +1,13 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
 #include "imports.h"
 
+// NOTE: The generated header here is used with office.core.DocumentProperties
+// for which the TypeLib definition in MSO.DLL is not included for some reason.
+// office.interop.word.CustomProperties has been repurposed for the job.
+// See https://msdn.microsoft.com/en-us/library/microsoft.office.core.documentproperties.aspx
+// https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.customproperties(v=office.11).aspx
+// and https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word._document.customdocumentproperties(v=office.11).aspx
+
 // CCustomProperties wrapper class
 
 class CCustomProperties : public COleDispatchDriver
@@ -45,7 +52,6 @@ public:
 		InvokeHelper(0x0, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, parms, Index);
 		return result;
 	}
-	// NOTE: The generated header here is actually for another (similar) class; it has been modified to work
 	LPDISPATCH Add(LPCTSTR Name, bool LinkToContent, short Type, LPCTSTR Value)
 	{
 		LPDISPATCH result;
