@@ -29,7 +29,6 @@ var Zotero = Components.classes["@zotero.org/Zotero;1"]
 			.getService(Components.interfaces.nsISupports)
 			.wrappedJSObject;
 var field_t, document_t, fieldListNode_t, progressFunction_t, lib, libPath, f, fieldPtr;
-var dataInUse = [];
 
 /**
  * Loads libzoteroWinWordIntegration.dll and initializes js-ctypes functions
@@ -203,13 +202,14 @@ function checkIfFreed(documentStatus) {
 	if(!documentStatus.active) throw "complete() method already called on document";
 }
 
-var Application = function() {};
+var Application = function() {
+	this.wrappedJSObject = this;
+};
 Application.prototype = {
 	classDescription: "Zotero Word for Windows Integration Application",
 	classID:		Components.ID("{c7a7eec5-f073-4db4-b383-f866f4b96b1c}"),
-	contractID:		"@zotero.org/Zotero/integration/application?agent=MacWord2004;1",
-	QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsISupports,
-		Components.interfaces.zoteroIntegrationApplication]),
+	contractID:		"@zotero.org/Zotero/integration/application?agent=WinWord;1",
+	QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsISupports]),
 	"service":		true,
 	"getDocument":function(documentName) {
 		init();
@@ -225,17 +225,13 @@ Application.prototype = {
 };
 
 /**
- * See zoteroIntegration.idl
+ * See integrationTests.js
  */
 var Document = function(cDoc) {
 	this._document_t = cDoc;
 	this._documentStatus = {"active":true};
-	this.wrappedJSObject = this;
 };
 Document.prototype = {
-	QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsISupports,
-		Components.interfaces.zoteroIntegrationDocument]),
-	
 	"displayAlert":function(dialogText, icon, buttons) {
 		Zotero.debug("ZoteroWinWordIntegration: displayAlert", 4);
 		var buttonPressed = new ctypes.unsigned_short();
@@ -312,7 +308,7 @@ Document.prototype = {
 		checkIfFreed(this._documentStatus);
 		var fieldPointers = [];
 		while(fieldEnumerator.hasMoreElements()) {
-			fieldPointers.push(fieldEnumerator.getNext().wrappedJSObject._field_t);
+			fieldPointers.push(fieldEnumerator.getNext()._field_t);
 		}
 		checkStatus(f.convert(this._document_t, field_t.ptr.array()(fieldPointers),
 			fieldPointers.length, ctypes.jschar.array()(toFieldType),
@@ -365,18 +361,14 @@ FieldEnumerator.prototype = {
 };
 
 /**
- * See zoteroIntegration.idl
+ * See integrationTests.js
  */
 var Field = function(field_t, documentStatus) {
 	this._field_t = field_t;
 	this._isBookmark = !field_t.contents.addressOfField("bookmarkName").contents.isNull();
 	this._documentStatus = documentStatus;
-	this.wrappedJSObject = this;
 };
 Field.prototype = {
-	QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsISupports,
-		Components.interfaces.zoteroIntegrationField]),
-	
 	"delete":function() {
 		Zotero.debug("ZoteroWinWordIntegration: delete", 4);
 		checkIfFreed(this._documentStatus);
@@ -427,14 +419,14 @@ Field.prototype = {
 		Zotero.debug("ZoteroWinWordIntegration: equals", 4);
 		checkIfFreed(this._documentStatus);
 		// Obviously, a field cannot be equal to a bookmark
-		if(this._isBookmark !== field.wrappedJSObject._isBookmark) return false;
+		if(this._isBookmark !== field._isBookmark) return false;
 		
 		if(this._isBookmark) {
 			return this._field_t.contents.addressOfField("bookmarkName").contents.readString() ===
-				field.wrappedJSObject._field_t.contents.addressOfField("bookmarkName").contents.readString();
+				field._field_t.contents.addressOfField("bookmarkName").contents.readString();
 		} else {
 			var a = this._field_t.contents,
-				b = field.wrappedJSObject._field_t.contents;
+				b = field._field_t.contents;
 			// This is stupid.
 			return a.addressOfField("noteType").contents.toString()
 				=== b.addressOfField("noteType").contents.toString()
