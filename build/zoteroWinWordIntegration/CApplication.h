@@ -1327,6 +1327,96 @@ public:
 		static BYTE parms[] = VTS_BOOL ;
 		InvokeHelper(0x1e0, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
 	}
+	LPDISPATCH get_SmartArtLayouts()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1e1, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	LPDISPATCH get_SmartArtQuickStyles()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1e2, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	LPDISPATCH get_SmartArtColors()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1e3, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	void ThreeWayMerge(LPDISPATCH LocalDocument, LPDISPATCH ServerDocument, LPDISPATCH BaseDocument, BOOL FavorSource)
+	{
+		static BYTE parms[] = VTS_DISPATCH VTS_DISPATCH VTS_DISPATCH VTS_BOOL;
+		InvokeHelper(0x1e4, DISPATCH_METHOD, VT_EMPTY, NULL, parms, LocalDocument, ServerDocument, BaseDocument, FavorSource);
+	}
+	void Dummy4()
+	{
+		InvokeHelper(0x1e5, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+	}
+	LPDISPATCH get_UndoRecord()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1e6, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	LPDISPATCH get_PickerDialog()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1e9, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	LPDISPATCH get_ProtectedViewWindows()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1ea, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	LPDISPATCH get_ActiveProtectedViewWindow()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x1eb, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, NULL);
+		return result;
+	}
+	BOOL get_IsSandboxed()
+	{
+		BOOL result;
+		InvokeHelper(0x1ec, DISPATCH_PROPERTYGET, VT_BOOL, (void*)&result, NULL);
+		return result;
+	}
+	long get_FileValidation()
+	{
+		long result;
+		InvokeHelper(0x1ed, DISPATCH_PROPERTYGET, VT_I4, (void*)&result, NULL);
+		return result;
+	}
+	void put_FileValidation(long newValue)
+	{
+		static BYTE parms[] = VTS_I4;
+		InvokeHelper(0x1ed, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
+	}
+	BOOL get_ChartDataPointTrack()
+	{
+		BOOL result;
+		InvokeHelper(0x1ee, DISPATCH_PROPERTYGET, VT_BOOL, (void*)&result, NULL);
+		return result;
+	}
+	void put_ChartDataPointTrack(BOOL newValue)
+	{
+		static BYTE parms[] = VTS_BOOL;
+		InvokeHelper(0x1ee, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
+	}
+	BOOL get_ShowAnimation()
+	{
+		BOOL result;
+		InvokeHelper(0x1ef, DISPATCH_PROPERTYGET, VT_BOOL, (void*)&result, NULL);
+		return result;
+	}
+	void put_ShowAnimation(BOOL newValue)
+	{
+		static BYTE parms[] = VTS_BOOL;
+		InvokeHelper(0x1ef, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
+	}
 
 	// _Application properties
 public:

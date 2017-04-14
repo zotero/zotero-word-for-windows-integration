@@ -50,6 +50,7 @@
 #include "CStyles.h"
 #include "CTabStop.h"
 #include "CTabStops.h"
+#include "CUndoRecord.h"
 #include "CView0.h"
 #include "CWindow0.h"
 
@@ -80,6 +81,7 @@ enum NOTE_TYPE {
 #define MAX_PROPERTY_LENGTH 255
 #define FIELD_PLACEHOLDER L"{Citation}"
 #define BOOKMARK_REFERENCE_PROPERTY L"ZOTERO_BREF"
+#define UNDO_RECORD_NAME L"Zotero Command"
 #define RTF_TEMP_BOOKMARK L"ZOTERO_TEMP_BOOKMARK"
 #define PREFS_PROPERTY L"ZOTERO_PREF"
 #define BOOKMARK_PREFIX L"ZOTERO_"
@@ -224,6 +226,7 @@ extern "C" {
 	                                                                unsigned long entrySpacing, long tabStops[],
 									                                unsigned long tabStopCount);
 	__declspec(dllexport) statusCode __stdcall cleanup(document_t *doc);
+	__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
 }
 
 statusCode getProperty(document_t *doc, CString propertyName,
