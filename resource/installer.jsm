@@ -76,6 +76,7 @@ var Plugin = new function() {
 		var wrk = Components.classes["@mozilla.org/windows-registry-key;1"]
 			.createInstance(Components.interfaces.nsIWindowsRegKey);
 		var installedVersions = [];
+		Zotero.debug("WinWordIntegration[install]: Looking for Word in HKCU");
 		for(var i=9; i<=20; i++) {
 			var path = null;
 			try {
@@ -120,7 +121,7 @@ var Plugin = new function() {
 		}
 
 		if(installedVersions.length == 0) {
-			// If we did not find an installed version in HKCU, look in HKLM
+			Zotero.debug("WinWordIntegration[install]: Word installations not found in HKCU. Searching in HKLM");
 			for(var i=9; i<=20; i++) {
 				try {
 					wrk.open(Components.interfaces.nsIWindowsRegKey.ROOT_KEY_LOCAL_MACHINE,
@@ -136,6 +137,7 @@ var Plugin = new function() {
 		var installDot = false;
 		var installDotm = false;
 		for(var version of installedVersions) {
+			Zotero.debug(`WinWordIntegration[install]: Word version ${version} found`);
 			if(version < 12) installDot = true;
 			if(version >= 12) installDotm = true;
 		}
@@ -147,7 +149,7 @@ var Plugin = new function() {
 			startupFolders.push(startupFolder);
 		}
 		
-		for(var startupFolder of startupFolders) {
+		for (var startupFolder of startupFolders) {
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsILocalFile);
 			var oldDotm = oldDot.clone();
 			oldDot.append("Zotero.dot");
