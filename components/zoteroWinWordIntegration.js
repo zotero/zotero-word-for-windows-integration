@@ -444,7 +444,7 @@ Field.prototype = {
 		checkIfFreed(this._documentStatus);
 		var returnValue = new ctypes.unsigned_long();
 		checkStatus(f.getNoteIndex(this._field_t, returnValue.address()));
-		return returnValue.value;
+		return parseInt(returnValue.value);
 	}
 }
 
