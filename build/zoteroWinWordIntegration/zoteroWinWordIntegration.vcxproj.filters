@@ -101,13 +101,7 @@
     <ClInclude Include="CWindow0.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="zoteroWinWordIntegration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imports.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -119,15 +113,5 @@
     <ClInclude Include="CUndoRecord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="zoteroWinWordIntegration.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\zoteroWinWordIntegration.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

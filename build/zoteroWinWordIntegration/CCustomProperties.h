@@ -1,5 +1,4 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
-#include "imports.h"
 
 // NOTE: The generated header here is used with office.core.DocumentProperties
 // for which the TypeLib definition in MSO.DLL is not included for some reason.

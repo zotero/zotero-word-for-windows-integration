@@ -1,5 +1,5 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
-#include "imports.h"
+
 // CStyle wrapper class
 
 class CStyle : public COleDispatchDriver

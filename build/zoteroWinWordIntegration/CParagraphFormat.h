@@ -1,5 +1,4 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
-#include "imports.h"
 
 // CParagraphFormat wrapper class
 
