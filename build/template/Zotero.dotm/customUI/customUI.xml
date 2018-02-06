@@ -5,8 +5,8 @@
       <tab id="ZoteroTab" getLabel="ZoteroRibbon.ZoteroTabLabel" insertBeforeMso="TabAddIns">
         <group id="ZoteroGroup" image="zotero-z-16" label="Zotero">
           <button id="InsertZoteroCitationButton" label="Add/Edit Citation" size="large" image="addEditZoteroCitation" onAction="ZoteroRibbon.ZoteroRibbonAddEditCitation" supertip="Insert a new citation, or edit the citation at the current cursor position"/>
-          <button id="InsertZoteroBibliographyButton" label="Add/Edit Bibliography" size="large" image="addEditZoteroBibliography" onAction="ZoteroRibbon.ZoteroRibbonAddEditBibliography" supertip="Insert a new bibliography, or edit the existing bibliography, at the current cursor position"/>
-          <button id="ZoteroSetDocPrefs" label="Document Preferences" image="setZoteroDocPrefs-small" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale"/>
+	      <button id="InsertZoteroBibliographyButton" label="Add/Edit Bibliography" size="large" image="addEditZoteroBibliography" onAction="ZoteroRibbon.ZoteroRibbonAddEditBibliography" supertip="Insert a new bibliography, or edit the existing bibliography, at the current cursor position"/>
+          <button id="ZoteroSetDocPrefs" label="Document Preferences" imageMso="AddInManager" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale"/>
           <button id="RefreshZotero" label="Refresh" imageMso="RecordsRefreshRecords" onAction="ZoteroRibbon.ZoteroRibbonRefresh" supertip="Update all citations to reflect changes"/>
           <button id="ZoteroRemoveCodes" label="Unlink Citations" imageMso="TableUnlinkExternalData" onAction="ZoteroRibbon.ZoteroRibbonRemoveCodes" supertip="Remove all Zotero field codes and unlink from Zotero library"/>
           <!-- <button id="InsertZoteroCitationButtonSmall" visible="false" label="Add/Edit Citation" image="addEditZoteroCitation-small" onAction="ZoteroRibbon.ZoteroRibbonAddEditCitation" supertip="Insert a new citation, or edit the citation at the current cursor position"/>
