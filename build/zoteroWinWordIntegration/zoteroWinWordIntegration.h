@@ -50,7 +50,6 @@
 #include "CStyles.h"
 #include "CTabStop.h"
 #include "CTabStops.h"
-#include "CUndoRecord.h"
 #include "CView0.h"
 #include "CWindow0.h"
 
@@ -226,7 +225,7 @@ extern "C" {
 	                                                                unsigned long entrySpacing, long tabStops[],
 									                                unsigned long tabStopCount);
 	__declspec(dllexport) statusCode __stdcall cleanup(document_t *doc);
-	__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
+	//__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
 }
 
 statusCode getProperty(document_t *doc, CString propertyName,
