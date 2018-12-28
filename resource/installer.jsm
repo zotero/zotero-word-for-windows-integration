@@ -133,14 +133,6 @@ var Plugin = new function() {
 				} catch(e) {}
 			}
 		}
-
-		var installDot = false;
-		var installDotm = false;
-		for(var version of installedVersions) {
-			Zotero.debug(`WinWordIntegration[install]: Word version ${version} found`);
-			if(version < 12) installDot = true;
-			if(version >= 12) installDotm = true;
-		}
 		
 		if(startupFolders.length == 0 || addDefaultStartupFolder) {
 			// if not in the registry, append Microsoft/Word/Startup to %AppData% (default location)
@@ -170,14 +162,19 @@ var Plugin = new function() {
 					try {
 						template.remove(false);
 					} catch(e) {
-						throw "Could not remove "+template.path;
+						Zotero.debug(e);
+						throw new Error("Could not remove "+template.path);
 					}
 				}
 			}
 
-			// copy Zotero.dot file to Word Startup folder
-			if(installDot) dot.copyTo(startupFolder, "Zotero.dot");
-			if(installDotm) dotm.copyTo(startupFolder, "Zotero.dotm");
+			// copy Zotero.dotm file to Word Startup folder
+			try {
+				dotm.copyTo(startupFolder, "Zotero.dotm");
+			} catch (e) {
+				Zotero.debug(e);
+				throw new Error(`Could not copy Zotero.dotm to ${startupFolder.path}`)
+			}
 		}
 		
 		zpi.success();
