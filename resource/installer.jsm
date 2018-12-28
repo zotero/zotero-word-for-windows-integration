@@ -151,6 +151,10 @@ var Plugin = new function() {
 		startupFolders.push(startupFolder);
 		
 		for (var startupFolder of startupFolders) {
+			if (!startupFolder.clone().exists()) {
+				Zotero.debug(`Potential Word startup location ${startupFolder.path} does not exist. Skipping`);
+				continue;
+			}
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsILocalFile);
 			var oldDotm = oldDot.clone();
 			oldDot.append("Zotero.dot");
