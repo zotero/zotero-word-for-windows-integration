@@ -149,6 +149,15 @@ var Plugin = new function() {
 			startupFolders.push(startupFolder);
 		}
 		
+		// The OEM Word 365 sandboxed location, which we might not have the permissions to write to
+		// but it is worth a shot
+		var startupFolder = Components.classes["@mozilla.org/file/directory_service;1"]
+			.getService(Components.interfaces.nsIProperties)
+			.get("LocalAppData", Components.interfaces.nsILocalFile)
+			.QueryInterface(Components.interfaces.nsILocalFile);
+		startupFolder.appendRelativePath("Packages\\Microsoft.Office.Desktop_8wekyb3d8bbwe\\LocalCache\\Roaming\\Microsoft\\Word\\Startup");
+		startupFolders.push(startupFolder);
+		
 		for (var startupFolder of startupFolders) {
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsILocalFile);
 			var oldDotm = oldDot.clone();
