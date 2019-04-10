@@ -39,6 +39,8 @@
 #include "CEndnotes.h"
 #include "CFootnote.h"
 #include "CFootnotes.h"
+#include "CHyperlink.h"
+#include "CHyperlinks.h"
 #include "CField.h"
 #include "CFields.h"
 #include "CFont0.h"
@@ -224,6 +226,8 @@ extern "C" {
 									                                long bodyIndent, unsigned long lineSpacing,
 	                                                                unsigned long entrySpacing, long tabStops[],
 									                                unsigned long tabStopCount);
+	__declspec(dllexport) statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], const wchar_t importInstructions[]);
+	__declspec(dllexport) statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], bool* returnValue);
 	__declspec(dllexport) statusCode __stdcall cleanup(document_t *doc);
 	//__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
 }

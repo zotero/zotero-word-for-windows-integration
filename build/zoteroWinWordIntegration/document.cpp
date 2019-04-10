@@ -32,6 +32,12 @@ static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 COleMessageFilter *comFilter = NULL;
 unsigned int comFilterRefs = 0;
 
+static wchar_t *IMPORT_LINK_URL = L"https://www.zotero.org/";
+static wchar_t *IMPORT_ITEM_PREFIX = L"ITEM CSL_CITATION ";
+static wchar_t *IMPORT_BIBL_PREFIX = L"BIBL ";
+static wchar_t *IMPORT_DOC_PREFS_PREFIX = L"DOCUMENT_PREFERENCES ";
+static wchar_t *EXPORTED_DOCUMENT_MARKER = L"ZOTERO_EXPORTED_DOCUMENT";
+
 statusCode addNextFieldToList(document_t* doc, field_t* currentFields[], listNode_t** fieldListStart, listNode_t** fieldListEnd,
                               short* noteType, bool* noMoreFields);
 statusCode getNextFieldFromEnumerator(document_t* doc, IEnumVARIANT* enumerator, short noteType, field_t** returnValue);
@@ -426,6 +432,13 @@ statusCode __stdcall cursorInField(document_t *doc, const wchar_t fieldType[],
 // Gets document data. The caller should free the returned string.
 statusCode __stdcall getDocumentData(document_t *doc, wchar_t **returnValue) {
 	HANDLE_EXCEPTIONS_BEGIN
+	CRange range = doc->comDoc.get_Content();
+	range.Collapse(1 /*wdCollapseStart*/);
+	range.MoveEnd(4 /*wdParagraph*/, 1);
+	if (range.get_Text().Find(EXPORTED_DOCUMENT_MARKER) == 0) {
+		*returnValue = _wcsdup(EXPORTED_DOCUMENT_MARKER);
+		return STATUS_OK;
+	}
 	CString returnString;
 	ENSURE_OK(getProperty(doc, PREFS_PROPERTY, &returnString));
 	*returnValue = _wcsdup(returnString);
@@ -761,6 +774,95 @@ statusCode __stdcall setBibliographyStyle(document_t *doc, long firstLineIndent,
 	}
 
     return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
+statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], const wchar_t importInstructions[]) {
+	HANDLE_EXCEPTIONS_BEGIN
+
+	// Export fields
+	listNode_t *fields;
+	ENSURE_OK(getFields(doc, fieldType, &fields));
+	listNode_t *fieldsStart = fields;
+	while (fields != NULL) {
+		field_t *field = (field_t *)fields->value;
+		ENSURE_OK(setText(field, field->code, false));
+		ENSURE_OK(removeCode(field));
+		CHyperlinks links = field->comContentRange.get_Hyperlinks();
+		links.Add(field->comContentRange, COleVariant(IMPORT_LINK_URL), covOptional, covOptional, covOptional, covOptional);
+		fields = fields->next;
+	}
+	freeFieldList(fieldsStart, false);
+
+	// Document data
+	CRange docDataRange = doc->comDoc.get_Content();
+	wchar_t *docData;
+	ENSURE_OK(getDocumentData(doc, &docData));
+
+	docDataRange.InsertParagraphAfter();
+	docDataRange.Collapse(0 /*wdCollapseEnd*/);
+	docDataRange.InsertAfter(IMPORT_DOC_PREFS_PREFIX);
+	docDataRange.InsertAfter(docData);
+	CHyperlinks links = docDataRange.get_Hyperlinks();
+	links.Add(docDataRange, COleVariant(IMPORT_LINK_URL), covOptional, covOptional, covOptional, covOptional);
+	free(docData);
+
+	// Import instructions
+	docDataRange = doc->comDoc.get_Content();
+	docDataRange.InsertParagraphBefore();
+	docDataRange.InsertParagraphBefore();
+	docDataRange.InsertBefore(importInstructions);
+	// Export marker
+	docDataRange.InsertParagraphBefore();
+	docDataRange.InsertBefore(EXPORTED_DOCUMENT_MARKER);
+
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
+statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], bool *returnValue) {
+	HANDLE_EXCEPTIONS_BEGIN
+	*returnValue = false;
+
+	CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
+	CRange comStoryRange;
+	// Main body, footnotes and endnotes (1 indexed!)
+	for (long i = 1; i <= 3; i++) {
+		try {
+			comStoryRange = comStoryRanges.Item(i);
+		}
+		catch (COleDispatchException* e) {
+			e->Delete();
+			continue;
+		}
+		CHyperlinks comLinks = comStoryRange.get_Hyperlinks();
+		long count = comLinks.get_Count();
+		// 1 indexed!!!
+		for (long j = count; j > 0; j--) {
+			CHyperlink comLink = comLinks.Item(COleVariant(j));
+			CRange comRange = comLink.get_Range();
+			CString linkText = comRange.get_Text();
+			if (linkText.Find(IMPORT_ITEM_PREFIX) == 0 || linkText.Find(IMPORT_BIBL_PREFIX) == 0) {
+				field_t *field;
+				ENSURE_OK(insertFieldRaw(doc, fieldType, comLink.get_Range(), &field));
+				ENSURE_OK(setCode(field, linkText));
+			}
+			else if (linkText.Find(IMPORT_DOC_PREFS_PREFIX) == 0) {
+				*returnValue = true;
+				linkText.Delete(0, lstrlen(IMPORT_DOC_PREFS_PREFIX));
+				ENSURE_OK(setDocumentData(doc, linkText));
+				comRange.put_Text(L"");
+			}
+		}
+	}
+	
+	// Remove 3 paragraphs: export marker, import instructions and an empty paragraph
+	CRange range = doc->comDoc.get_Content();
+	range.Collapse(1 /*wdCollapseStart*/);
+	range.MoveEnd(4 /*wdParagraph*/, 3);
+	range.put_Text(L"");
+
+	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
 }
 

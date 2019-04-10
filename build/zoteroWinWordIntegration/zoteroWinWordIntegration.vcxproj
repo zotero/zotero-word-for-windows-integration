@@ -408,6 +408,8 @@
     <ClInclude Include="CFootnote.h" />
     <ClInclude Include="CFootnoteOptions.h" />
     <ClInclude Include="CFootnotes.h" />
+    <ClInclude Include="CHyperlink.h" />
+    <ClInclude Include="CHyperlinks.h" />
     <ClInclude Include="CParagraphFormat.h" />
     <ClInclude Include="CRange.h" />
     <ClInclude Include="CSelection.h" />
