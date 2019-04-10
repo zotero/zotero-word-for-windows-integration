@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/setZoteroDocPrefs.png" Id="setZoteroDocPrefs"/>
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroBibliography.png" Id="addEditZoteroBibliography"/>
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroCitation-small.png" Id="addEditZoteroCitation-small"/>
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroBibliography-small.png" Id="addEditZoteroBibliography-small"/>
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/setZoteroDocPrefs-small.png" Id="setZoteroDocPrefs-small"/>
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/zotero-z-16.png" Id="zotero-z-16"/>
-  <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroCitation0.png" Id="addEditZoteroCitation"/>
+  <Relationship Id="setZoteroDocPrefs" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/setZoteroDocPrefs.png"/>
+  <Relationship Id="addEditZoteroBibliography" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroBibliography.png"/>
+  <Relationship Id="addEditZoteroCitation-small" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroCitation-small.png"/>
+  <Relationship Id="addEditZoteroBibliography-small" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroBibliography-small.png"/>
+  <Relationship Id="setZoteroDocPrefs-small" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/setZoteroDocPrefs-small.png"/>
+  <Relationship Id="zotero-z-16" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/zotero-z-16.png"/>
+  <Relationship Id="addEditZoteroCitation" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="images/addEditZoteroCitation0.png"/>
 </Relationships>
