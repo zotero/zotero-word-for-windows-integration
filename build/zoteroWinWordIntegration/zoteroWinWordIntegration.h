@@ -88,6 +88,10 @@ enum NOTE_TYPE {
 #define BOOKMARK_PREFIX L"ZOTERO_"
 #define BIBLIOGRAPHY_STYLE_NAME L"Bibliography"
 #define BIBLIOGRAPHY_STYLE_ENUM -266 /**WdBuiltinStyle.wdStyleBibliography**/
+#define FOOTNOTE_STYLE_NAME L"Footnote Text"
+#define FOOTNOTE_STYLE_ENUM -30 /**WdBuiltinStyle.wdStyleFootnoteText**/
+#define ENDNOTE_STYLE_NAME L"Endnote Text"
+#define ENDNOTE_STYLE_ENUM -44 /**WdBuiltinStyle.wdStyleEndnoteText**/
 
 // Returns expr if expr is non-zero.
 #define ENSURE_OK(expr) \
@@ -202,6 +206,8 @@ void deleteTemporaryFile(void);
 wchar_t* getTemporaryFilePath(void);
 
 CString generateRandomString(unsigned int length);
+
+void setStyle(document_t *doc, CRange *range, long styleEnum, CString styleName);
 
 // document.cpp
 extern "C" {

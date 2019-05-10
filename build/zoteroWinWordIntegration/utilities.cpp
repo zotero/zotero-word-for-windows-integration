@@ -112,3 +112,26 @@ CString generateRandomString(unsigned int length) {
 	}
 	return randString;
 }
+
+void setStyle(document_t *doc, CRange *range, long styleEnum, CString styleName) {
+	// Set style on range
+	try {
+		if (doc->wordVersion >= 12) {
+			// In Word 2007+, we should use WdBuiltinStyle enum
+			// instead of the string name to reference the bibliography style.
+			try {
+				range->put_Style(styleEnum);
+			}
+			catch (...) {
+				range->put_Style(styleName);
+			}
+		}
+		else {
+			range->put_Style(styleName);
+		}
+	}
+	catch (...) {
+		// This is probably not necessary, but it's better than throwing, and I can't test all
+		// Word versions at this time
+	}
+}

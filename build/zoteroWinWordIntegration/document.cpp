@@ -844,8 +844,14 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 			CString linkText = comRange.get_Text();
 			if (linkText.Find(IMPORT_ITEM_PREFIX) == 0 || linkText.Find(IMPORT_BIBL_PREFIX) == 0) {
 				field_t *field;
-				ENSURE_OK(insertFieldRaw(doc, fieldType, comLink.get_Range(), &field));
+				ENSURE_OK(insertFieldRaw(doc, fieldType, comRange, &field));
 				ENSURE_OK(setCode(field, linkText));
+				if (i == 2) {
+					setStyle(doc, &comRange, FOOTNOTE_STYLE_ENUM, FOOTNOTE_STYLE_NAME);
+				}
+				else if (i == 3) {
+					setStyle(doc, &comRange, ENDNOTE_STYLE_ENUM, ENDNOTE_STYLE_NAME);
+				}
 			}
 			else if (linkText.Find(IMPORT_DOC_PREFS_PREFIX) == 0) {
 				*returnValue = true;

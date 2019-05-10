@@ -340,23 +340,7 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 		}
 
 		if(wcsncmp(field->code, L"BIBL", 4) == 0) {
-			// Set style on bibliography
-			try {
-				if((field->doc)->wordVersion >= 12) {
-					// In Word 2007+, we should use WdBuiltinStyle.wdStyleBibliography
-					// instead of "Bibliography" to reference the bibliography style.
-					try {
-						field->comContentRange.put_Style(BIBLIOGRAPHY_STYLE_ENUM);
-					} catch(...) {
-						field->comContentRange.put_Style(BIBLIOGRAPHY_STYLE_NAME);
-					}
-				} else {
-					field->comContentRange.put_Style(BIBLIOGRAPHY_STYLE_NAME);
-				}
-			} catch(...) {
-				// This is probably not necessary, but it's better than throwing, and I can't test all
-				// Word versions at this time
-			}
+			setStyle(field->doc, &field->comContentRange, BIBLIOGRAPHY_STYLE_ENUM, BIBLIOGRAPHY_STYLE_NAME);
 		}
 	} else {
 		CFont0 comFont = field->comContentRange.get_Font();
