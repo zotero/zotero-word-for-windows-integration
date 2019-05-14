@@ -814,6 +814,7 @@ statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], 
 	docDataRange.InsertBefore(importInstructions);
 	// Export marker
 	docDataRange.InsertParagraphBefore();
+	docDataRange.InsertParagraphBefore();
 	docDataRange.InsertBefore(EXPORTED_DOCUMENT_MARKER);
 
 	return STATUS_OK;
@@ -862,10 +863,10 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 		}
 	}
 	
-	// Remove 3 paragraphs: export marker, import instructions and an empty paragraph
+	// Remove 3 paragraphs: export marker, empty paragraph, import instructions and another empty paragraph
 	CRange range = doc->comDoc.get_Content();
 	range.Collapse(1 /*wdCollapseStart*/);
-	range.MoveEnd(4 /*wdParagraph*/, 3);
+	range.MoveEnd(4 /*wdParagraph*/, 4);
 	range.put_Text(L"");
 
 	return STATUS_OK;
