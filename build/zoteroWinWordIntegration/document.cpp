@@ -36,7 +36,8 @@ static wchar_t *IMPORT_LINK_URL = L"https://www.zotero.org/";
 static wchar_t *IMPORT_ITEM_PREFIX = L"ITEM CSL_CITATION ";
 static wchar_t *IMPORT_BIBL_PREFIX = L"BIBL ";
 static wchar_t *IMPORT_DOC_PREFS_PREFIX = L"DOCUMENT_PREFERENCES ";
-static wchar_t *EXPORTED_DOCUMENT_MARKER = L"ZOTERO_EXPORTED_DOCUMENT";
+// ZOTERO_EXPORTED_DOCUMENT is for legacy/old beta support and may be removed at a later date.
+static wchar_t *EXPORTED_DOCUMENT_MARKER[] = { L"ZOTERO_TRANSFER_DOCUMENT", L"ZOTERO_EXPORTED_DOCUMENT", NULL };
 
 statusCode addNextFieldToList(document_t* doc, field_t* currentFields[], listNode_t** fieldListStart, listNode_t** fieldListEnd,
                               short* noteType, bool* noMoreFields);
@@ -435,10 +436,14 @@ statusCode __stdcall getDocumentData(document_t *doc, wchar_t **returnValue) {
 	CRange range = doc->comDoc.get_Content();
 	range.Collapse(1 /*wdCollapseStart*/);
 	range.MoveEnd(4 /*wdParagraph*/, 1);
-	if (range.get_Text().Find(EXPORTED_DOCUMENT_MARKER) == 0) {
-		*returnValue = _wcsdup(EXPORTED_DOCUMENT_MARKER);
-		return STATUS_OK;
+	CString text = range.get_Text();
+	for (unsigned short i = 0; EXPORTED_DOCUMENT_MARKER[i] != NULL; i++) {
+		if (text.Find(EXPORTED_DOCUMENT_MARKER[i]) == 0) {
+			*returnValue = _wcsdup(EXPORTED_DOCUMENT_MARKER[0]);
+			return STATUS_OK;
+		}
 	}
+	
 	CString returnString;
 	ENSURE_OK(getProperty(doc, PREFS_PROPERTY, &returnString));
 	*returnValue = _wcsdup(returnString);
@@ -815,7 +820,7 @@ statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], 
 	// Export marker
 	docDataRange.InsertParagraphBefore();
 	docDataRange.InsertParagraphBefore();
-	docDataRange.InsertBefore(EXPORTED_DOCUMENT_MARKER);
+	docDataRange.InsertBefore(EXPORTED_DOCUMENT_MARKER[0]);
 
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
