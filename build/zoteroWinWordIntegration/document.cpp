@@ -178,6 +178,13 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 		doc->restoreShowRevisions =
 			doc->statusShowRevisions = false;
 	}
+
+	// Create an Undo Record, so we can undo Zotero actions in a single go.
+	// Only available in Word 2010 and later
+	if (doc->wordVersion >= 14) {
+		CUndoRecord undoRecord = doc->comApp.get_UndoRecord();
+		undoRecord.StartCustomRecord(UNDO_RECORD_NAME);
+	}
 	
 	doc->allocatedFieldsStart = NULL;
 	doc->allocatedFieldsEnd = NULL;
@@ -890,11 +897,15 @@ statusCode __stdcall cleanup(document_t *doc) {
 	HANDLE_EXCEPTIONS_END
 }
 
-//statusCode __stdcall complete(document_t *doc) {
-//	HANDLE_EXCEPTIONS_BEGIN
-//	return STATUS_OK;
-//	HANDLE_EXCEPTIONS_END
-//}
+statusCode __stdcall complete(document_t *doc) {
+	HANDLE_EXCEPTIONS_BEGIN
+	if (doc->wordVersion >= 14) {
+		CUndoRecord undoRecord = doc->comApp.get_UndoRecord();
+		undoRecord.EndCustomRecord();
+	}
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
 
 // Gets a property from the document
 statusCode getProperty(document_t *doc, CString propertyName,

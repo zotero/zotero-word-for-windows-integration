@@ -52,6 +52,7 @@
 #include "CStyles.h"
 #include "CTabStop.h"
 #include "CTabStops.h"
+#include "CUndoRecord.h"
 #include "CView0.h"
 #include "CWindow0.h"
 
@@ -235,7 +236,7 @@ extern "C" {
 	__declspec(dllexport) statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], const wchar_t importInstructions[]);
 	__declspec(dllexport) statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], bool* returnValue);
 	__declspec(dllexport) statusCode __stdcall cleanup(document_t *doc);
-	//__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
+	__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
 }
 
 statusCode getProperty(document_t *doc, CString propertyName,
