@@ -418,6 +418,7 @@
     <ClInclude Include="CStyles.h" />
     <ClInclude Include="CTabStop.h" />
     <ClInclude Include="CTabStops.h" />
+    <ClInclude Include="CUndoRecord.h" />
     <ClInclude Include="CView0.h" />
     <ClInclude Include="CWindow0.h" />
     <ClInclude Include="stdafx.h" />

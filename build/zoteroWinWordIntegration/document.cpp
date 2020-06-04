@@ -178,6 +178,17 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 		doc->restoreShowRevisions =
 			doc->statusShowRevisions = false;
 	}
+	// Disable Track Changes if necessary
+	try {
+		doc->restoreTrackChanges = doc->comDoc.get_TrackRevisions();
+		if (doc->restoreTrackChanges) {
+			doc->comDoc.put_TrackRevisions(false);
+		}
+	}
+	catch (CException *e) {
+		e->Delete();
+		doc->restoreTrackChanges = false;
+	}
 
 	// Create an Undo Record, so we can undo Zotero actions in a single go.
 	// Only available in Word 2010 and later
@@ -902,6 +913,10 @@ statusCode __stdcall complete(document_t *doc) {
 	if (doc->wordVersion >= 14) {
 		CUndoRecord undoRecord = doc->comApp.get_UndoRecord();
 		undoRecord.EndCustomRecord();
+	}
+	if (doc->restoreTrackChanges) {
+		doc->comDoc.put_TrackRevisions(true);
+		doc->restoreTrackChanges = false;
 	}
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END

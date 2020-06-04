@@ -139,6 +139,7 @@ typedef struct Document {
 	bool restoreShowRevisions;
 	bool statusShowRevisions;
 	bool statusScreenUpdating;
+	bool restoreTrackChanges;
 	
 	listNode_t* allocatedFieldsStart;
 	listNode_t* allocatedFieldsEnd;

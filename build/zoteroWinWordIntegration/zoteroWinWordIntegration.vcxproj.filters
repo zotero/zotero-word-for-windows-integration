@@ -110,6 +110,12 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CHyperlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CHyperlinks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="CUndoRecord.h">
       <Filter>Header Files</Filter>
     </ClInclude>
