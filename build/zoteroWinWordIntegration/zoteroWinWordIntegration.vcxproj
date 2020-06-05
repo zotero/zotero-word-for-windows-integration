@@ -412,6 +412,7 @@
     <ClInclude Include="CHyperlinks.h" />
     <ClInclude Include="CParagraphFormat.h" />
     <ClInclude Include="CRange.h" />
+    <ClInclude Include="CRevisionsFilter.h" />
     <ClInclude Include="CSelection.h" />
     <ClInclude Include="CStoryRanges.h" />
     <ClInclude Include="CStyle.h" />

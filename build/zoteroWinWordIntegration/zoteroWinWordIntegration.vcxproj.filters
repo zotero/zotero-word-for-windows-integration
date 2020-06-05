@@ -95,9 +95,6 @@
     <ClInclude Include="CTabStops.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CView0.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CWindow0.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -117,6 +114,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CUndoRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRevisionsFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CView0.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

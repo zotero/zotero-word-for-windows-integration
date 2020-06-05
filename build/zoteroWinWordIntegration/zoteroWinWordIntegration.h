@@ -46,6 +46,7 @@
 #include "CFont0.h"
 #include "CParagraphFormat.h"
 #include "CRange.h"
+#include "CRevisionsFilter.h"
 #include "CSelection.h"
 #include "CStoryRanges.h"
 #include "CStyle.h"
@@ -136,8 +137,9 @@ typedef struct Document {
 	CWindow0 comWindow;
 
 	long wordVersion;
-	bool restoreShowRevisions;
 	bool statusShowRevisions;
+	bool restoreShowRevisions;
+	long restoreRevisionsMarkup;
 	bool statusScreenUpdating;
 	bool restoreTrackChanges;
 	

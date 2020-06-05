@@ -1,5 +1,6 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
 
+// #import "C:\\Program Files (x86)\\Microsoft Office 2013\\Office15\\MSWORD.OLB" no_namespace
 // CView0 wrapper class
 
 class CView0 : public COleDispatchDriver
@@ -677,8 +678,66 @@ public:
 	}
 	void put_MarkupMode(long newValue)
 	{
-		static BYTE parms[] = VTS_I4 ;
-		InvokeHelper(0x39, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms, newValue);
+		static BYTE parms[] = VTS_I4;
+		InvokeHelper(0x39, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms, newValue);
+	}
+	BOOL get_ConflictMode()
+	{
+		BOOL result;
+		InvokeHelper(0x3a, DISPATCH_PROPERTYGET, VT_BOOL, (void*)&result, nullptr);
+		return result;
+	}
+	void put_ConflictMode(BOOL newValue)
+	{
+		static BYTE parms[] = VTS_BOOL;
+		InvokeHelper(0x3a, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms, newValue);
+	}
+	BOOL get_ShowOtherAuthors()
+	{
+		BOOL result;
+		InvokeHelper(0x3b, DISPATCH_PROPERTYGET, VT_BOOL, (void*)&result, nullptr);
+		return result;
+	}
+	void put_ShowOtherAuthors(BOOL newValue)
+	{
+		static BYTE parms[] = VTS_BOOL;
+		InvokeHelper(0x3b, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms, newValue);
+	}
+	void ExpandAllHeadings()
+	{
+		InvokeHelper(0x453, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
+	}
+	void CollapseAllHeadings()
+	{
+		InvokeHelper(0x454, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
+	}
+	LPDISPATCH get_RevisionsFilter()
+	{
+		LPDISPATCH result;
+		InvokeHelper(0x3e, DISPATCH_PROPERTYGET, VT_DISPATCH, (void*)&result, nullptr);
+		return result;
+	}
+	long get_PageColor()
+	{
+		long result;
+		InvokeHelper(0x3f, DISPATCH_PROPERTYGET, VT_I4, (void*)&result, nullptr);
+		return result;
+	}
+	void put_PageColor(long newValue)
+	{
+		static BYTE parms[] = VTS_I4;
+		InvokeHelper(0x3f, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms, newValue);
+	}
+	long get_ColumnWidth()
+	{
+		long result;
+		InvokeHelper(0x40, DISPATCH_PROPERTYGET, VT_I4, (void*)&result, nullptr);
+		return result;
+	}
+	void put_ColumnWidth(long newValue)
+	{
+		static BYTE parms[] = VTS_I4;
+		InvokeHelper(0x40, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms, newValue);
 	}
 
 	// View properties

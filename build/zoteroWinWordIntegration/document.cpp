@@ -170,13 +170,15 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 
 	// Disable ShowRevisions if necessary
 	try {
-		doc->restoreShowRevisions =
-			doc->statusShowRevisions =
-			doc->comDoc.get_ShowRevisions() == TRUE;
+		doc->statusShowRevisions = doc->restoreShowRevisions = doc->comDoc.get_ShowRevisions();
+		if (doc->wordVersion >= 15) {
+			CRevisionsFilter revisionsFilter = comView.get_RevisionsFilter();
+			doc->restoreRevisionsMarkup = revisionsFilter.get_Markup();
+		}
 	} catch(CException *e) {
 		e->Delete();
-		doc->restoreShowRevisions =
-			doc->statusShowRevisions = false;
+		doc->statusShowRevisions = doc->restoreRevisionsMarkup = false;
+		doc->restoreRevisionsMarkup = 0;
 	}
 	// Disable Track Changes if necessary
 	try {
@@ -329,7 +331,7 @@ statusCode prepareReadFieldCode(document_t* doc) {
 			doc->comDoc.put_ShowRevisions(false);
 		}
 	} else {
-		doc->comDoc.put_ShowRevisions(true);
+		doc->comDoc.put_ShowRevisions(false);
 	}
 	doc->statusShowRevisions = false;
 
@@ -899,7 +901,14 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 statusCode __stdcall cleanup(document_t *doc) {
 	HANDLE_EXCEPTIONS_BEGIN
 	if(doc->restoreShowRevisions) {
-		doc->comDoc.put_ShowRevisions(true);
+		if (doc->wordVersion >= 15) {
+			CView0 comView = doc->comWindow.get_View();
+			CRevisionsFilter revisionsFilter = comView.get_RevisionsFilter();
+			revisionsFilter.put_Markup(doc->restoreRevisionsMarkup);
+		}
+		else {
+			doc->comDoc.put_ShowRevisions(true);
+		}
 		doc->statusShowRevisions = true;
 	}
 	setScreenUpdatingStatus(doc, true);
