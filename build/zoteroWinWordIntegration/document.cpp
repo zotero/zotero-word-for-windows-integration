@@ -180,6 +180,7 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 		doc->statusShowRevisions = doc->restoreRevisionsMarkup = false;
 		doc->restoreRevisionsMarkup = 0;
 	}
+
 	// Disable Track Changes if necessary
 	try {
 		doc->restoreTrackChanges = doc->comDoc.get_TrackRevisions();
@@ -190,6 +191,16 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 	catch (CException *e) {
 		e->Delete();
 		doc->restoreTrackChanges = false;
+	}
+
+	// Disable Show Field Codes if enabled
+	try {
+		if (comView.get_ShowFieldCodes()) {
+			comView.put_ShowFieldCodes(false);
+		}
+	}
+	catch (CException *e) {
+		e->Delete();
 	}
 
 	// Create an Undo Record, so we can undo Zotero actions in a single go.
