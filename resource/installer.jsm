@@ -23,6 +23,7 @@
 */
 
 var EXPORTED_SYMBOLS = ["Installer"];
+Components.utils.import("resource://gre/modules/Services.jsm");
 var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
 var ZoteroPluginInstaller = Components.utils.import("resource://zotero/word-processor-plugin-installer.js").ZoteroPluginInstaller;
 var Installer = function(failSilently, force) {
@@ -145,11 +146,27 @@ var Plugin = new function() {
 		startupFolder.appendRelativePath("Packages\\Microsoft.Office.Desktop_8wekyb3d8bbwe\\LocalCache\\Roaming\\Microsoft\\Word\\Startup");
 		startupFolders.push(startupFolder);
 		
+		var someBadFolders = false;
+		var allBadFolders = true;
+		var installedAt = new Set();
 		for (var startupFolder of startupFolders) {
 			if (!startupFolder.clone().exists()) {
 				Zotero.debug(`Potential Word startup location ${startupFolder.path} does not exist. Skipping`);
 				continue;
 			}
+			
+			// Multiple versions of Word all with the same setting, so we only install there once
+			if (installedAt.has(startupFolder.path)) continue;
+			installedAt.add(startupFolder.path);
+			
+			if (startupFolder.path.includes('Program Files')) {
+				someBadFolders = true;
+				continue;
+			}
+			else {
+				allBadFolders = false;
+			}
+			
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsIFile);
 			var oldDotm = oldDot.clone();
 			oldDot.append("Zotero.dot");
@@ -171,8 +188,25 @@ var Plugin = new function() {
 				dotm.copyTo(startupFolder, "Zotero.dotm");
 			} catch (e) {
 				Zotero.debug(e);
+				someBadFolders = true;
 				throw new Error(`Could not copy Zotero.dotm to ${startupFolder.path}`)
 			}
+		}
+
+		if (allBadFolders || someBadFolders) {
+			zpi.failSilently = true;
+			if (allBadFolders) {
+				Services.prompt.alert(null, Zotero.getString('general.error'),
+					Zotero.getString('integration.error.winWordAllStartupFolderAlert', [Zotero.clientName]));
+				zpi.error(Zotero.getString('integration.error.winWordAllStartupFolderAlert', [Zotero.clientName]));
+			}
+			else {
+				Services.prompt.alert(null, Zotero.getString('general.warning'),
+					Zotero.getString('integration.error.winWordSomeStartupFolderAlert', [Zotero.clientName]));
+				zpi.error(Zotero.getString('integration.error.winWordSomeStartupFolderAlert', [Zotero.clientName]), false);
+			}
+			Zotero.launchURL('https://www.zotero.org/support/word_processor_plugin_troubleshooting#zotero_toolbar_doesn_t_appear');
+			return;
 		}
 		
 		zpi.success();
