@@ -187,25 +187,46 @@ var Plugin = new function() {
 			try {
 				dotm.copyTo(startupFolder, "Zotero.dotm");
 			} catch (e) {
-				Zotero.debug(e);
-				someBadFolders = true;
+				Zotero.debug(e, 1);
 				throw new Error(`Could not copy Zotero.dotm to ${startupFolder.path}`)
 			}
 		}
 
 		if (allBadFolders || someBadFolders) {
 			zpi.failSilently = true;
+			let title;
+			let text;
 			if (allBadFolders) {
-				Services.prompt.alert(null, Zotero.getString('general.error'),
-					Zotero.getString('integration.error.winWordAllStartupFolderAlert', [Zotero.clientName]));
-				zpi.error(Zotero.getString('integration.error.winWordAllStartupFolderAlert', [Zotero.clientName]));
+				title = Zotero.getString('general.error');
+				text = Zotero.getString(
+					'integration.error.misconfiguredWordStartupFolder.all',
+					[Zotero.clientName]
+				);
+				zpi.error(text);
 			}
 			else {
-				Services.prompt.alert(null, Zotero.getString('general.warning'),
-					Zotero.getString('integration.error.winWordSomeStartupFolderAlert', [Zotero.clientName]));
-				zpi.error(Zotero.getString('integration.error.winWordSomeStartupFolderAlert', [Zotero.clientName]), false);
+				title = Zotero.getString('general.warning');
+				text = Zotero.getString(
+					'integration.error.misconfiguredWordStartupFolder.some',
+					[Zotero.clientName]
+				);
+				zpi.error(text, false);
 			}
-			Zotero.launchURL('https://www.zotero.org/support/word_processor_plugin_troubleshooting#zotero_toolbar_doesn_t_appear');
+			text += "\n\n" + Zotero.getString('integration.error.misconfiguredWordStartupFolder.fix');
+			let ps = Services.prompt;
+			let buttonFlags = ps.BUTTON_POS_0 * ps.BUTTON_TITLE_IS_STRING
+				+ ps.BUTTON_POS_1 * ps.BUTTON_TITLE_CANCEL;
+			let index = ps.confirmEx(
+				null,
+				title,
+				text,
+				buttonFlags,
+				Zotero.getString('general.moreInformation'),
+				"", "", "", {}
+			);
+			if (index == 0) {
+				Zotero.launchURL('https://www.zotero.org/support/kb/misconfigured_word_startup_folder');
+			}
 			return;
 		}
 		
