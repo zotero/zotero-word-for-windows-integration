@@ -205,11 +205,31 @@ statusCode __stdcall deleteField(field_t* field) {
 	HANDLE_EXCEPTIONS_BEGIN
 	bool wholeNote;
 	ENSURE_OK(isWholeNote(field, &wholeNote));
+	CSelection selection = field->doc->comWindow.get_Selection();
+	CRange selectionRange = selection.get_Range();
 	if(wholeNote) {
 		// If the note contains only this field, delete the note
 		if(field->noteType == NOTE_FOOTNOTE) {
+			CRange noteRange = field->comFootnote.get_Range();
+			// If we remove a note and the selection cursor is in it, the document ends up without a valid selection
+			// so we put the selection right after the note in the reference.
+			if (selection.get_Start() >= noteRange.get_Start() && selection.get_End() <= noteRange.get_End()) {
+				CRange refRange = field->comFootnote.get_Reference();
+				CRange dupRange = refRange.get_Duplicate();
+				dupRange.Collapse(0);
+				dupRange.Select();
+				field->doc->insertTextIntoNote = field->noteType;
+			}
 			field->comFootnote.Delete();
 		} else if(field->noteType == NOTE_ENDNOTE) {
+			CRange noteRange = field->comEndnote.get_Range();
+			if (selection.get_Start() >= noteRange.get_Start() && selection.get_End() <= noteRange.get_End()) {
+				CRange refRange = field->comEndnote.get_Reference();
+				CRange dupRange = refRange.get_Duplicate();
+				dupRange.Collapse(0);
+				dupRange.Select();
+				field->doc->insertTextIntoNote = field->noteType;
+			}
 			field->comEndnote.Delete();
 		}
 	} else if(field->comBookmark) {

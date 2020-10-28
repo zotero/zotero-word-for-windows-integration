@@ -29,9 +29,11 @@
 #include "zoteroWinWordIntegration.h"
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
+static COleVariant covTrue((short)TRUE), covFalse((short)FALSE);
 COleMessageFilter *comFilter = NULL;
 unsigned int comFilterRefs = 0;
 
+static short LINK_PLACEHOLDER_LENGTH = 6;
 static wchar_t *IMPORT_LINK_URL = L"https://www.zotero.org/";
 static wchar_t *IMPORT_ITEM_PREFIX = L"ITEM CSL_CITATION ";
 static wchar_t *IMPORT_BIBL_PREFIX = L"BIBL ";
@@ -214,6 +216,7 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 	doc->allocatedFieldsEnd = NULL;
 	doc->allocatedFieldListsStart = NULL;
 	doc->allocatedFieldListsEnd = NULL;
+	doc->insertTextIntoNote = 0;
 
 	*returnValue = doc;
 	return STATUS_OK;
@@ -904,6 +907,158 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 	range.Collapse(1 /*wdCollapseStart*/);
 	range.MoveEnd(4 /*wdParagraph*/, 4);
 	range.put_Text(L"");
+
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
+statusCode __stdcall insertText(document_t *doc, const wchar_t htmlString[]) {
+	HANDLE_EXCEPTIONS_BEGIN
+	setScreenUpdatingStatus(doc, false);
+
+	CSelection selection = doc->comWindow.get_Selection();
+	CRange insertRange = selection.get_Range();
+	if (doc->insertTextIntoNote && insertRange.get_StoryType() == 1) {
+		// Due to the stupid way we're handling this by inserting a field first and then un-inserting
+		// if text has to be inserted into the doc we have to re-insert a note here.
+		if (doc->insertTextIntoNote == NOTE_FOOTNOTE) {
+			CFootnotes notes = doc->comDoc.get_Footnotes();
+			CFootnote note = notes.Add(insertRange, covOptional, covOptional);
+			insertRange = note.get_Range();
+		}
+		else {
+			CEndnotes notes = doc->comDoc.get_Endnotes();
+			CEndnote note = notes.Add(insertRange, covOptional, covOptional);
+			insertRange = note.get_Range();
+		}
+	}
+
+	// Get current font info
+	CFont0 comFont = selection.get_Font();
+	CString fontName = comFont.get_Name();
+	float fontSize = comFont.get_Size();
+	// This doesn't work because it removes things like bullet points from inserted text
+	// The downside is that footnote text style is not applied to footnotes after insertion
+	//VARIANT var = insertRange.get_Style();
+	//CStyle comStyle = (CStyle) var.pdispVal;
+
+	// Get a temp file
+	char* utf8String;
+	int nBytes;
+
+	// Convert to UTF-8
+	nBytes = WideCharToMultiByte(CP_UTF8, 0, htmlString, -1, NULL, 0, NULL, NULL);
+	utf8String = new char[nBytes];
+	WideCharToMultiByte(CP_UTF8, 0, htmlString, -1, utf8String, nBytes, NULL, NULL);
+
+	// Open and write file
+	DWORD nWritten;
+	HANDLE tempFileHandle = getTemporaryFile();
+	WriteFile(tempFileHandle, utf8String, nBytes - 1, &nWritten, NULL);
+	SetEndOfFile(tempFileHandle);
+	delete[] utf8String;
+
+	// Read from file into range
+	insertRange.put_Text(L"  ");
+	CRange toDelete = insertRange.get_Duplicate();
+	toDelete.Collapse(0);
+	CRange comDupRange = insertRange.get_Duplicate();
+	comDupRange.MoveEnd(1, -1);
+	comDupRange.InsertFile(getTemporaryFilePath(), &covOptional, &covFalse, &covFalse, &covFalse);
+	toDelete.MoveStart(1, -1);
+	toDelete.put_Text(L"");
+	
+	// Put font back on
+	comFont = insertRange.get_Font();
+	comFont.put_Name(fontName);
+	comFont.put_Size(fontSize);
+	//insertRange.put_Style(comStyle.get_NameLocal());
+
+	selection.put_Start(insertRange.get_End());
+	selection.put_End(insertRange.get_End());
+
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
+statusCode __stdcall convertPlaceholdersToFields(document_t *doc, const wchar_t* placeholders[], const unsigned long nPlaceholders,
+		const unsigned short noteType, const wchar_t fieldType[], listNode_t** returnNode) {
+	HANDLE_EXCEPTIONS_BEGIN
+	bool isField = wcscmp(fieldType, L"Field") == 0;
+	bool isBookmark = wcscmp(fieldType, L"Bookmark") == 0;
+	if (!isField && !isBookmark) {
+		DIE(L"Field type not implemented");
+	}
+
+	listNode_t* fieldListStart = NULL;
+	listNode_t* fieldListEnd = NULL;
+
+	CStoryRanges comStoryRanges = doc->comDoc.get_StoryRanges();
+	CRange comStoryRange;
+	// Main body, footnotes and endnotes (1 indexed!)
+	for (long i = 1; i <= 3; i++) {
+		try {
+			comStoryRange = comStoryRanges.Item(i);
+		}
+		catch (COleDispatchException* e) {
+			e->Delete();
+			continue;
+		}
+		CHyperlinks comLinks = comStoryRange.get_Hyperlinks();
+		long count = comLinks.get_Count();
+		// 1 indexed!!!
+		for (long j = count; j > 0; j--) {
+			CHyperlink comLink = comLinks.Item(COleVariant(j));
+			CString linkUrl = comLink.get_Address();
+			CString placeholderID = linkUrl.Right(LINK_PLACEHOLDER_LENGTH);
+			const wchar_t *code = NULL;
+			for (long k = 0; k < nPlaceholders; k++) {
+				if (placeholderID.Find(placeholders[k]) != 0) {
+					continue;
+				}
+				code = L"TEMP";
+				break;
+			}
+			if (code == NULL) {
+				continue;
+			}
+			CRange insertRange = comLink.get_Range();
+			field_t *newField;
+
+			if (insertRange.get_StoryType() == 1) {
+				insertRange.put_Text(L"");
+				// If inserting a note citation in the main story, we need to make a new note
+				if (noteType == NOTE_FOOTNOTE) {
+					CFootnotes notes = doc->comDoc.get_Footnotes();
+					CFootnote note = notes.Add(insertRange, covOptional, covOptional);
+					// Move cursor back to main text
+					CRange referenceRange = note.get_Reference();
+					CRange dupRange = referenceRange.get_Duplicate();
+					dupRange.Collapse(0 /*wdCollapseEnd*/);
+					dupRange.Select();
+					// Now inserting field into note
+					insertRange = note.get_Range();
+				}
+				else if (noteType == NOTE_ENDNOTE) {
+					CEndnotes notes = doc->comDoc.get_Endnotes();
+					CEndnote note = notes.Add(insertRange, covOptional, covOptional);
+					// Move cursor back to main text
+					CRange referenceRange = note.get_Reference();
+					CRange dupRange = referenceRange.get_Duplicate();
+					dupRange.Collapse(0 /*wdCollapseEnd*/);
+					dupRange.Select();
+					// Now inserting field into note
+					insertRange = note.get_Range();
+				}
+			}
+
+			ENSURE_OK(insertFieldRaw(doc, fieldType, insertRange, &newField));
+			if (newField->code) free(newField->code);
+			ENSURE_OK(setCode(newField, code));
+			addValueToList(newField, &fieldListStart, &fieldListEnd);
+		}
+	}
+	*returnNode = fieldListStart;
 
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
