@@ -49,6 +49,15 @@ void throwError(const CException* error, const char function[], const char file[
 	throwError(errorString, function, file, 0);
 }
 
+// Converts a std:exception to a JS exception
+void throwError(const std::exception *error, const char function[], const char file[]) {
+	std::string str = error->what();
+	std::wstring widestr = std::wstring(str.begin(), str.end());
+	const wchar_t* widecstr = widestr.c_str();
+	throwError(widecstr, function, file, 0);
+}
+
+
 // Clears the last error encountered
 void __stdcall clearError(void) {
 	delete lastErrorString;

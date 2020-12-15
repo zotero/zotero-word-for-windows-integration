@@ -29,6 +29,7 @@
 #pragma comment(lib, "mpr.lib")
 
 #include "stdafx.h"
+#include <iostream>
 #include "CApplication.h"
 #include "CBookmark0.h"
 #include "CBookmarks.h"
@@ -120,6 +121,9 @@ try {
 	throwError(exception, __FUNCTION__, __FILE__); \
 	exception->Delete(); \
 	return STATUS_EXCEPTION; \
+} catch(std::exception *exception) { \
+	throwError(exception, __FUNCTION__, __FILE__); \
+	return STATUS_EXCEPTION; \
 } catch(...) { \
 	throwError(L"An unhandled exception occured.", __FUNCTION__, __FILE__, 0);\
 	return STATUS_EXCEPTION; \
@@ -204,6 +208,7 @@ bool errorHasOccurred(void);
 void throwError(const wchar_t error[], const char function[], const char file[],
 				unsigned int line);
 void throwError(const CException* error, const char function[], const char file[]);
+void throwError(const std::exception* error, const char function[], const char file[]);
 
 HANDLE getTemporaryFile(void);
 void deleteTemporaryFile(void);
