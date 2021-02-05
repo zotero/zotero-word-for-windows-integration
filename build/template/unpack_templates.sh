@@ -17,11 +17,3 @@ rm Zotero.dotm/word/vbaProject.bin
 mkdir Zotero.dotm/word/vbaProject.bin
 python ../tools/officeparser/officeparser.py -l ERROR -o Zotero.dotm/word/vbaProject.bin \
        --extract-macros ../../install/Zotero.dotm
-
-# Zotero.dot (not unzipping, because all files are binary anyway)
-echo 'Unpacking Zotero.dot...'
-
-rm -rf Zotero.dot/*
-
-python ../tools/officeparser/officeparser.py -l ERROR -o Zotero.dot \
-       --extract-macros ../../install/Zotero.dot

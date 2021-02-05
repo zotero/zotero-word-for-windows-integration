@@ -88,6 +88,10 @@ Public Sub ZoteroAddEditCitation()
     Call ZoteroCommand("addEditCitation", True)
 End Sub
 
+Public Sub ZoteroAddNote()
+    Call ZoteroCommand("addNote", True)
+End Sub
+
 Public Sub ZoteroAddEditBibliography()
     Call ZoteroCommand("addEditBibliography", True)
 End Sub
@@ -112,7 +116,7 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
     #Else
         Dim ThWnd As Long
     #End If
-    Dim a$, args$, name$
+    Dim a$, args$, name$, templateVersion$
     Dim i As Long
     Dim ignore As Long
     Dim sBuffer$
@@ -146,9 +150,11 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
         name$ = ActiveDocument.name
     End If
     
+    templateVersion$ = 1
+    
     ' Set up command line arguments
     name$ = Replace(name$, """", """""")
-    args$ = "-silent -ZoteroIntegrationAgent WinWord -ZoteroIntegrationCommand " & cmd & " -ZoteroIntegrationDocument """ & name$ & """"
+    args$ = "-silent -ZoteroIntegrationAgent WinWord -ZoteroIntegrationCommand " & cmd & " -ZoteroIntegrationDocument """ & name$ & """ -ZoteroIntegrationTemplateVersion " & templateVersion$
     a$ = "firefox.exe " & args$ & Chr$(0) & "C:\"
     
     ' Do some UTF-8 magic
