@@ -3,8 +3,9 @@
   <ribbon>
     <tabs>
       <tab id="ZoteroTab" getLabel="ZoteroRibbon.ZoteroTabLabel" insertBeforeMso="TabAddIns">
-        <group id="ZoteroGroup" image="zotero-z-16" label="Zotero">
+        <group id="ZoteroGroup" image="zoteroz16" label="Zotero">
           <button id="InsertZoteroCitationButton" label="Add/Edit Citation" size="large" image="addEditZoteroCitation" onAction="ZoteroRibbon.ZoteroRibbonAddEditCitation" supertip="Insert a new citation, or edit the citation at the current cursor position"/>
+          <button id="InsertZoteroNoteButton" label="Add Note" size="large" image="addZoteroNote" onAction="ZoteroRibbon.ZoteroRibbonAddNote" supertip="Insert a new note at the current cursor position"/>
           <button id="InsertZoteroBibliographyButton" label="Add/Edit Bibliography" size="large" image="addEditZoteroBibliography" onAction="ZoteroRibbon.ZoteroRibbonAddEditBibliography" supertip="Insert a new bibliography, or edit the existing bibliography, at the current cursor position"/>
           <button id="ZoteroSetDocPrefs" label="Document Preferences" image="setZoteroDocPrefs-small" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale"/>
           <button id="RefreshZotero" label="Refresh" imageMso="RecordsRefreshRecords" onAction="ZoteroRibbon.ZoteroRibbonRefresh" supertip="Update all citations to reflect changes"/>
