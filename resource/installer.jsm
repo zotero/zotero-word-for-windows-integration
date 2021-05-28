@@ -158,7 +158,7 @@ var Plugin = new function() {
 					try {
 						Zotero.File.createDirectoryIfMissing(startupFolder.path);
 					} catch (e) {
-						Zotero.debug('Failed to create the default startup folder. Skipping the location');
+						Zotero.debug('Failed to create the default Word startup folder -- skipping\n\n' + e, 1);
 						continue;
 					}
 				}
