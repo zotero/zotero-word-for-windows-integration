@@ -130,11 +130,12 @@ var Plugin = new function() {
 			}
 		}
 		
+		var defaultStartupFolder = appData.clone().QueryInterface(Components.interfaces.nsIFile);
+		defaultStartupFolder.appendRelativePath("Microsoft\\Word\\Startup");
+
 		if(startupFolders.length == 0 || addDefaultStartupFolder) {
 			// if not in the registry, append Microsoft/Word/Startup to %AppData% (default location)
-			var startupFolder = appData.clone().QueryInterface(Components.interfaces.nsIFile);
-			startupFolder.appendRelativePath("Microsoft\\Word\\Startup");
-			startupFolders.push(startupFolder);
+			startupFolders.push(defaultStartupFolder);
 		}
 		
 		// The OEM Word 365 sandboxed location, which we might not have the permissions to write to
@@ -149,10 +150,17 @@ var Plugin = new function() {
 		var someBadFolders = false;
 		var allBadFolders = true;
 		var installedAt = new Set();
-		for (var startupFolder of startupFolders) {
+		for (let startupFolder of startupFolders) {
 			if (!startupFolder.clone().exists()) {
-				Zotero.debug(`Potential Word startup location ${startupFolder.path} does not exist. Skipping`);
-				continue;
+				// Sometimes even with Word installed and having been launched before the Startup folder does not exist
+				// so we create it here if we have detected installed Word versions
+				if (installedVersions.length && startupFolder.path.toLowerCase() == defaultStartupFolder.path.toLowerCase()) {
+					Zotero.File.createDirectoryIfMissing(startupFolder.path);
+				}
+				else {
+					Zotero.debug(`Potential Word startup location ${startupFolder.path} does not exist. Skipping`);
+					continue;
+				}
 			}
 			
 			// Multiple versions of Word all with the same setting, so we only install there once
