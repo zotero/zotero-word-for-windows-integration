@@ -221,20 +221,29 @@ var Plugin = new function() {
 				zpi.error(text, false);
 			}
 			text += "\n\n" + Zotero.getString('integration.error.misconfiguredWordStartupFolder.fix');
-			let ps = Services.prompt;
-			let buttonFlags = ps.BUTTON_POS_0 * ps.BUTTON_TITLE_IS_STRING
-				+ ps.BUTTON_POS_1 * ps.BUTTON_TITLE_CANCEL;
-			let index = ps.confirmEx(
-				null,
-				title,
-				text,
-				buttonFlags,
-				Zotero.getString('general.moreInformation'),
-				"", "", "", {}
-			);
-			if (index == 0) {
-				Zotero.launchURL('https://www.zotero.org/support/kb/misconfigured_word_startup_folder');
+			// Only display prompt if force installing (via button press)
+			if (zpi.force) {
+				// Prompts displayed synchronously here fails for some mystical reason
+				// (probably because this runs in a some event handler event loop)
+				// See zpi.success()/zpi.error() which also shows its dialogs in the next loop
+				Zotero.setTimeout(function() {
+					let ps = Services.prompt;
+					let buttonFlags = ps.BUTTON_POS_0 * ps.BUTTON_TITLE_IS_STRING
+						+ ps.BUTTON_POS_1 * ps.BUTTON_TITLE_CANCEL;
+					let index = ps.confirmEx(
+						null,
+						title,
+						text,
+						buttonFlags,
+						Zotero.getString('general.moreInformation'),
+						"", "", "", {}
+					);
+					if (index == 0) {
+						Zotero.launchURL('https://www.zotero.org/support/kb/misconfigured_word_startup_folder');
+					}
+				});
 			}
+			
 			return;
 		}
 		
