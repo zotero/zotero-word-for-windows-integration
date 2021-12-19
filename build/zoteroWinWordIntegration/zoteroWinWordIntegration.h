@@ -25,6 +25,7 @@
 // or project specific include files that are used frequently, but
 // are changed infrequently
 
+#define _ALLOW_RTCc_IN_STL
 #pragma once
 #pragma comment(lib, "mpr.lib")
 
@@ -146,6 +147,7 @@ typedef struct Document {
 	long restoreRevisionsMarkup;
 	bool statusScreenUpdating;
 	bool restoreTrackChanges;
+	short insertTextIntoNote;
 	
 	listNode_t* allocatedFieldsStart;
 	listNode_t* allocatedFieldsEnd;
@@ -243,6 +245,9 @@ extern "C" {
 									                                unsigned long tabStopCount);
 	__declspec(dllexport) statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], const wchar_t importInstructions[]);
 	__declspec(dllexport) statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], bool* returnValue);
+	__declspec(dllexport) statusCode __stdcall insertText(document_t *doc, const wchar_t htmlString[]);
+	__declspec(dllexport) statusCode __stdcall convertPlaceholdersToFields(document_t *doc, const wchar_t* placeholders[], const unsigned long nPlaceholders,
+		const unsigned short noteType, const wchar_t fieldType[], listNode_t** returnNode);
 	__declspec(dllexport) statusCode __stdcall cleanup(document_t *doc);
 	__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
 }
