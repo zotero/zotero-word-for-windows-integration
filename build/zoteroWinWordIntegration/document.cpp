@@ -936,11 +936,6 @@ statusCode __stdcall insertText(document_t *doc, const wchar_t htmlString[]) {
 	// Get current font info
 	CFont0 comFont = selection.get_Font();
 	CString fontName = comFont.get_Name();
-	float fontSize = comFont.get_Size();
-	// This doesn't work because it removes things like bullet points from inserted text
-	// The downside is that footnote text style is not applied to footnotes after insertion
-	//VARIANT var = insertRange.get_Style();
-	//CStyle comStyle = (CStyle) var.pdispVal;
 
 	// Get a temp file
 	char* utf8String;
@@ -971,8 +966,6 @@ statusCode __stdcall insertText(document_t *doc, const wchar_t htmlString[]) {
 	// Put font back on
 	comFont = insertRange.get_Font();
 	comFont.put_Name(fontName);
-	comFont.put_Size(fontSize);
-	//insertRange.put_Style(comStyle.get_NameLocal());
 
 	selection.put_Start(insertRange.get_End());
 	selection.put_End(insertRange.get_End());
