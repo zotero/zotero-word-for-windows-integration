@@ -38,31 +38,17 @@ var Plugin = new function() {
 	this.EXTENSION_PREF_BRANCH = "extensions.zoteroWinWordIntegration.";
 	this.EXTENSION_DIR = "zotero-winword-integration";
 	this.APP = 'Microsoft Word';
+	this.VERSION_FILE = 'resource://zotero-winword-integration/version.txt';
 	
-	this.REQUIRED_ADDONS = [{
-		name: "Zotero",
-		url: "zotero.org",
-		id: "zotero@chnm.gmu.edu",
-		minVersion: "4.0.28.6.SOURCE",
-		required: true
-	}, {
-		name: "Zotero LibreOffice Integration",
-		url: "zotero.org/support/word_processor_plugin_installation",
-		id: "zoteroOpenOfficeIntegration@zotero.org",
-		minVersion: "3.5b2.SVN",
-		required: false
-	}];
 	this.LAST_INSTALLED_FILE_UPDATE = "6.0.0pre";
 	
 	var zoteroPluginInstaller;
 	
-	this.verifyNotCorrupt = function(zpi) {}
-	
 	this.install = function(zpi) {
 		// get Zotero.dot file
-		var dotm = zpi.getAddonPath(this.EXTENSION_ID);
-		dotm.append("install");
-		dotm.append("Zotero.dotm");
+		let dotm = FileUtils.getDir('AChrom', []).parent.parent;
+		dotm.append('integration');
+		dotm.append('word-for-windows');
 
 		// find Word Startup folders (see http://support.microsoft.com/kb/210860)
 		var appData = Components.classes["@mozilla.org/file/directory_service;1"]

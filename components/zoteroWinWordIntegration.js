@@ -22,7 +22,7 @@
     ***** END LICENSE BLOCK *****
 */
 
-Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+Components.utils.import("resource://gre/modules/ComponentUtils.jsm");
 Components.utils.import("resource://gre/modules/ctypes.jsm");
 
 var Zotero = Components.classes["@zotero.org/Zotero;1"]
@@ -530,6 +530,22 @@ for (let cls of [Document, Field]) {
 	}
 }
 
-const NSGetFactory = XPCOMUtils.generateNSGetFactory([
-	Application
+/**
+ * A service to initialize Word plugin code on Zotero startup
+ */
+var Initializer = function() {
+	var Integration = Components.utils.import("resource://zotero-winword-integration/integration.js").WinWordIntegration;
+	Integration.init();
+};
+Initializer.prototype = {
+	classDescription: "Zotero Word for Windows Initializer",
+	"classID":Components.ID("{bacdcfc8-9c82-49d0-8076-b8dc17f7366e}"),
+	"contractID":"@zotero.org/Zotero/integration/initializer?agent=WinWord;1",
+	"QueryInterface":ChromeUtils.generateQI([Components.interfaces.nsISupports]),
+	"service":true
+};
+
+
+const NSGetFactory = ComponentUtils.generateNSGetFactory([
+	Application, Initializer
 ]);
