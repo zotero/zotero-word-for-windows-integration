@@ -33,7 +33,6 @@ static COleVariant covTrue((short)TRUE), covFalse((short)FALSE);
 static wchar_t* FIELD_PREFIXES[] = {L" ADDIN ZOTERO_", L" CSL_", NULL};
 static wchar_t* BOOKMARK_PREFIXES[] = {L"ZOTERO_", L"CSL_", NULL};
 
-statusCode getFieldRange(field_t* field, CRange* testRange);
 statusCode isWholeNote(field_t* field, bool* returnValue);
 statusCode setTextAndNoteLocations(field_t* field);
 
@@ -100,6 +99,7 @@ statusCode initField(document_t *doc, CField comField, short noteType,
 		field->text = NULL;
 		field->bookmarkName = NULL;
 		field->comBookmark = NULL;
+		field->adjacent = false;
 		
 		field->doc = doc;
 		field->comField = comField;
@@ -168,6 +168,7 @@ statusCode initBookmark(document_t *doc, CBookmark0 comBookmark, short noteType,
 	if(field) {
 		field->text = NULL;
 		field->comField = NULL;
+		field->adjacent = false;
 		
 		field->bookmarkName = _wcsdup(bookmarkName);
 		field->doc = doc;
@@ -418,6 +419,14 @@ statusCode __stdcall getNoteIndex(field_t* field, unsigned long *returnValue) {
 	} else {
 		*returnValue = 0;
 	}
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
+// Returns whether the field is adjacent to the next field
+statusCode __stdcall isAdjacentToNextField(field_t* field, bool *returnValue) {
+	HANDLE_EXCEPTIONS_BEGIN
+	*returnValue = field->adjacent;
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
 }
