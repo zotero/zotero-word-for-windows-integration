@@ -46,6 +46,7 @@ statusCode addNextFieldToList(document_t* doc, field_t* currentFields[], listNod
 statusCode getNextFieldFromEnumerator(document_t* doc, IEnumVARIANT* enumerator, short noteType, field_t** returnValue);
 statusCode getNextBookmark(document_t* doc, CBookmarks comBookmarks, unsigned long* bookmarkIndex,
 	                       const unsigned long bookmarkCount, short noteType, field_t** returnValue);
+statusCode setFieldAdjacency(field_t *fieldA, field_t *fieldB);
 void freeFieldList(listNode_t* fieldList, bool freeFields);
 
 statusCode __stdcall getDocument(const wchar_t documentName[], document_t** returnValue) {
@@ -680,10 +681,23 @@ statusCode addNextFieldToList(document_t* doc, field_t* currentFields[], listNod
 		// No next field
 		*noMoreFields = true;
 	} else {
+		if (*fieldListEnd) {
+			ENSURE_OK(setFieldAdjacency((field_t *) (*fieldListEnd)->value, currentFields[noteTypeA]));
+		}
 		*noteType = noteTypeA;
 		addValueToList(currentFields[noteTypeA], fieldListStart, fieldListEnd);
 	}
 
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
+statusCode setFieldAdjacency(field_t * fieldA, field_t *fieldB) {
+	HANDLE_EXCEPTIONS_BEGIN
+	CRange rangeA, rangeB;
+	ENSURE_OK(getFieldRange(fieldA, &rangeA));
+	ENSURE_OK(getFieldRange(fieldB, &rangeB));
+	fieldA->adjacent = rangeA.get_End() == rangeB.get_Start();
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
 }

@@ -176,6 +176,9 @@ typedef struct Field {
 	// The location of this field relative to the start of the footnote/endnote
 	// story.
 	long noteLocation;
+
+	// Whether this field is adjacent to the next field
+	bool adjacent;
 	
 	// Only one of these will be set
 	CField comField;
@@ -252,6 +255,7 @@ extern "C" {
 	__declspec(dllexport) statusCode __stdcall complete(document_t *doc);
 }
 
+statusCode getFieldRange(field_t* field, CRange* testRange);
 statusCode getProperty(document_t *doc, CString propertyName,
 					   CString* returnValue);
 statusCode setProperty(document_t *doc, CString propertyName,
@@ -272,6 +276,7 @@ extern "C" {
 	__declspec(dllexport) statusCode __stdcall getText(field_t* field, wchar_t** returnValue);
 	__declspec(dllexport) statusCode __stdcall setCode(field_t *field, const wchar_t code[]);
 	__declspec(dllexport) statusCode __stdcall getNoteIndex(field_t* field, unsigned long *returnValue);
+	__declspec(dllexport) statusCode __stdcall isAdjacentToNextField(field_t* field, bool *returnValue);
 }
 
 statusCode initField(document_t *doc, CField comField, short noteType,
