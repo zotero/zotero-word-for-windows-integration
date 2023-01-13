@@ -25,6 +25,11 @@ Option Explicit
 
 Private Const CP_UTF8 = 65001
 Private Const WM_COPYDATA = &H4A
+#If VBA7 Then
+    Global ZotWnd As LongPtr
+#Else
+    Global ZotWnd As Long
+#End If
 
 #If VBA7 Then
     Type COPYDATASTRUCT
@@ -40,6 +45,12 @@ Private Const WM_COPYDATA = &H4A
         wParam As Long, lParam As Any) As Integer
     Private Declare PtrSafe Function SetForegroundWindow Lib "user32" _
         (ByVal hwnd As LongPtr) As Boolean
+    Private Declare PtrSafe Function EnumThreadWindows Lib "user32" _
+        (ByVal dwThreadId As Long, ByVal lpEnumFunc As LongPtr, ByVal lParam As LongPtr) As Boolean
+    Private Declare PtrSafe Function GetWindowThreadProcessId Lib "user32" _
+        (ByVal hwnd As LongPtr, lpdwProcessId As Long) As Long
+    Private Declare PtrSafe Function GetClassName Lib "user32" Alias "GetClassNameA" _
+        (ByVal hwnd As LongPtr, ByVal lpClassName As String, ByVal nMaxCount As Long) As Long
     Private Declare PtrSafe Function WideCharToMultiByte Lib "kernel32" (ByVal CodePage As Long, _
         ByVal dwflags As Long, ByVal lpWideCharStr As LongPtr, _
         ByVal cchWideChar As Long, lpMultiByteStr As Any, _
@@ -59,6 +70,12 @@ Private Const WM_COPYDATA = &H4A
         wParam As Long, lParam As Any) As Integer
     Private Declare Function SetForegroundWindow Lib "user32" _
         (ByVal hwnd As Long) As Boolean
+    Private Declare Function EnumThreadWindows Lib "user32" _
+        (ByVal dwThreadId As Long, ByVal lpEnumFunc As Long, ByVal lParam As Long) As Boolean
+    Private Declare Function GetWindowThreadProcessId Lib "user32" _
+        (ByVal hwnd As Long, lpdwProcessId As Long) As Long
+    Private Declare Function GetClassName Lib "user32" Alias "GetClassNameA" _
+        (ByVal hwnd As Long, ByVal lpClassName As String, ByVal nMaxCount As Long) As Long
     Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" _
         (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
     Private Declare Function WideCharToMultiByte Lib "kernel32" (ByVal CodePage As Long, _
@@ -108,14 +125,58 @@ Public Sub ZoteroRemoveCodes()
     Call ZoteroCommand("removeCodes", False)
 End Sub
 
-
-Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
-    Dim cds As COPYDATASTRUCT
+Private Sub FindZoteroWindow()
+    ZotWnd = 0
     #If VBA7 Then
         Dim ThWnd As LongPtr
     #Else
         Dim ThWnd As Long
     #End If
+    ' Zotero 6 / FX60+
+    ThWnd = FindWindow("ZoteroMessageWindow", vbNullString)
+    If ThWnd <> 0 Then
+        ZotWnd = ThWnd
+        Exit Sub
+    End If
+    
+    ' Zotero 7 / FX102+
+    ThWnd = FindWindow("ZoteroWindowClass", vbNullString)
+    If ThWnd = 0 Then
+        Exit Sub
+    End If
+    Dim lpdwThreadId As Long
+    lpdwThreadId = GetWindowThreadProcessId(ThWnd, 0)
+    Call EnumThreadWindows(lpdwThreadId, AddressOf EnumWindowsCallback, ByVal 0&)
+End Sub
+
+Function EnumWindowsCallback(ByVal hwnd As Long, ByVal lParams As Long) As Long ' {
+    Dim windowClass As String * 256
+    Dim retVal      As Long
+    Dim l           As Long
+    Dim zoteroPosition As Long
+    Dim remoteWindowPosition As Long
+
+    retVal = GetClassName(hwnd, windowClass, 255)
+    windowClass = Left$(windowClass, retVal)
+    zoteroPosition = InStr(windowClass, "Mozilla_zotero_")
+    remoteWindowPosition = InStr(windowClass, "RemoteWindow")
+    ' Looking for window name like `Mozilla_zotero_%profileName%_RemoteWindow`
+    ' which is not configurable and used to be much simpler in Z6 - `ZoteroMessageWindow`
+    If zoteroPosition <> 0 And remoteWindowPosition <> 0 Then
+        ZotWnd = hwnd
+        EnumWindowsCallback = False
+    Else
+        '
+        ' Return true to indicate that we want to continue
+        ' with the enumeration of the windows:
+        '
+        EnumWindowsCallback = True
+    End If
+End Function ' }
+
+
+Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
+    Dim cds As COPYDATASTRUCT
     Dim a$, args$, name$, templateVersion$
     Dim i As Long
     Dim ignore As Long
@@ -123,25 +184,14 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
     Dim lLength As Long
     Dim buf() As Byte
     
-    ' Try various names for Firefox
-    Dim appNames(5)
-    appNames(1) = "Zotero"
-    appNames(2) = "Firefox"
-    appNames(3) = "Browser"
-    appNames(4) = "firefox-dev"
-    For i = 1 To 4
-        ThWnd = FindWindow(appNames(i) & "MessageWindow", vbNullString)
-        If ThWnd <> 0 Then
-            Exit For
-        End If
-    Next
-    If ThWnd = 0 Then
+    Call FindZoteroWindow
+    If ZotWnd = 0 Then
         MsgBox ("Word could not communicate with Zotero. Please ensure Zotero is running and try again. If this problem persists, see https://www.zotero.org/support/word_processor_plugin_troubleshooting")
         Exit Sub
     End If
     
     ' Allow Firefox to bring a window to the front
-    If bringToFront Then Call SetForegroundWindow(ThWnd)
+    If bringToFront Then Call SetForegroundWindow(ZotWnd)
     
     ' Get path to active document
     If ActiveDocument.Path <> "" Then
@@ -155,7 +205,7 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
     ' Set up command line arguments
     name$ = Replace(name$, """", """""")
     args$ = "-silent -ZoteroIntegrationAgent WinWord -ZoteroIntegrationCommand " & cmd & " -ZoteroIntegrationDocument """ & name$ & """ -ZoteroIntegrationTemplateVersion " & templateVersion$
-    a$ = "firefox.exe " & args$ & Chr$(0) & "C:\"
+    a$ = "zotero.exe " & args$ & Chr$(0) & "C:\"
     
     ' Do some UTF-8 magic
     lLength = WideCharToMultiByte(CP_UTF8, 0, StrPtr(a$), -1, ByVal 0, 0, 0, 0)
@@ -166,14 +216,14 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
     cds.dwData = 1
     cds.cbData = lLength
     cds.lpData = VarPtr(buf(1))
-    i = SendMessage(ThWnd, WM_COPYDATA, 0, cds)
+    i = SendMessage(ZotWnd, WM_COPYDATA, 0, cds)
     
     ' Handle error
     If Err.LastDllError = 5 Then
-        If Dir("C:\Program Files\Mozilla Firefox\firefox.exe") <> "" Then
-            Call Shell("""C:\Program Files\Mozilla Firefox\firefox.exe"" " & args$, vbNormalFocus)
-        ElseIf Dir("C:\Program Files (x86)\Mozilla Firefox\firefox.exe") <> "" Then
-            Call Shell("""C:\Program Files (x86)\Mozilla Firefox\firefox.exe"" " & args$, vbNormalFocus)
+        If Dir("C:\Program Files\Zotero\zotero.exe.exe") <> "" Then
+            Call Shell("""C:\Program Files\Zotero\zotero.exe"" " & args$, vbNormalFocus)
+        ElseIf Dir("C:\Program Files (x86)\Zotero\zotero.exe.exe") <> "" Then
+            Call Shell("""C:\Program Files (x86)\Zotero\zotero.exe.exe"" " & args$, vbNormalFocus)
         End If
     End If
 End Sub
