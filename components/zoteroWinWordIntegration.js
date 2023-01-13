@@ -24,6 +24,7 @@
 
 Components.utils.import("resource://gre/modules/ComponentUtils.jsm");
 Components.utils.import("resource://gre/modules/ctypes.jsm");
+Components.utils.import("resource://gre/modules/FileUtils.jsm");
 
 var Zotero = Components.classes["@zotero.org/Zotero;1"]
 			.getService(Components.interfaces.nsISupports)
@@ -35,13 +36,9 @@ var field_t, document_t, fieldListNode_t, progressFunction_t, lib, libPath, f, f
  */
 function init() {
 	if(lib) return;
-	var ios = Components.classes["@mozilla.org/network/io-service;1"]  
-		.getService(Components.interfaces.nsIIOService);
-	var resHandler = ios.getProtocolHandler("resource")
-		.QueryInterface(Components.interfaces.nsIResProtocolHandler);
-	var fileURI = resHandler.getSubstitution("zotero-winword-integration")
-		.QueryInterface(Components.interfaces.nsIFileURL);
-	libPath = fileURI.file;
+	libPath = FileUtils.getDir('ARes', []).parent.parent;
+	libPath.append('integration');
+	libPath.append('word-for-windows');
 	if (Zotero.platform == "Win64") {
 		libPath.append("libzoteroWinWordIntegration_x64.dll");
 	} else {
@@ -234,7 +231,7 @@ Application.prototype = {
 	classDescription: "Zotero Word for Windows Integration Application",
 	classID:		Components.ID("{c7a7eec5-f073-4db4-b383-f866f4b96b1c}"),
 	contractID:		"@zotero.org/Zotero/integration/application?agent=WinWord;1",
-	QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsISupports]),
+	QueryInterface: ChromeUtils.generateQI([Components.interfaces.nsISupports]),
 	service:		true,
 	getDocument: async function(documentName) {
 		init();
@@ -436,7 +433,7 @@ FieldEnumerator.prototype = {
 		return new Field(fieldPtr, this._documentStatus);
 	},
 	
-	"QueryInterface": XPCOMUtils.generateQI([Components.interfaces.nsISupports,
+	"QueryInterface": ChromeUtils.generateQI([Components.interfaces.nsISupports,
 		Components.interfaces.nsISimpleEnumerator])
 };
 

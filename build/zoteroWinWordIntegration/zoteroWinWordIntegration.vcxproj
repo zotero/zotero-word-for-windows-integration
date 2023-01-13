@@ -196,7 +196,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CustomBuildStep>
-      <Command>copy "$(OutDir)\zoteroWinWordIntegration.dll" ..\..\resource\libzoteroWinWordIntegration.dll
+      <Command>copy "$(OutDir)\zoteroWinWordIntegration.dll" ..\..\install\libzoteroWinWordIntegration.dll
 </Command>
       <Outputs>..\..\resource\libzoteroWinWordIntegration.dll;%(Outputs)</Outputs>
       <Inputs>Release\zoteroWinWordIntegration.dll</Inputs>
@@ -241,7 +241,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CustomBuildStep>
-      <Command>copy "$(OutDir)\zoteroWinWordIntegration.dll" ..\..\resource\libzoteroWinWordIntegration_$(Platform).dll
+      <Command>copy "$(OutDir)\zoteroWinWordIntegration.dll" ..\..\install\libzoteroWinWordIntegration_$(Platform).dll
 </Command>
       <Outputs>..\..\resource\libzoteroWinWordIntegration_$(Platform).dll;%(Outputs)</Outputs>
       <Inputs>Release\zoteroWinWordIntegration_$(Platform).dll</Inputs>

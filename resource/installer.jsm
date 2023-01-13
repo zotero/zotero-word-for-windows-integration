@@ -24,6 +24,7 @@
 
 var EXPORTED_SYMBOLS = ["Installer"];
 Components.utils.import("resource://gre/modules/Services.jsm");
+Components.utils.import("resource://gre/modules/FileUtils.jsm");
 var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
 var ZoteroPluginInstaller = Components.utils.import("resource://zotero/word-processor-plugin-installer.js").ZoteroPluginInstaller;
 var Installer = function(failSilently, force) {
@@ -49,6 +50,7 @@ var Plugin = new function() {
 		let dotm = FileUtils.getDir('AChrom', []).parent.parent;
 		dotm.append('integration');
 		dotm.append('word-for-windows');
+		dotm.append("Zotero.dotm");
 
 		// find Word Startup folders (see http://support.microsoft.com/kb/210860)
 		var appData = Components.classes["@mozilla.org/file/directory_service;1"]
