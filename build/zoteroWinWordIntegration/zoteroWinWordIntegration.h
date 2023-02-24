@@ -147,6 +147,7 @@ typedef struct Document {
 	long restoreRevisionsMarkup;
 	bool statusScreenUpdating;
 	bool restoreTrackChanges;
+	bool hasUndoRecordInterface;
 	short insertTextIntoNote;
 	
 	listNode_t* allocatedFieldsStart;

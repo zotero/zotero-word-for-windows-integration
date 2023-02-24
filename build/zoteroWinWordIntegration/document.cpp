@@ -207,8 +207,13 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 	}
 
 	// Create an Undo Record, so we can undo Zotero actions in a single go.
-	// Only available in Word 2010 and later
-	if (doc->wordVersion >= 14) {
+	// when need to call Undo Record, checking if it exists first
+	DISPID dwDispID = -1;
+	CComBSTR szName("UndoRecord");
+	doc->comApp.m_lpDispatch->GetIDsOfNames(IID_NULL, &szName, 1, LOCALE_USER_DEFAULT, &dwDispID);
+	doc->hasUndoRecordInterface = false;
+	if (dwDispID > 0) {
+		doc->hasUndoRecordInterface = true;
 		CUndoRecord undoRecord = doc->comApp.get_UndoRecord();
 		undoRecord.StartCustomRecord(UNDO_RECORD_NAME);
 	}
@@ -1092,7 +1097,7 @@ statusCode __stdcall cleanup(document_t *doc) {
 
 statusCode __stdcall complete(document_t *doc) {
 	HANDLE_EXCEPTIONS_BEGIN
-	if (doc->wordVersion >= 14) {
+	if (doc->hasUndoRecordInterface) {
 		CUndoRecord undoRecord = doc->comApp.get_UndoRecord();
 		undoRecord.EndCustomRecord();
 	}
