@@ -41,7 +41,7 @@ var Plugin = new function() {
 	this.APP = 'Microsoft Word';
 	this.VERSION_FILE = 'resource://zotero-winword-integration/version.txt';
 	
-	this.LAST_INSTALLED_FILE_UPDATE = "6.0.0pre";
+	this.LAST_INSTALLED_FILE_UPDATE = "7.0.1pre";
 	
 	var zoteroPluginInstaller;
 	
