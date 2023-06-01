@@ -25,6 +25,14 @@
 var EXPORTED_SYMBOLS = ["Installer"];
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/FileUtils.jsm");
+
+const { XPCOMUtils } = ChromeUtils.import(
+	"resource://gre/modules/XPCOMUtils.jsm"
+);
+XPCOMUtils.defineLazyModuleGetters(this, {
+	setTimeout: "resource://gre/modules/Timer.jsm",
+});
+
 var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
 var ZoteroPluginInstaller = Components.utils.import("resource://zotero/word-processor-plugin-installer.js").ZoteroPluginInstaller;
 var Installer = function(failSilently, force) {
@@ -219,7 +227,7 @@ var Plugin = new function() {
 				// Prompts displayed synchronously here fails for some mystical reason
 				// (probably because this runs in a some event handler event loop)
 				// See zpi.success()/zpi.error() which also shows its dialogs in the next loop
-				Zotero.setTimeout(function() {
+				setTimeout(function() {
 					let ps = Services.prompt;
 					let buttonFlags = ps.BUTTON_POS_0 * ps.BUTTON_TITLE_IS_STRING
 						+ ps.BUTTON_POS_1 * ps.BUTTON_TITLE_CANCEL;
