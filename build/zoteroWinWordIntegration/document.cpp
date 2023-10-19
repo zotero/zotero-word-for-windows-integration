@@ -1071,6 +1071,15 @@ statusCode __stdcall convertPlaceholdersToFields(document_t *doc, const wchar_t*
 	HANDLE_EXCEPTIONS_END
 }
 
+// Activates document window
+statusCode __stdcall activate(document_t *doc) {
+	HANDLE_EXCEPTIONS_BEGIN
+	doc->comApp.put_Visible(true);
+	doc->comApp.Activate();
+	return STATUS_OK;
+	HANDLE_EXCEPTIONS_END
+}
+
 statusCode __stdcall cleanup(document_t *doc) {
 	HANDLE_EXCEPTIONS_BEGIN
 	if(doc->restoreShowRevisions) {

@@ -247,6 +247,7 @@ statusCode __stdcall deleteField(field_t* field) {
 statusCode __stdcall selectField(field_t* field) {
 	HANDLE_EXCEPTIONS_BEGIN
 	setScreenUpdatingStatus(field->doc, true);
+	field->comContentRange.Select();
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
 }

@@ -227,6 +227,7 @@ void setStyle(document_t *doc, CRange *range, long styleEnum, CString styleName)
 extern "C" {
 	__declspec(dllexport) statusCode __stdcall getDocument(const wchar_t documentName[], document_t** returnValue);
 	__declspec(dllexport) void __stdcall freeDocument(document_t *doc);
+	__declspec(dllexport) statusCode __stdcall activate(document_t *doc);
 	__declspec(dllexport) statusCode __stdcall displayAlert(document_t *doc, const wchar_t dialogText[],
 							                                unsigned short icon, unsigned short buttons,
 							                                unsigned short* returnValue);
