@@ -35,6 +35,10 @@ Sub ZoteroRibbonAddEditBibliography(button As IRibbonControl)
     Call ZoteroAddEditBibliography
 End Sub
 
+Sub ZoteroRibbonCitationExplorer(button As IRibbonControl)
+    Call ZoteroCitationExplorer
+End Sub
+
 Sub ZoteroRibbonSetDocPrefs(button As IRibbonControl)
     Call ZoteroSetDocPrefs
 End Sub
