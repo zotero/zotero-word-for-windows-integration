@@ -13,7 +13,7 @@
     <w:charset w:val="86"/>
     <w:family w:val="auto"/>
     <w:pitch w:val="variable"/>
-    <w:sig w:usb0="00000003" w:usb1="288F0000" w:usb2="00000016" w:usb3="00000000" w:csb0="00040001" w:csb1="00000000"/>
+    <w:sig w:usb0="00000203" w:usb1="288F0000" w:usb2="00000016" w:usb3="00000000" w:csb0="00040001" w:csb1="00000000"/>
   </w:font>
   <w:font w:name="Arial">
     <w:panose1 w:val="020B0604020202020204"/>

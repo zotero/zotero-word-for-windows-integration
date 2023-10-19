@@ -11,5 +11,6 @@
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROINSERTBIBLIOGRAPHY" wne:name="Project.Zotero.ZoteroInsertBibliography" wne:bEncrypt="00" wne:cmg="56"/>
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROADDEDITBIBLIOGRAPHY" wne:name="Project.Zotero.ZoteroAddEditBibliography" wne:bEncrypt="00" wne:cmg="56"/>
     <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROADDNOTE" wne:name="Project.Zotero.ZoteroAddNote" wne:bEncrypt="00" wne:cmg="56"/>
+    <wne:mcd wne:macroName="PROJECT.ZOTERO.ZOTEROCITATIONEXPLORER" wne:name="Project.Zotero.ZoteroCitationExplorer" wne:bEncrypt="00" wne:cmg="56"/>
   </wne:mcds>
 </wne:vbaSuppData>

@@ -113,6 +113,10 @@ Public Sub ZoteroAddEditBibliography()
     Call ZoteroCommand("addEditBibliography", True)
 End Sub
 
+Public Sub ZoteroCitationExplorer()
+    Call ZoteroCommand("citationExplorer", True)
+End Sub
+
 Public Sub ZoteroSetDocPrefs()
     Call ZoteroCommand("setDocPrefs", True)
 End Sub

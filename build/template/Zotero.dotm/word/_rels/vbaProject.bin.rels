@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId3" Type="http://schemas.microsoft.com/office/2020/07/relationships/vbaProjectSignatureV3" Target="vbaProjectSignatureV3.bin"/>
-  <Relationship Id="rId2" Type="http://schemas.microsoft.com/office/2014/relationships/vbaProjectSignatureAgile" Target="vbaProjectSignatureAgile.bin"/>
-  <Relationship Id="rId1" Type="http://schemas.microsoft.com/office/2006/relationships/vbaProjectSignature" Target="vbaProjectSignature.bin"/>
-  <Relationship Id="rId4" Type="http://schemas.microsoft.com/office/2006/relationships/wordVbaData" Target="vbaData.xml"/>
+  <Relationship Id="rId1" Type="http://schemas.microsoft.com/office/2006/relationships/wordVbaData" Target="vbaData.xml"/>
 </Relationships>
