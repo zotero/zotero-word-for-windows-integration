@@ -36,11 +36,7 @@ function init() {
 	libPath = FileUtils.getDir('ARes', []).parent.parent;
 	libPath.append('integration');
 	libPath.append('word-for-windows');
-	if (Zotero.platform == "Win64") {
-		libPath.append("libzoteroWinWordIntegration_x64.dll");
-	} else {
-		libPath.append("libzoteroWinWordIntegration.dll");
-	}
+	libPath.append("libzoteroWinWordIntegration.dll");
 	
 	lib = ctypes.open(libPath.path);
 	
@@ -149,6 +145,9 @@ function init() {
 
 		// statusCode complete(Document *doc);
 		complete: lib.declare("complete", ctypes.stdcall_abi, statusCode, document_t.ptr),
+
+		// statusCode activate(Document *doc);
+		activate: lib.declare("activate", ctypes.stdcall_abi, statusCode, document_t.ptr),
 		
 		// statusCode deleteField(Field* field);
 		deleteField: lib.declare("deleteField", ctypes.stdcall_abi, statusCode, field_t.ptr),
@@ -264,8 +263,6 @@ Document.prototype = {
 		return buttonPressed.value;
 	},
 	
-	activate: function() {},
-	
 	canInsertField: function(fieldType) {
 		Zotero.debug("ZoteroWinWordIntegration: canInsertField", 4);
 		checkIfFreed(this._documentStatus);
@@ -379,6 +376,15 @@ Document.prototype = {
 		checkStatus(f.convert(this._document_t, field_t.ptr.array()(fields),
 			fields.length, ctypes.jschar.array()(toFieldType),
 			ctypes.unsigned_short.array()(toNoteTypes)));
+	},
+
+	activate: function() {
+		Zotero.debug("ZoteroWinWordIntegration: activate", 4);
+		if (this._documentStatus.active) {
+			checkStatus(f.activate(this._document_t));
+		} else {
+			Zotero.debug("complete() already called on document; ignoring");
+		}	
 	},
 	
 	cleanup: function() {
