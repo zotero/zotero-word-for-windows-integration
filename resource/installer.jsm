@@ -26,14 +26,7 @@ var EXPORTED_SYMBOLS = ["Installer"];
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/FileUtils.jsm");
 
-const { XPCOMUtils } = ChromeUtils.import(
-	"resource://gre/modules/XPCOMUtils.jsm"
-);
-XPCOMUtils.defineLazyModuleGetters(this, {
-	setTimeout: "resource://gre/modules/Timer.jsm",
-});
-
-var Zotero = Components.classes["@zotero.org/Zotero;1"].getService(Components.interfaces.nsISupports).wrappedJSObject;
+var { Zotero } = ChromeUtils.importESModule("chrome://zotero/content/zotero.mjs");
 var ZoteroPluginInstaller = Components.utils.import("resource://zotero/word-processor-plugin-installer.js").ZoteroPluginInstaller;
 var Installer = function(failSilently, force) {
 	return new ZoteroPluginInstaller(Plugin,
@@ -53,7 +46,7 @@ var Plugin = new function() {
 	
 	var zoteroPluginInstaller;
 	
-	this.install = function(zpi) {
+	this.install = async function(zpi) {
 		// get Zotero.dot file
 		let dotm = FileUtils.getDir('AChrom', []).parent.parent;
 		dotm.append('integration');
@@ -227,22 +220,21 @@ var Plugin = new function() {
 				// Prompts displayed synchronously here fails for some mystical reason
 				// (probably because this runs in a some event handler event loop)
 				// See zpi.success()/zpi.error() which also shows its dialogs in the next loop
-				setTimeout(function() {
-					let ps = Services.prompt;
-					let buttonFlags = ps.BUTTON_POS_0 * ps.BUTTON_TITLE_IS_STRING
-						+ ps.BUTTON_POS_1 * ps.BUTTON_TITLE_CANCEL;
-					let index = ps.confirmEx(
-						null,
-						title,
-						text,
-						buttonFlags,
-						Zotero.getString('general.moreInformation'),
-						"", "", "", {}
-					);
-					if (index == 0) {
-						Zotero.launchURL('https://www.zotero.org/support/kb/misconfigured_word_startup_folder');
-					}
-				});
+				await Zotero.Promise.delay();
+				let ps = Services.prompt;
+				let buttonFlags = ps.BUTTON_POS_0 * ps.BUTTON_TITLE_IS_STRING
+					+ ps.BUTTON_POS_1 * ps.BUTTON_TITLE_CANCEL;
+				let index = ps.confirmEx(
+					null,
+					title,
+					text,
+					buttonFlags,
+					Zotero.getString('general.moreInformation'),
+					"", "", "", {}
+				);
+				if (index == 0) {
+					Zotero.launchURL('https://www.zotero.org/support/kb/misconfigured_word_startup_folder');
+				}
 			}
 			
 			return;
