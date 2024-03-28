@@ -22,13 +22,10 @@
     ***** END LICENSE BLOCK *****
 */
 
-Components.utils.import("resource://gre/modules/ComponentUtils.jsm");
 Components.utils.import("resource://gre/modules/ctypes.jsm");
 Components.utils.import("resource://gre/modules/FileUtils.jsm");
 
-var Zotero = Components.classes["@zotero.org/Zotero;1"]
-			.getService(Components.interfaces.nsISupports)
-			.wrappedJSObject;
+var { Zotero } = ChromeUtils.importESModule("chrome://zotero/content/zotero.mjs");
 var field_t, document_t, fieldListNode_t, progressFunction_t, lib, libPath, f, fieldPtr;
 
 /**
@@ -224,15 +221,9 @@ function checkIfFreed(documentStatus) {
 	if(!documentStatus.active) throw "complete() method already called on document";
 }
 
-var Application = function() {
-	this.wrappedJSObject = this;
-};
+var Application = function() {};
 Application.prototype = {
 	classDescription: "Zotero Word for Windows Integration Application",
-	classID:		Components.ID("{c7a7eec5-f073-4db4-b383-f866f4b96b1c}"),
-	contractID:		"@zotero.org/Zotero/integration/application?agent=WinWord;1",
-	QueryInterface: ChromeUtils.generateQI([Components.interfaces.nsISupports]),
-	service:		true,
 	getDocument: async function(documentName) {
 		init();
 		var docPtr = new document_t.ptr();
@@ -432,9 +423,6 @@ FieldEnumerator.prototype = {
 		this._currentNode = contents.addressOfField("next").contents;
 		return new Field(fieldPtr, this._documentStatus);
 	},
-	
-	"QueryInterface": ChromeUtils.generateQI([Components.interfaces.nsISupports,
-		Components.interfaces.nsISimpleEnumerator])
 };
 
 /**
@@ -540,22 +528,10 @@ for (let cls of [Document, Field]) {
 	}
 }
 
-/**
- * A service to initialize Word plugin code on Zotero startup
- */
-var Initializer = function() {
-	var Integration = Components.utils.import("resource://zotero-winword-integration/integration.js").WinWordIntegration;
-	Integration.init();
-};
-Initializer.prototype = {
-	classDescription: "Zotero Word for Windows Initializer",
-	"classID":Components.ID("{bacdcfc8-9c82-49d0-8076-b8dc17f7366e}"),
-	"contractID":"@zotero.org/Zotero/integration/initializer?agent=WinWord;1",
-	"QueryInterface":ChromeUtils.generateQI([Components.interfaces.nsISupports]),
-	"service":true
-};
+function initIntegration() {
+	// start plug-in installer
+	var Installer = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
+	new Installer();
+}
 
-
-const NSGetFactory = ComponentUtils.generateNSGetFactory([
-	Application, Initializer
-]);
+export { Application, initIntegration as init };
