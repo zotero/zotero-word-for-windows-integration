@@ -36,9 +36,13 @@ function init() {
 	libPath = FileUtils.getDir('ARes', []).parent.parent;
 	libPath.append('integration');
 	libPath.append('word-for-windows');
-	if (Zotero.platform == "Win64") {
+	if (Zotero.arch == "x86_64") {
 		libPath.append("libzoteroWinWordIntegration_x64.dll");
-	} else {
+	}
+	else if (Zotero.arch == "aarch64") {
+		libPath.append("libzoteroWinWordIntegration_ARM64.dll");
+	}
+	else {
 		libPath.append("libzoteroWinWordIntegration.dll");
 	}
 	
