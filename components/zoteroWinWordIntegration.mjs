@@ -217,17 +217,38 @@ function checkIfFreed(documentStatus) {
 	if(!documentStatus.active) throw "complete() method already called on document";
 }
 
+const DECODE_MAPPINGS = {
+	' ': '%20',
+	'^': '%5e',
+}
+
 var Application = function() {};
 Application.prototype = {
 	classDescription: "Zotero Word for Windows Integration Application",
 	getDocument: async function(documentName) {
 		init();
 		var docPtr = new document_t.ptr();
-		// For OneDrive stored documents we receive the in the form:
-		// https://[username]-my.sharepoint.com/personal/[username_url_thing]/Documents\Document1.docx
-		// But the document url is all stored with forward slashes in running-object table
+		// As of 2024-05-02 Word passes the filepath of the opened file as it appears in the running-objects table
+		// which is usually encoded for some characters (not encodeURI-style though)
+		// except for the filename, which it passes in the "decoded" form. In this form weird things happen
+		// like various symbols #^ are replaced with ^N^1 etc. In the running-object table the filename
+		// of the opened document is encoded by replacing "^" with "%5e" and " " with "%20".
+		//
+		// E.g. the filename "Asdasdas!@#$%^&() _+ąčę.docx" is passed to us as "Asdasdas!@^N$^1^L^0()-_=^M^J; ąčę.docx"
+		// and appears as "Asdasdas!@%5eN$%5e1%5eL%5e0()-_=%5eM%5eJ;%20ąčę.docx" in the running-objects table.
+		//
+		// For most users this doesn't matter because when we fail to find the open document via its running-objects
+		// table entry we can get the current running instance of Word and get the active document instead, but this
+		// doesn't work universally. Hopefully this will fix it for most users.
 		if (documentName.indexOf('https://') == 0) {
 			documentName = documentName.replace(/\\/g, '/');
+			let parts = documentName.split('/'); // No "/" allowed in filenames, so we are safe to do this
+			let finalPart = parts[parts.length-1];
+			for (let [key, value] of Object.entries(DECODE_MAPPINGS)) {
+				finalPart = finalPart.replaceAll(key, value);
+			}
+			parts[parts.length-1] = finalPart;
+			documentName = parts.join('/');
 		}
 		checkStatus(f.getDocument(documentName, docPtr.address()));
 		return new Document(docPtr);
