@@ -140,7 +140,7 @@ Private Sub FindZoteroWindow()
     End If
     
     ' Zotero 7 / FX102+
-    ThWnd = FindWindow("ZoteroWindowClass", vbNullString)
+    ThWnd = FindWindow("MozillaWindowClass", vbNullString)
     If ThWnd = 0 Then
         Exit Sub
     End If
