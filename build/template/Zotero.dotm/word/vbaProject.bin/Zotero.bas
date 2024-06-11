@@ -41,8 +41,8 @@ Private Const WM_COPYDATA = &H4A
         "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName _
         As String) As LongPtr
     Private Declare PtrSafe Function FindWindowEx Lib "user32" Alias _
-        "FindWindowExA" (ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
-        ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
+        "FindWindowExA" (ByVal hWnd1 As LongPtr, ByVal hWnd2 As LongPtr, _
+        ByVal lpsz1 As String, ByVal lpsz2 As String) As LongPtr
     Private Declare PtrSafe Function SendMessage Lib "user32" Alias _
         "SendMessageA" (ByVal hwnd As LongPtr, ByVal wMsg As Long, ByVal _
         wParam As Long, lParam As Any) As Integer
