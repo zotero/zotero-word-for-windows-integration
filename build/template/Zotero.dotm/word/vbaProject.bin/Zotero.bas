@@ -40,6 +40,9 @@ Private Const WM_COPYDATA = &H4A
     Private Declare PtrSafe Function FindWindow Lib "user32" Alias _
         "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName _
         As String) As LongPtr
+    Private Declare PtrSafe Function FindWindowEx Lib "user32" Alias _
+        "FindWindowExA" (ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
+        ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
     Private Declare PtrSafe Function SendMessage Lib "user32" Alias _
         "SendMessageA" (ByVal hwnd As LongPtr, ByVal wMsg As Long, ByVal _
         wParam As Long, lParam As Any) As Integer
@@ -65,6 +68,9 @@ Private Const WM_COPYDATA = &H4A
     Private Declare Function FindWindow Lib "user32" Alias _
         "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName _
         As String) As Long
+    Private Declare Function FindWindowEx Lib "user32" Alias _
+        "FindWindowExA" (ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
+        ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
     Private Declare Function SendMessage Lib "user32" Alias _
         "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal _
         wParam As Long, lParam As Any) As Integer
@@ -140,13 +146,16 @@ Private Sub FindZoteroWindow()
     End If
     
     ' Zotero 7 / FX102+
-    ThWnd = FindWindow("MozillaWindowClass", vbNullString)
-    If ThWnd = 0 Then
-        Exit Sub
-    End If
     Dim lpdwThreadId As Long
-    lpdwThreadId = GetWindowThreadProcessId(ThWnd, 0)
-    Call EnumThreadWindows(lpdwThreadId, AddressOf EnumWindowsCallback, ByVal 0&)
+    ThWnd = FindWindow("MozillaWindowClass", vbNullString)
+    Do While ThWnd <> 0
+        lpdwThreadId = GetWindowThreadProcessId(ThWnd, 0)
+        Call EnumThreadWindows(lpdwThreadId, AddressOf EnumWindowsCallback, ByVal 0&)
+        If ZotWnd <> 0 Then
+            Exit Do
+        End If
+        ThWnd = FindWindowEx(0, ThWnd, "MozillaWindowClass", vbNullString)
+    Loop
 End Sub
 
 Function EnumWindowsCallback(ByVal hwnd As Long, ByVal lParams As Long) As Long ' {
@@ -227,4 +236,5 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
         End If
     End If
 End Sub
+
 
