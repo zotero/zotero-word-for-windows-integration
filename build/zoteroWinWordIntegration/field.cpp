@@ -485,7 +485,7 @@ statusCode convertToNoteType(field_t* field, short toNoteType) {
 					comNoteRange = field->comFootnote.get_Range();
 				} else {
 					comRefRange = field->comEndnote.get_Reference();
-					comNoteRange = field->comFootnote.get_Range();
+					comNoteRange = field->comEndnote.get_Range();
 				}
 				comRange = comRefRange.get_Duplicate();
 				comRange.Collapse(0);
