@@ -120,8 +120,7 @@ statusCode __stdcall getDocument(const wchar_t documentName[], document_t** retu
 
 			pmon->Release();
 		}
-	
-		pmon->Release();
+
 		prot->Release();
 		pbc->Release();
 		
