@@ -126,7 +126,7 @@ try {
 	throwError(exception, __FUNCTION__, __FILE__); \
 	return STATUS_EXCEPTION; \
 } catch(...) { \
-	throwError(L"An unhandled exception occured.", __FUNCTION__, __FILE__, 0);\
+	throwError(L"An unhandled exception occurred.", __FUNCTION__, __FILE__, 0);\
 	return STATUS_EXCEPTION; \
 }
 
