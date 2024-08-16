@@ -140,6 +140,14 @@ var Plugin = new function() {
 		var allBadFolders = true;
 		var installedAt = new Set();
 		for (let startupFolder of startupFolders) {
+			if (startupFolder.path.includes('Program Files')) {
+				someBadFolders = true;
+				continue;
+			}
+			else {
+				allBadFolders = false;
+			}
+			
 			if (!startupFolder.clone().exists()) {
 				// Sometimes even with Word installed and having been launched before the Startup folder does not exist
 				// so we create it here if we have detected installed Word versions
@@ -161,14 +169,6 @@ var Plugin = new function() {
 			if (installedAt.has(startupFolder.path)) continue;
 			installedAt.add(startupFolder.path);
 			
-			if (startupFolder.path.includes('Program Files')) {
-				someBadFolders = true;
-				continue;
-			}
-			else {
-				allBadFolders = false;
-			}
-			
 			var oldDot = startupFolder.clone().QueryInterface(Components.interfaces.nsIFile);
 			var oldDotm = oldDot.clone();
 			oldDot.append("Zotero.dot");
@@ -180,7 +180,11 @@ var Plugin = new function() {
 						template.remove(false);
 					} catch(e) {
 						Zotero.debug(e);
-						throw new Error("Could not remove "+template.path);
+						// Non-fatal if we cannot remove the .dot file since we're only
+						// removing it to take out our own trash
+						if (template === oldDotm) {
+							throw new Error("Could not remove "+template.path);
+						}
 					}
 				}
 			}
