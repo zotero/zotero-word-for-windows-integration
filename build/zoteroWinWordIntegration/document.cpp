@@ -235,15 +235,8 @@ void __stdcall freeDocument(document_t* doc) {
 
 	// Free allocated fields
 	freeFieldList(doc->allocatedFieldsStart, true);
-	
 	// Free allocated field lists
-	listNode_t* nextNode = doc->allocatedFieldListsStart;
-	while(nextNode) {
-		listNode_t* currentNode = nextNode;
-		freeFieldList((listNode_t*) currentNode->value, false);
-		nextNode = currentNode->next;
-		free(currentNode);
-	}
+	freeFieldList(doc->allocatedFieldListsStart, false);
 	
 	// Free document
 	delete doc;
