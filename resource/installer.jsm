@@ -23,7 +23,6 @@
 */
 
 var EXPORTED_SYMBOLS = ["Installer"];
-Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/FileUtils.jsm");
 
 var { Zotero } = ChromeUtils.importESModule("chrome://zotero/content/zotero.mjs");
