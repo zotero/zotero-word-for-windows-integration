@@ -30,6 +30,7 @@ Private Const WM_COPYDATA = &H4A
 #Else
     Global ZotWnd As Long
 #End If
+Global IsZotero7 As Boolean
 
 #If VBA7 Then
     Type COPYDATASTRUCT
@@ -145,6 +146,8 @@ Private Sub FindZoteroWindow()
         Exit Sub
     End If
     
+    IsZotero7 = True
+    
     ' Zotero 7 / FX102+
     Dim lpdwThreadId As Long
     ThWnd = FindWindow("MozillaWindowClass", vbNullString)
@@ -161,7 +164,6 @@ End Sub
 Function EnumWindowsCallback(ByVal hwnd As Long, ByVal lParams As Long) As Long ' {
     Dim windowClass As String * 256
     Dim retVal      As Long
-    Dim l           As Long
     Dim zoteroPosition As Long
     Dim remoteWindowPosition As Long
 
@@ -216,15 +218,27 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
     args$ = "-silent -ZoteroIntegrationAgent WinWord -ZoteroIntegrationCommand " & cmd & " -ZoteroIntegrationDocument """ & name$ & """ -ZoteroIntegrationTemplateVersion " & templateVersion$
     a$ = "zotero.exe " & args$ & Chr$(0) & "C:\"
     
-    ' Do some UTF-8 magic
-    lLength = WideCharToMultiByte(CP_UTF8, 0, StrPtr(a$), -1, ByVal 0, 0, 0, 0)
-    ReDim buf(lLength) As Byte
-    Call WideCharToMultiByte(CP_UTF8, 0, StrPtr(a$), -1, buf(1), lLength, 0, 0)
+    If IsZotero7 Then
+        ' With FX128+ WM_COPYDATA either has to be in UTF16 (native VBA string encoding)
+        ' or the UTF8 WM_COPYDATA must start with Fire + Fox emojis. We cannot do that
+        ' because the VBA editor doesn't support unicode at all.
+        ' Either way this works with FX115 too which is now released
+        ' so we do this for Zotero 7
+        cds.dwData = 2
+        cds.cbData = LenB(a$)
+        cds.lpData = StrPtr(a$)
+    Else
+        ' Do some UTF-8 magic for Zotero 6
+        lLength = WideCharToMultiByte(CP_UTF8, 0, StrPtr(a$), -1, ByVal 0, 0, 0, 0)
+        ReDim buf(lLength) As Byte
+        Call WideCharToMultiByte(CP_UTF8, 0, StrPtr(a$), -1, buf(1), lLength, 0, 0)
+    
+        cds.dwData = 1
+        cds.cbData = lLength
+        cds.lpData = VarPtr(buf(1))
+    End If
     
     ' Send message to Firefox
-    cds.dwData = 1
-    cds.cbData = lLength
-    cds.lpData = VarPtr(buf(1))
     i = SendMessage(ZotWnd, WM_COPYDATA, 0, cds)
     
     ' Handle error
@@ -236,5 +250,4 @@ Sub ZoteroCommand(cmd As String, bringToFront As Boolean)
         End If
     End If
 End Sub
-
 
