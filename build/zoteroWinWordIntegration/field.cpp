@@ -278,10 +278,14 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 	HANDLE_EXCEPTIONS_BEGIN
 	setScreenUpdatingStatus(field->doc, false);
 	
-	// Get current font info
-	CFont0 comFont = field->comContentRange.get_Font();
-	CString fontName = comFont.get_Name();
-	float fontSize = comFont.get_Size();
+	// Get current style info
+	CString styleName;
+	VARIANT varStyle = field->comContentRange.get_Style();
+	if (varStyle.vt == VT_DISPATCH && varStyle.pdispVal != NULL) {
+		CStyle comStyle(varStyle.pdispVal);
+		styleName = comStyle.get_NameLocal();
+	}
+	VariantClear(&varStyle); // Clean up the VARIANT
 
 	// Check if we need to restore cursor position after insert (bookmarks only)
 	bool restoreSelectionToEnd = false;
@@ -344,8 +348,12 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 			}
 		}
 
-		// Put font back on
-		comFont = field->comContentRange.get_Font();
+		// We need to reset the font here, otherwise in mixed-font situations (e.g. when citing
+		// items that contain english and chinese characters) the font somehow goes to Times New Roman
+		CFont0 comFont = field->comContentRange.get_Font();
+		comFont.Reset();
+		// Put style back on
+		field->comContentRange.put_Style(styleName);
 
 		// Need to delete the return that gets added at the end, but only if there are no
 		// returns within the text to be inserted
@@ -373,6 +381,8 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 			field->comBookmark = comBookmarks.Add(field->bookmarkName, field->comContentRange);
 			field->comContentRange = field->comBookmark.get_Range();
 		}
+		// Put style back on
+		field->comContentRange.put_Style(styleName);
 	}
 
 	// Restore the selection to the end of a bookmark
@@ -382,8 +392,6 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 		comRange.Select();
 	}
 
-	comFont.put_Name(fontName);
-	comFont.put_Size(fontSize);
 	return STATUS_OK;
 	HANDLE_EXCEPTIONS_END
 }
