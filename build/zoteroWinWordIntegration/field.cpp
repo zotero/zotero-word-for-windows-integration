@@ -278,14 +278,23 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 	HANDLE_EXCEPTIONS_BEGIN
 	setScreenUpdatingStatus(field->doc, false);
 	
-	// Get current style info
-	CString styleName;
+	// Get current font size
+	CFont0 comFont = field->comContentRange.get_Font();
+	float fontSize = comFont.get_Size();
+	
+	// Get the font name from style instead of directly from the
+	// content range, because when there are mixed fonts (like when
+	// inserting text with mixed latin and chinese characters)
+	// the returned font style is an empty string "" and if you
+	// try to put that back on Word defaults to Times New Roman
+	CString fontName;
 	VARIANT varStyle = field->comContentRange.get_Style();
 	if (varStyle.vt == VT_DISPATCH && varStyle.pdispVal != NULL) {
 		CStyle comStyle(varStyle.pdispVal);
-		styleName = comStyle.get_NameLocal();
+		CFont0 styleFont = comStyle.get_Font();
+		fontName = styleFont.get_Name();
 	}
-	VariantClear(&varStyle); // Clean up the VARIANT
+	VariantClear(&varStyle);
 
 	// Check if we need to restore cursor position after insert (bookmarks only)
 	bool restoreSelectionToEnd = false;
@@ -351,9 +360,8 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 		// We need to reset the font here, otherwise in mixed-font situations (e.g. when citing
 		// items that contain english and chinese characters) the font somehow goes to Times New Roman
 		CFont0 comFont = field->comContentRange.get_Font();
-		comFont.Reset();
-		// Put style back on
-		field->comContentRange.put_Style(styleName);
+		comFont.put_Name(fontName);
+		comFont.put_Size(fontSize);
 
 		// Need to delete the return that gets added at the end, but only if there are no
 		// returns within the text to be inserted
@@ -381,8 +389,9 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 			field->comBookmark = comBookmarks.Add(field->bookmarkName, field->comContentRange);
 			field->comContentRange = field->comBookmark.get_Range();
 		}
-		// Put style back on
-		field->comContentRange.put_Style(styleName);
+		// Put dont back on
+		comFont.put_Name(fontName);
+		comFont.put_Size(fontSize);
 	}
 
 	// Restore the selection to the end of a bookmark
