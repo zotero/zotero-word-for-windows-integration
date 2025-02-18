@@ -288,13 +288,12 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 	// the returned font style is an empty string "" and if you
 	// try to put that back on Word defaults to Times New Roman
 	CString fontName;
-	VARIANT varStyle = field->comContentRange.get_Style();
+	CComVariant varStyle = field->comContentRange.get_Style();
 	if (varStyle.vt == VT_DISPATCH && varStyle.pdispVal != NULL) {
 		CStyle comStyle(varStyle.pdispVal);
 		CFont0 styleFont = comStyle.get_Font();
 		fontName = styleFont.get_Name();
 	}
-	VariantClear(&varStyle);
 
 	// Check if we need to restore cursor position after insert (bookmarks only)
 	bool restoreSelectionToEnd = false;
