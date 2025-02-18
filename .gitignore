@@ -1,6 +1,7 @@
 build/zoteroWinWordIntegration/.vs
-build/zoteroWinWordIntegration/Release
-build/zoteroWinWordIntegration/Debug
-build/zoteroWinWordIntegration/x64
-build/zoteroWinWordIntegration/ARM64
+build/zoteroWinWordIntegration/**/Release
+build/zoteroWinWordIntegration/**/Debug
+build/zoteroWinWordIntegration/**/x64
+build/zoteroWinWordIntegration/**/ARM64
+build/zoteroWinWordIntegration/**/zoteroWinWordIntegration.log
 *.vcxproj.user
