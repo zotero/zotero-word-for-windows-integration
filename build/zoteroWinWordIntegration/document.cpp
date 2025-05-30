@@ -888,6 +888,7 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 			CHyperlink comLink = comLinks.Item(COleVariant(j));
 			CRange comRange = comLink.get_Range();
 			CString linkText = comRange.get_Text();
+			linkText.Trim();
 			if (linkText.Find(IMPORT_ITEM_PREFIX) == 0 || linkText.Find(IMPORT_BIBL_PREFIX) == 0) {
 				field_t *field;
 				ENSURE_OK(insertFieldRaw(doc, fieldType, comRange, &field));
