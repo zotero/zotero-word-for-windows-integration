@@ -22,8 +22,8 @@
     ***** END LICENSE BLOCK *****
 */
 
-Components.utils.import("resource://gre/modules/ctypes.jsm");
-Components.utils.import("resource://gre/modules/FileUtils.jsm");
+const { ctypes } = ChromeUtils.importESModule("resource://gre/modules/ctypes.sys.mjs");
+const { FileUtils } = ChromeUtils.importESModule("resource://gre/modules/FileUtils.sys.mjs");
 
 var { Zotero } = ChromeUtils.importESModule("chrome://zotero/content/zotero.mjs");
 var field_t, document_t, fieldListNode_t, progressFunction_t, lib, libPath, f, fieldPtr;

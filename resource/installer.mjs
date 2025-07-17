@@ -22,18 +22,18 @@
     ***** END LICENSE BLOCK *****
 */
 
-var EXPORTED_SYMBOLS = ["Installer"];
-Components.utils.import("resource://gre/modules/FileUtils.jsm");
+const { FileUtils } = ChromeUtils.importESModule("resource://gre/modules/FileUtils.sys.mjs");
 
-var { Zotero } = ChromeUtils.importESModule("chrome://zotero/content/zotero.mjs");
-var ZoteroPluginInstaller = Components.utils.import("resource://zotero/word-processor-plugin-installer.js").ZoteroPluginInstaller;
-var Installer = function(failSilently, force) {
+import { Zotero } from "chrome://zotero/content/zotero.mjs";
+const { ZoteroPluginInstaller } = ChromeUtils.importESModule("resource://zotero/word-processor-plugin-installer.mjs");
+
+export var Installer = function(failSilently, force) {
 	return new ZoteroPluginInstaller(Plugin,
 		failSilently !== undefined ? failSilently : Zotero.isStandalone,
 		force);
-}
+};
 
-var Plugin = new function() {
+var Plugin = new (function() {
 	this.EXTENSION_STRING = "Zotero Word for Windows Integration";
 	this.EXTENSION_ID = "zoteroWinWordIntegration@zotero.org";
 	this.EXTENSION_PREF_BRANCH = "extensions.zoteroWinWordIntegration.";
@@ -245,4 +245,4 @@ var Plugin = new function() {
 		
 		zpi.success();
 	}
-}
+})
