@@ -547,7 +547,7 @@ for (let cls of [Document, Field]) {
 
 function initIntegration() {
 	// start plug-in installer
-	var Installer = Components.utils.import("resource://zotero-winword-integration/installer.jsm").Installer;
+	var { Installer } = ChromeUtils.importESModule("resource://zotero-winword-integration/installer.mjs");
 	new Installer();
 }
 
