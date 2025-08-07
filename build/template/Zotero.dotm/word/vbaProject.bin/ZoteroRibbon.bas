@@ -31,6 +31,10 @@ Sub ZoteroRibbonAddNote(button As IRibbonControl)
     Call ZoteroAddNote
 End Sub
 
+Sub ZoteroRibbonAddAnnotation(button As IRibbonControl)
+    Call ZoteroAddAnnotation
+End Sub
+
 Sub ZoteroRibbonAddEditBibliography(button As IRibbonControl)
     Call ZoteroAddEditBibliography
 End Sub

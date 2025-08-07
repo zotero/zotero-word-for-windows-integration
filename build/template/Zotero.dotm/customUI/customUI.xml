@@ -7,14 +7,12 @@
           <button id="InsertZoteroCitationButton" label="Add/Edit Citation" size="large" image="addEditZoteroCitation" onAction="ZoteroRibbon.ZoteroRibbonAddEditCitation" supertip="Insert a new citation, or edit the citation at the current cursor position" keytip="C"/>
           <button id="InsertZoteroBibliographyButton" label="Add/Edit Bibliography" size="large" image="addEditZoteroBibliography" onAction="ZoteroRibbon.ZoteroRibbonAddEditBibliography" supertip="Insert a new bibliography, or edit the existing bibliography, at the current cursor position" keytip="B"/>
           <separator id="ZoteroSeparator1"/>
-          <button id="InsertZoteroNoteButton" label="Insert Note" size="large" image="addZoteroNote" onAction="ZoteroRibbon.ZoteroRibbonAddNote" supertip="Insert a new note at the current cursor position" keytip="N"/>
+          <button id="InsertZoteroAnnotationButton" label="Add Annotation" size="large" image="addZoteroAnnotation" onAction="ZoteroRibbon.ZoteroRibbonAddAnnotation" supertip="Insert an annotation at the current cursor position" keytip="A"/>
+          <button id="InsertZoteroNoteButton" label="Add Note" size="large" image="addZoteroNote" onAction="ZoteroRibbon.ZoteroRibbonAddNote" supertip="Insert a new note at the current cursor position" keytip="N"/>
           <separator id="ZoteroSeparator2"/>
-          <button id="ZoteroSetDocPrefs" label="Document Preferences" image="setZoteroDocPrefs-small" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale" keytip="P"/>
-          <button id="RefreshZotero" label="Refresh" imageMso="RecordsRefreshRecords" onAction="ZoteroRibbon.ZoteroRibbonRefresh" supertip="Update all citations to reflect changes" keytip="R"/>
-          <button id="ZoteroRemoveCodes" label="Unlink Citations" imageMso="TableUnlinkExternalData" onAction="ZoteroRibbon.ZoteroRibbonRemoveCodes" supertip="Remove all Zotero field codes and unlink from Zotero library" keytip="U"/>
-          <!-- <button id="InsertZoteroCitationButtonSmall" visible="false" label="Add/Edit Citation" image="addEditZoteroCitation-small" onAction="ZoteroRibbon.ZoteroRibbonAddEditCitation" supertip="Insert a new citation, or edit the citation at the current cursor position"/>
-	    <button id="InsertZoteroBibliographyButtonSmall" visible="false" label="Add/Edit Bibliography" size="large" image="addEditZoteroBibliography-small" onAction="ZoteroRibbon.ZoteroRibbonAddEditBibliography" supertip="Insert a new bibliography, or edit the existing bibliography, at the current cursor position"/>
-          <button id="ZoteroSetDocPrefsLarge" visible="false" label="Document Preferences" size="large" image="setZoteroDocPrefs" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale"/> -->
+          <button id="ZoteroSetDocPrefs" label="Document Preferences" image="zoteroDocPrefs" onAction="ZoteroRibbon.ZoteroRibbonSetDocPrefs" supertip="Change the citation style or locale" keytip="P"/>
+          <button id="RefreshZotero" label="Refresh" image="zoteroRefresh" onAction="ZoteroRibbon.ZoteroRibbonRefresh" supertip="Update all citations to reflect changes" keytip="R"/>
+          <button id="ZoteroRemoveCodes" label="Unlink Citations" image="zoteroRemoveCodes" onAction="ZoteroRibbon.ZoteroRibbonRemoveCodes" supertip="Remove all Zotero field codes and unlink from Zotero library" keytip="U"/>
         </group>
       </tab>
     </tabs>
