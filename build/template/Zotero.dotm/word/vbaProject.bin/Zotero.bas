@@ -116,6 +116,10 @@ Public Sub ZoteroAddNote()
     Call ZoteroCommand("addNote", True)
 End Sub
 
+Public Sub ZoteroAddAnnotation()
+    Call ZoteroCommand("addAnnotation", True)
+End Sub
+
 Public Sub ZoteroAddEditBibliography()
     Call ZoteroCommand("addEditBibliography", True)
 End Sub
