@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+	local current_version
+	current_version=$(sed 's/\.SOURCE$//' "$VERSION_FILE")
+	echo "Current version: $current_version"
+	echo ""
+	echo "Usage: $0 <version>"
+	echo ""
+	echo "Examples:"
+	echo "  $0 7.0.6        # Set version to 7.0.6"
+	echo "  $0 7.1.0        # Set version to 7.1.0"
+	echo ""
+	echo "This script updates version in:"
+	echo "  - resource/version.txt (as VERSION.SOURCE)"
+	echo "  - resource/installer.mjs (LAST_INSTALLED_FILE_UPDATE as VERSIONpre)"
+	exit 1
+}
+
+validate_version() {
+	local version="$1"
+	if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+		echo "Error: Invalid version format: $version"
+		echo "Error: Version must be in format X.Y.Z (e.g., 7.0.6)"
+		exit 1
+	fi
+}
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+VERSION_FILE="$PROJECT_ROOT/resource/version.txt"
+INSTALLER_FILE="$PROJECT_ROOT/resource/installer.mjs"
+
+if [ $# -ne 1 ]; then
+	usage
+fi
+
+NEW_VERSION="$1"
+
+validate_version "$NEW_VERSION"
+
+echo "Bumping version to $NEW_VERSION..."
+
+echo "Updating $VERSION_FILE"
+echo "${NEW_VERSION}.SOURCE" > "$VERSION_FILE"
+
+echo "Updating $INSTALLER_FILE"
+sed -i "s/this\.LAST_INSTALLED_FILE_UPDATE = \"[^\"]*\";/this.LAST_INSTALLED_FILE_UPDATE = \"${NEW_VERSION}pre\";/" "$INSTALLER_FILE"
+
+echo "Version successfully bumped to $NEW_VERSION"
