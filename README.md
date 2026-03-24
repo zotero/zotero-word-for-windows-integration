@@ -2,6 +2,16 @@
 
 This is a Firefox add-on that consists of a library written in C++ that communicates with Microsoft Word out of process using OLE Automation, a js-ctypes wrapper for said library, and a template that is installed into Microsoft Word to communicate with Zotero.
 
+## Development Setup
+
+After cloning, install git hooks:
+
+```
+./scripts/install_hooks.sh
+```
+
+This sets up a pre-commit hook that automatically runs `build/template/unpack_templates.sh` when `install/Zotero.dotm` is modified, keeping the unpacked template files in sync.
+
 ## C++ Library Build Requirements
 - Visual Studio (currently 2017)
 - Windows XP C++ libraries (install in VS by right-clicking the project and selecting "Install Missing Features")

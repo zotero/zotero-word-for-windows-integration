@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+set -e
+
+# --- Unpack Zotero.dotm if it was modified ---
+
+if git diff --cached --name-only | grep -q '^install/Zotero\.dotm$'; then
+	REPO_ROOT="$(git rev-parse --show-toplevel)"
+	UNPACK_SCRIPT="$REPO_ROOT/build/template/unpack_templates.sh"
+
+	if [ ! -x "$UNPACK_SCRIPT" ]; then
+		echo "Warning: $UNPACK_SCRIPT not found or not executable, skipping unpack" >&2
+	else
+		echo "install/Zotero.dotm changed — running unpack_templates.sh..."
+		"$UNPACK_SCRIPT"
+		git add "$REPO_ROOT/build/template/Zotero.dotm/"
+		echo "Unpacked template files staged."
+	fi
+fi
+
+# --- gh-account-guard identity check ---
+
+# Check if gh account-guard is available
+command -v gh >/dev/null || exit 0
+
+# Auto-enforce to ensure identity is correct
+gh account-guard auto-enforce >/dev/null 2>&1 || true
+
+# Get current git identity after enforcement
+current_name=$(git config --get user.name 2>/dev/null || echo "")
+current_email=$(git config --get user.email 2>/dev/null || echo "")
+
+# If no identity is set, allow commit (git will use global config)
+if [[ -z "$current_name" ]] || [[ -z "$current_email" ]]; then
+	exit 0
+fi
+
+# Get expected identity by calling status and parsing output
+status_output=$(gh account-guard status 2>&1 || echo "")
+
+# Check if there's a matched profile
+if ! echo "$status_output" | grep -q "Matched profile:"; then
+	exit 0
+fi
+
+# Extract expected values from status output
+expected_name=""
+expected_email=""
+
+name_line=$(echo "$status_output" | grep "user.name" | head -1)
+if echo "$name_line" | grep -q "should be:"; then
+	expected_name=$(echo "$name_line" | sed 's/.*should be: //' | xargs)
+elif echo "$name_line" | grep -q "✓"; then
+	expected_name=$(echo "$name_line" | sed 's/.*= //' | xargs)
+fi
+
+email_line=$(echo "$status_output" | grep "user.email" | head -1)
+if echo "$email_line" | grep -q "should be:"; then
+	expected_email=$(echo "$email_line" | sed 's/.*should be: //' | xargs)
+elif echo "$email_line" | grep -q "✓"; then
+	expected_email=$(echo "$email_line" | sed 's/.*= //' | xargs)
+fi
+
+# If we couldn't determine expected values, allow commit (fail open)
+if [[ -z "$expected_name" ]] || [[ -z "$expected_email" ]]; then
+	exit 0
+fi
+
+# Compare current vs expected
+if [[ "$current_name" != "$expected_name" ]] || [[ "$current_email" != "$expected_email" ]]; then
+	echo "❌ Pre-commit hook: Git identity mismatch!" >&2
+	echo "" >&2
+	echo "Current identity:" >&2
+	echo "  user.name  = $current_name" >&2
+	echo "  user.email = $current_email" >&2
+	echo "" >&2
+	echo "Expected identity for this profile:" >&2
+	echo "  user.name  = $expected_name" >&2
+	echo "  user.email = $expected_email" >&2
+	echo "" >&2
+	echo "The identity has been auto-corrected. Please try committing again." >&2
+	echo "" >&2
+	echo "To bypass this check (not recommended):" >&2
+	echo "  git commit --no-verify" >&2
+	exit 1
+fi
+
+exit 0
