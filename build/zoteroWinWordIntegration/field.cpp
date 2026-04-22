@@ -278,21 +278,22 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 	HANDLE_EXCEPTIONS_BEGIN
 	setScreenUpdatingStatus(field->doc, false);
 	
-	// Get current font size
+	// Get current font size and name
 	CFont0 comFont = field->comContentRange.get_Font();
 	float fontSize = comFont.get_Size();
-	
-	// Get the font name from style instead of directly from the
-	// content range, because when there are mixed fonts (like when
-	// inserting text with mixed latin and chinese characters)
-	// the returned font style is an empty string "" and if you
-	// try to put that back on Word defaults to Times New Roman
-	CString fontName;
-	CComVariant varStyle = field->comContentRange.get_Style();
-	if (varStyle.vt == VT_DISPATCH && varStyle.pdispVal != NULL) {
-		CStyle comStyle(varStyle.pdispVal);
-		CFont0 styleFont = comStyle.get_Font();
-		fontName = styleFont.get_Name();
+	CString fontName = comFont.get_Name();
+
+	// If the font name from the range is empty (happens with mixed fonts,
+	// e.g. when inserting text with mixed latin and chinese characters),
+	// fall back to the font name from the current style. Otherwise Word
+	// defaults to Times New Roman when we put an empty font name back on.
+	if (fontName.IsEmpty()) {
+		CComVariant varStyle = field->comContentRange.get_Style();
+		if (varStyle.vt == VT_DISPATCH && varStyle.pdispVal != NULL) {
+			CStyle comStyle(varStyle.pdispVal);
+			CFont0 styleFont = comStyle.get_Font();
+			fontName = styleFont.get_Name();
+		}
 	}
 
 	// Check if we need to restore cursor position after insert (bookmarks only)
@@ -388,7 +389,7 @@ statusCode __stdcall setText(field_t* field, const wchar_t string[], bool isRich
 			field->comBookmark = comBookmarks.Add(field->bookmarkName, field->comContentRange);
 			field->comContentRange = field->comBookmark.get_Range();
 		}
-		// Put dont back on
+		// Put font back on
 		comFont.put_Name(fontName);
 		comFont.put_Size(fontSize);
 	}
