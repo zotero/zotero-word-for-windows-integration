@@ -27,6 +27,8 @@
 */
 
 #include "zoteroWinWordIntegration.h"
+#include <vector>
+#include <algorithm>
 
 static COleVariant covOptional((long)DISP_E_PARAMNOTFOUND, VT_ERROR);
 static COleVariant covTrue((short)VARIANT_TRUE, VT_BOOL);
@@ -866,6 +868,12 @@ statusCode __stdcall exportDocument(document_t *doc, const wchar_t fieldType[], 
 	HANDLE_EXCEPTIONS_END
 }
 
+struct importLink_t {
+	CRange range;
+	CString text;
+	long start;
+};
+
 statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], bool *returnValue) {
 	HANDLE_EXCEPTIONS_BEGIN
 	*returnValue = false;
@@ -881,14 +889,43 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 			e->Delete();
 			continue;
 		}
+
+		// Collect the importable links first without modifying the document.
+		// Replacing a hyperlink with a field while iterating the Hyperlinks
+		// collection can invalidate other items in it (e.g. hyperlinks within
+		// a TOC field), resulting in "Object has been deleted" errors.
+		std::vector<importLink_t> links;
 		CHyperlinks comLinks = comStoryRange.get_Hyperlinks();
 		long count = comLinks.get_Count();
 		// 1 indexed!!!
-		for (long j = count; j > 0; j--) {
-			CHyperlink comLink = comLinks.Item(COleVariant(j));
-			CRange comRange = comLink.get_Range();
-			CString linkText = comRange.get_Text();
-			linkText.Trim();
+		for (long j = 1; j <= count; j++) {
+			try {
+				CHyperlink comLink = comLinks.Item(COleVariant(j));
+				CRange comRange = comLink.get_Range();
+				CString linkText = comRange.get_Text();
+				linkText.Trim();
+				if (linkText.Find(IMPORT_ITEM_PREFIX) == 0
+						|| linkText.Find(IMPORT_BIBL_PREFIX) == 0
+						|| linkText.Find(IMPORT_DOC_PREFS_PREFIX) == 0) {
+					importLink_t link;
+					link.range = CRange(comRange.get_Duplicate());
+					link.text = linkText;
+					link.start = comRange.get_Start();
+					links.push_back(link);
+				}
+			}
+			catch (COleDispatchException* e) {
+				// Skip hyperlinks that Word cannot give us a range or text for
+				e->Delete();
+			}
+		}
+
+		// Process from the end of the story so that earlier ranges are unaffected
+		std::sort(links.begin(), links.end(),
+			[](const importLink_t &a, const importLink_t &b) { return a.start > b.start; });
+		for (auto &link : links) {
+			CRange comRange = link.range;
+			CString linkText = link.text;
 			if (linkText.Find(IMPORT_ITEM_PREFIX) == 0 || linkText.Find(IMPORT_BIBL_PREFIX) == 0) {
 				field_t *field;
 				ENSURE_OK(insertFieldRaw(doc, fieldType, comRange, &field));
@@ -900,7 +937,7 @@ statusCode __stdcall importDocument(document_t *doc, const wchar_t fieldType[], 
 					setStyle(doc, &comRange, ENDNOTE_STYLE_ENUM, ENDNOTE_STYLE_NAME);
 				}
 			}
-			else if (linkText.Find(IMPORT_DOC_PREFS_PREFIX) == 0) {
+			else {
 				*returnValue = true;
 				linkText.Delete(0, lstrlen(IMPORT_DOC_PREFS_PREFIX));
 				ENSURE_OK(setDocumentData(doc, linkText));
