@@ -35,6 +35,14 @@ void throwError(const wchar_t error[], const char function[], const char file[],
 				unsigned int line) {
 	if(!lastErrorString) lastErrorString = new CString();
 
+	// Only report the file name, not the full build path
+	if(file) {
+		const char* lastSeparator = strrchr(file, '\\');
+		if(lastSeparator) file = lastSeparator + 1;
+		lastSeparator = strrchr(file, '/');
+		if(lastSeparator) file = lastSeparator + 1;
+	}
+
 	if(line == 0) {
 		lastErrorString->Format(L"%s [%S:%S]", error, function, file);
 	} else {

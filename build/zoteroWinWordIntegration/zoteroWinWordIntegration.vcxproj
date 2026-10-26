@@ -378,6 +378,18 @@
       <FloatingPointExceptions>true</FloatingPointExceptions>
     </ClCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!--
+        Strip the local build path from __FILE__ so error messages and binaries don't contain it.
+        /d1trimfile is an undocumented MSVC switch (VS 2019 16.4+). References:
+          https://developercommunity.visualstudio.com/t/absolute-paths-for-associated-pdb-files-are-record/573023
+          https://assarbad.net/blog/20230201/aiding-reproducibility-in-builds-with-ms-visual-c/
+        $(ProjectDir) ends in a backslash, so the extra one keeps the closing quote from being escaped.
+      -->
+      <AdditionalOptions>/d1trimfile:"$(ProjectDir)\" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="document.cpp" />
     <ClCompile Include="field.cpp" />
